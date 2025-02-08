@@ -3,4 +3,6 @@ export enum ApiRoutes {
   MAKES = "makes",
   MODELS = "models",
   GRADES = "grades",
+  FUELS = "fuels",
+  YEARS = "years",
 }

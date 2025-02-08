@@ -4,20 +4,26 @@ export interface GetSearchParams {
   grades?: string;
   page?: string;
   pageSize?: string;
+  fuels?: string;
+  yearsMin?: string;
+  yearsMax?: string;
+  priceMin?: string;
+  priceMax?: string;
 }
 
 // export interface LayoutProps {
 //   params?: Promise<GetSearchParams>;
 // }
+
 export interface ReturnProps {
   vehicle: {
     id: bigint;
     details: {
       makes: {
-        make_english: string | null;
+        make_short_name: string | null;
       };
       model: {
-        model_english: string | null;
+        model_short_name: string | null;
       };
       grades: {
         grade_english: string | null;
@@ -39,13 +45,33 @@ export interface ReturnProps {
 
 import { prisma } from "@/prisma/prisma-client";
 
+const DEFAULT_MIN_YEARS = 2000;
+const DEFAULT_MAX_YEARS = 2025;
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 2000000000;
+
 export const findVehicle = async (
   params: GetSearchParams
 ): Promise<ReturnProps> => {
-  const { makes, model, grades, page, pageSize } = await params;
+  const {
+    makes,
+    model,
+    grades,
+    fuels,
+    page,
+    pageSize,
+    yearsMin,
+    yearsMax,
+    priceMin,
+    priceMax,
+  } = await params;
 
   const pagenum = page ?? 0;
   const takePageSize = pageSize ?? 10;
+  const currentMinYear = Number(yearsMin) || DEFAULT_MIN_YEARS;
+  const currentMaxYear = Number(yearsMax) || DEFAULT_MAX_YEARS;
+  const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
+  const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
 
   const vehiclePromise = prisma.encar_vehicles.findMany({
     // where: {
@@ -121,14 +147,14 @@ export const findVehicle = async (
         {
           details: {
             makes: {
-              make_english: makes,
+              make_short_name: makes,
             },
           },
         },
         {
           details: {
             model: {
-              model_english: model,
+              model_short_name: model,
             },
           },
         },
@@ -136,6 +162,29 @@ export const findVehicle = async (
           details: {
             grades: {
               grade_english: grades,
+            },
+          },
+        },
+        {
+          details: {
+            form_year: {
+              gte: currentMinYear,
+              lte: currentMaxYear,
+            },
+          },
+        },
+        {
+          details: {
+            origin_price: {
+              gte: currentMinPrice,
+              lte: currentMaxPrice,
+            },
+          },
+        },
+        {
+          details: {
+            fuel: {
+              fuel_english: fuels,
             },
           },
         },
@@ -147,12 +196,12 @@ export const findVehicle = async (
         select: {
           makes: {
             select: {
-              make_english: true,
+              make_short_name: true,
             },
           },
           model: {
             select: {
-              model_english: true,
+              model_short_name: true,
             },
           },
           grades: {
@@ -165,6 +214,7 @@ export const findVehicle = async (
               fuel_english: true,
             },
           },
+
           form_year: true,
           engine_displacement: true,
           mileage: true,
@@ -184,13 +234,24 @@ export const findVehicle = async (
     where: {
       details: {
         makes: {
-          make_english: makes,
+          make_short_name: makes,
         },
         model: {
-          model_english: model,
+          model_short_name: model,
         },
         grades: {
           grade_english: grades,
+        },
+        fuel: {
+          fuel_english: fuels,
+        },
+        form_year: {
+          gte: currentMinYear,
+          lte: currentMaxYear,
+        },
+        origin_price: {
+          gte: currentMinPrice,
+          lte: currentMaxPrice,
         },
       },
     },
@@ -200,6 +261,9 @@ export const findVehicle = async (
     vehiclePromise,
     totalPagePromise,
   ]);
+  // console.log("min", currentMinYear);
+  // console.log("max", currentMaxYear);
+  // console.log("total", totalPage);
   return { vehicle, totalPage };
 };
 

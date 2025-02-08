@@ -8,9 +8,7 @@ import { MiddleSelect } from "./middle-select";
 import { Button } from "../ui/button";
 
 export interface ModelProps {
-  model: {
-    model_english: string;
-  };
+  model_short_name: string;
 }
 export interface GradesProps {
   grades: {
@@ -29,7 +27,21 @@ export const FormFilters = () => {
   const [gradesType, setGradesType] = useState(
     searchParams.has("grades") ? searchParams.get("grades") : null
   );
-
+  const [fuels, setFuels] = useState(
+    searchParams.has("fuels") ? searchParams.get("fuels") : null
+  );
+  const [yearsMin, setYearsMin] = useState(
+    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+  );
+  const [yearsMax, setYearsMax] = useState(
+    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+  );
+  const [priceMin, setPriceMin] = useState<string | null>(
+    searchParams.has("priceMin") ? searchParams.get("priceMin") : null
+  );
+  const [priceMax, setPriceMax] = useState<string | null>(
+    searchParams.has("priceMax") ? searchParams.get("priceMax") : null
+  );
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     router.refresh();
@@ -37,6 +49,11 @@ export const FormFilters = () => {
       makes: makesType,
       model: modelType,
       grades: gradesType,
+      fuels: fuels,
+      yearsMin: yearsMin,
+      yearsMax: yearsMax,
+      priceMin: priceMin,
+      priceMax: priceMax,
     };
     const query = qs.stringify(params, {
       arrayFormat: "comma",
@@ -64,7 +81,17 @@ export const FormFilters = () => {
         model={modelType}
         grade={gradesType}
       />
-      <MiddleSelect />
+
+      <MiddleSelect
+        onChangeFuels={setFuels}
+        onChangeYearMin={setYearsMin}
+        onChangeYearMax={setYearsMax}
+        onChangePriceMin={setPriceMin}
+        onChangePriceMax={setPriceMax}
+        fuels={fuels}
+        yearMin={yearsMin}
+        yearMax={yearsMax}
+      />
 
       <div className="border-zinc-200 md:border-zinc-200 col-span-12 md:col-span-6 lg:col-span-3 flex flex-col">
         <p className="text-zinc-400 mb-1 ml-1.5 text-sm">&nbsp;</p>

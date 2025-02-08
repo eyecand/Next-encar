@@ -4,19 +4,19 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query") || "";
 
-  const model = await prisma.vehicle_details.findMany({
+  const model = await prisma.lib_models.findMany({
+    distinct: ["model_short_name"],
     where: {
-      makes: {
-        make_english: query,
-      },
-    },
-    distinct: ["model_id"],
-    select: {
-      model: {
-        select: {
-          model_english: true,
+      details: {
+        some: {
+          makes: {
+            make_short_name: query,
+          },
         },
       },
+    },
+    select: {
+      model_short_name: true,
     },
   });
 

@@ -4,6 +4,7 @@ import { Api } from "@/services/api-client";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import { GradesProps, ModelProps } from "./form-filters";
+
 interface Option {
   value: string | null;
   label: string | null;
@@ -26,14 +27,16 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
   onChangeMakes,
   onChangeModels,
   onChangeGrades,
-
   make,
   model,
   grade,
 }) => {
   const { makes } = useMakes();
+
   const [mod, setMod] = useState<ModelProps[]>([]);
   const [grades, setGrades] = useState<GradesProps[]>([]);
+  const [isMod, setIsMod] = useState(false);
+  const [isGrades, setIsGrades] = useState(false);
 
   const optionMakes: Option[] = [
     {
@@ -55,14 +58,14 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
   ];
   makes.map((item) => {
     return optionMakes.push({
-      value: item.make_english,
-      label: item.make_english,
+      value: item.make_short_name,
+      label: item.make_short_name,
     });
   });
   mod.map((item) => {
     return optionsModels.push({
-      value: item.model.model_english,
-      label: item.model.model_english,
+      value: item.model_short_name,
+      label: item.model_short_name,
     });
   });
 
@@ -75,18 +78,24 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
   useEffect(() => {
     async function test(params: string) {
       try {
+        setIsMod(true);
         const response = await Api.models.getModels(params);
         setMod(response);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsMod(false);
       }
     }
     async function grades(makes: string | null, model: string | null) {
       try {
+        setIsGrades(true);
         const response = await Api.grades.getGrades(makes, model);
         setGrades(response);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsGrades(false);
       }
     }
     if (make) {
@@ -132,6 +141,7 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
       </div>
       <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">
         <NoSSR
+          isLoading={isMod}
           placeholder="Модель"
           options={optionsModels}
           value={
@@ -151,6 +161,7 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
       </div>
       <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">
         <NoSSR
+          isLoading={isGrades}
           placeholder="Комплектация"
           options={optionsGrades}
           value={

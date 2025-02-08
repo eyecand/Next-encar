@@ -50,6 +50,7 @@ export default async function Home({
                   <div className="flex justify-between relative card-car">
                     <div className="mr-5">
                       <Image
+                        className="w-auto h-auto"
                         loading="lazy"
                         src={item.photos[0].url}
                         alt="#"
@@ -60,8 +61,8 @@ export default async function Home({
                     <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
                       <div className="title">
                         <h3 className="inline text-[18px] leading-[25px]">
-                          {item.details.makes.make_english}{" "}
-                          {item.details.model.model_english},{" "}
+                          {item.details.makes.make_short_name}{" "}
+                          {item.details.model.model_short_name},{" "}
                           {item.details.form_year}
                         </h3>
                         <div className="text-[13px] leading-[20px] mt-1 text-gray-400">
@@ -99,11 +100,13 @@ export default async function Home({
           )}
       </div>
       <div className="mt-10">
-        <PaginationWithLinks
-          page={currentPage}
-          pageSize={take}
-          totalCount={totalPage}
-        />
+        {totalPage ? (
+          <PaginationWithLinks
+            page={currentPage}
+            pageSize={take}
+            totalCount={totalPage}
+          />
+        ) : null}
       </div>
     </div>
   );
