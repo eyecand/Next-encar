@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { LiaTelegramPlane } from "react-icons/lia";
 import { FaWhatsapp } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import React from "react";
 import { useClickAway } from "react-use";
 import Image from "next/image";
+import axios from "axios";
 
 const socialItems = [
   {
@@ -27,10 +28,45 @@ const socialItems = [
     icon: <IoLogoInstagram className="w-4 h-4 sm:w-5 sm:h-5" />,
   },
 ];
+interface CBRPRops {
+  Date: string; // Или Date, если будете парсить строку в Date объект
+  PreviousDate: string; // Или Date
+  PreviousURL: string;
+  Timestamp: string; // Или Date
+  Valute: {
+    [key: string]: ValuteData; // Индексный тип для динамических ключей валют (AUD, AZN, ...)
+  };
+}
+
+interface ValuteData {
+  ID: string;
+  NumCode: string;
+  CharCode: string;
+  Nominal: number;
+  Name: string;
+  Value: number;
+  Previous: number;
+}
+
 const navitems = [{ id: "1", name: "Подбор авто", scrollname: "nomer" }];
 export const Header = () => {
   const [isSideMenuOpen, setSideMenue] = useState(false);
-
+  const [cbr, setCBR] = useState<CBRPRops>();
+  useEffect(() => {
+    async function getCBR() {
+      try {
+        const makesAll = (
+          await axios.get<CBRPRops>(
+            "https://www.cbr-xml-daily.ru/daily_json.js"
+          )
+        ).data;
+        setCBR(makesAll);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getCBR();
+  }, []);
   function openSideMenu() {
     setSideMenue(true);
   }
@@ -44,7 +80,7 @@ export const Header = () => {
           <div>
             <a
               className="flex items-center"
-              href="http://localhost:3000"
+              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -91,13 +127,15 @@ export const Header = () => {
         >
           {isSideMenuOpen && <Mobilenav closeSideMenu={closeSideMenu} />}
         </div>
-
-        <div className="hidden md:flex items-center mr-52">
+        <div className="hidden md:flex  items-center ">
+          <span className="text-white">KRW/RUB: {cbr?.Valute.KRW.Value}</span>
+        </div>
+        <div className="hidden md:flex items-center md:mr-16 lg:mr-52">
           {/* navitems */}
           {navitems.map((item) => (
             <a
               className="font-body text-white hover:text-red-500 hover:scale-105  transition-transform duration-200 ease-linear"
-              href=""
+              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
               key={item.id}
             >
               {item.name}
@@ -135,7 +173,7 @@ function Mobilenav({ closeSideMenu }: { closeSideMenu: () => void }) {
             <a
               onClick={closeSideMenu}
               className="font-body  hover:scale-105 hover:text-red-500 transition-transform duration-300 ease-linear"
-              href=""
+              href="http://localhost:3000"
               key={item.id}
             >
               {item.name}

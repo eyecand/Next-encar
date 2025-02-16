@@ -9,3 +9,8 @@ export { ProductCard } from "./product-card";
 export { MiddleSelect } from "./middle-select";
 export { PaginationWithLinks } from "./pagination-container";
 export { VehicleList } from "./vehicle-list";
+export { SliderCarPage } from "./slider-carpage";
+export { BlockItem } from "./block-item";
+export { CarInfo } from "./car-info";
+export { StatisticCar } from "./statistic-car";
+export { StatisticAlertDialog } from "./statistic-alert-dialog";
