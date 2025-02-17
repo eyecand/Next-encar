@@ -14,3 +14,4 @@ export { BlockItem } from "./block-item";
 export { CarInfo } from "./car-info";
 export { StatisticCar } from "./statistic-car";
 export { StatisticAlertDialog } from "./statistic-alert-dialog";
+export { AlertDiagnostic } from "./alert-diagnostic";
