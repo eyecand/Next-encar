@@ -4,6 +4,25 @@ import {
   StatisticAlertDialog,
   StatisticCar,
 } from "@/components/shared";
+import { detectFuels } from "@/hooks/use-fuels";
+type AccidentProps = {
+  current_accident_count: number;
+  other_accident_count: number;
+  robber_count: number;
+  flood_total_loss_count: number;
+  flood_part_loss_count: number;
+  government: boolean;
+  business: boolean;
+  loan: boolean;
+};
+export type AccidentDetailsProps = {
+  date: Date;
+  type: string;
+  insurance_benefit: number;
+  part_cost: number;
+  labor_cost: number;
+  painting_cost: number;
+};
 type InfoProps = {
   model: string | null | undefined;
   make: string | null | undefined;
@@ -16,6 +35,10 @@ type InfoProps = {
   grades: string | null | undefined;
   engine: number | undefined;
   // lot: string | null;
+  accident: AccidentProps | null;
+  accident_details: AccidentDetailsProps[];
+  changeCount: number;
+  plate_number: string | null;
 };
 
 export const CarInfo = ({
@@ -26,14 +49,21 @@ export const CarInfo = ({
   fuel,
   transmission,
   mileage,
-
   grades,
   engine,
+  accident,
+  accident_details,
+  changeCount,
+  plate_number,
 }: InfoProps) => {
   const engine_displacement = engine
     ? (Math.round(engine) / 1000).toFixed(1)
     : "";
-  const priceWon = price ? price * 1000 : 0;
+  const priceWon = price ? price * 10000 : 0;
+  const paAccident = accident?.other_accident_count ?? 0;
+  const prAccident = accident?.current_accident_count ?? 0;
+  const totalA = paAccident + prAccident;
+
   return (
     <div className="w-full md:w-1/2">
       <div>
@@ -42,9 +72,13 @@ export const CarInfo = ({
         </h2>
         <div className="flex items-center">
           {grades}{" "}
-          <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
-            был в аварии
-          </span>
+          {totalA ? (
+            <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
+              был в аварии
+            </span>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 
@@ -56,12 +90,31 @@ export const CarInfo = ({
         </div>
         <div className="space-y-4 w-full lg:w-1/2">
           <BlockItem title="Двигатель" value={engine} />
-          <BlockItem title="Топливо" value={fuel} />
+          <BlockItem title="Топливо" value={detectFuels(fuel || "")} />
         </div>
       </div>
-      <StatisticCar />
+      <StatisticCar
+        flood={accident?.flood_total_loss_count}
+        robber={accident?.robber_count}
+        pastAccident={accident?.other_accident_count}
+        presentAccident={accident?.current_accident_count}
+        countChanges={changeCount}
+      />
       <div className="flex flex-col xl:flex-row gap-4">
-        <StatisticAlertDialog />
+        <StatisticAlertDialog
+          make={make}
+          model={model}
+          grades={grades}
+          engine={engine}
+          fuel={fuel}
+          plate_number={plate_number}
+          buisness={accident?.business}
+          goverment={accident?.government}
+          loan={accident?.loan}
+          robber={accident?.robber_count}
+          accident_details={accident_details}
+          years={years}
+        />
         <AlertDiagnostic />
       </div>
       {/* Total Price */}
@@ -75,7 +128,10 @@ export const CarInfo = ({
             <div className="flex justify-between items-center text-zinc-500">
               <span>Стоимость в Корее</span>
               <span className="text-lg font-semibold text-zinc-700">
-                {priceWon} ₩
+                {new Intl.NumberFormat("ru-RU")
+                  .format(priceWon)
+                  .replace(",", ".")}{" "}
+                ₩
               </span>
             </div>
             <div className="flex justify-between items-center text-zinc-500">

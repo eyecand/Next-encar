@@ -9,8 +9,28 @@ interface Option {
   value: string | null;
   label: string | null;
 }
+export type tpl = {
+  [key: string]: string;
+};
+export function detectFuels(fuel: string) {
+  const currentFuels: tpl = {
+    Gasoline: "Бензин",
+    ["LPG (Purchased by the public)"]: "СУГ(LPG)",
+    Diesel: "Дизель",
+    Electricity: "Электричество",
+    ["Gasolie+Electric"]: "Бензин + Электричество",
+    Hydrogen: "Водород",
+    ["Gasoline+LPG"]: "Бензин + СНГ",
+    ["LPG + Electric"]: "СНГ + электричество",
+    Other: "Другое",
+    ["Gasoline+CNG"]: "Бензин + СНГ",
+    CNG: "СПГ",
+  };
+  return currentFuels[fuel];
+}
 export const useFuels = (): ReturnProps => {
   const [fuels, setFuels] = React.useState<lib_fuels[]>([]);
+
   const optionFuels: Option[] = [
     {
       value: null,
@@ -31,7 +51,7 @@ export const useFuels = (): ReturnProps => {
   fuels.map((item) => {
     return optionFuels.push({
       value: item.fuel_english,
-      label: item.fuel_english,
+      label: detectFuels(item.fuel_english || ""),
     });
   });
   return { optionFuels };

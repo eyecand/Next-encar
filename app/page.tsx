@@ -9,6 +9,7 @@ import { findVehicle, GetSearchParams } from "@/lib/find-vehicle";
 
 import React from "react";
 type ParamsProps = Promise<GetSearchParams>;
+
 export default async function Home({
   searchParams,
 }: {
@@ -40,7 +41,6 @@ export default async function Home({
         </div>
       </div>
       <VehicleList vehicle={vehicle} />
-
       <div className="mt-10">
         {totalPage ? (
           <PaginationWithLinks

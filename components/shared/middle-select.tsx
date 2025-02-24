@@ -2,6 +2,7 @@
 import { useFuels, useYears } from "@/hooks";
 import dynamic from "next/dynamic";
 import { Input } from "../ui/input";
+import { detectFuels } from "@/hooks/use-fuels";
 
 interface Props<T> {
   onChangeFuels: (value: T) => void;
@@ -113,7 +114,7 @@ export const MiddleSelect: React.FC<Props<string | null>> = ({
                   ? [
                       {
                         value: fuels,
-                        label: fuels,
+                        label: detectFuels(fuels),
                       },
                     ]
                   : []

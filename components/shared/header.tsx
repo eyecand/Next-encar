@@ -80,7 +80,7 @@ export const Header = () => {
           <div>
             <a
               className="flex items-center"
-              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
+              href="http://localhost:3000"
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -135,7 +135,7 @@ export const Header = () => {
           {navitems.map((item) => (
             <a
               className="font-body text-white hover:text-red-500 hover:scale-105  transition-transform duration-200 ease-linear"
-              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
+              href="http://localhost:3000"
               key={item.id}
             >
               {item.name}

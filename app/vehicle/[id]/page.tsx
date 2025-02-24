@@ -12,6 +12,35 @@ export default async function CarPage({
   const car = await prisma.encar_vehicles.findFirst({
     where: { id: Number(id) },
     include: {
+      // номер машины при каждом владеьце
+      car_info: { select: { date: true, plate_number: true } },
+      // затраты на ремонт по страховке
+      accident_details: {
+        select: {
+          date: true,
+          insurance_benefit: true,
+          labor_cost: true,
+          painting_cost: true,
+          part_cost: true,
+          type: true,
+        },
+      },
+      // количество аварий и утопленник
+      accident: {
+        select: {
+          current_accident_count: true,
+          other_accident_count: true,
+          flood_total_loss_count: true,
+          flood_part_loss_count: true,
+          robber_count: true,
+          business: true,
+          government: true,
+          loan: true,
+        },
+      },
+      // количество владельцев
+      _count: { select: { car_info: { where: { vehicle_id: +id } } } },
+
       details: {
         include: {
           model: true,
@@ -33,6 +62,7 @@ export default async function CarPage({
   if (!car) {
     return notFound();
   }
+
   return (
     <div className="mx-auto px-5 max-w-[1280px] mt-24">
       <div className=" py-5 flex flex-col">
@@ -53,6 +83,10 @@ export default async function CarPage({
           mileage={car.details?.mileage}
           grades={car.details?.grades.grade_english}
           engine={car.details?.engine_displacement}
+          changeCount={car._count.car_info}
+          accident={car.accident}
+          accident_details={car.accident_details}
+          plate_number={car.vehicle_plate_number}
         />
       </section>
     </div>

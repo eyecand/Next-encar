@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("POSTGRES_URL")
 }
 
 model SequelizeMeta {
@@ -31,6 +31,7 @@ model accident_and_change_histories {
   loan                   Boolean   @default(false)
   created_at             DateTime  @db.Timestamptz(6)
   updated_at             DateTime  @db.Timestamptz(6)
+  encar                  encar_vehicles@relation(fields: [vehicle_id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -45,6 +46,7 @@ model accident_details {
   painting_cost     Int      @default(0)
   created_at        DateTime @db.Timestamptz(6)
   updated_at        DateTime @db.Timestamptz(6)
+  encar             encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date], map: "accident_details_vehicle_id_date_unique")
 }
@@ -56,6 +58,8 @@ model active_lots {
   is_checked              Boolean  @default(false)
   created_at              DateTime @db.Timestamptz(6)
   updated_at              DateTime @db.Timestamptz(6)
+  encar                   encar_vehicles@relation(fields:[vehicle_id],references:[id])
+
 }
 
 model advertisement_trust_label {
@@ -89,6 +93,7 @@ model car_info_changes {
   plate_number String   @db.VarChar(25)
   created_at   DateTime @db.Timestamptz(6)
   updated_at   DateTime @db.Timestamptz(6)
+  encar        encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date, plate_number], map: "car_info_changes_unique")
 }
@@ -114,11 +119,15 @@ model companies {
 model diagnosis_items {
   id                  BigInt   @id @default(autoincrement())
   diagnostic_id       BigInt
-  diagnosis_code_id   Int
-  diagnosis_result_id Int?
+  diagnosis_code_id   Int 
+  diagnosis_result_id Int? 
   comment_id          Int?
   created_at          DateTime @db.Timestamptz(6)
   updated_at          DateTime @db.Timestamptz(6)
+  diagnostics         diagnostics@relation(fields: [diagnostic_id],references: [id])
+  lib_codes           lib_diagnosis_codes @relation(fields: [diagnosis_code_id], references: [id])
+  results             lib_diagnosis_results? @relation(fields: [diagnosis_result_id], references: [id])
+  comments            lib_diagnosis_comments? @relation(fields: [comment_id], references: [id]) 
 
   @@unique([diagnostic_id, diagnosis_code_id], map: "diagnostic_diagnosis_code_unique_index")
 }
@@ -134,6 +143,9 @@ model diagnostic_centers {
   reservation_center_id Int?
   created_at            DateTime @db.Timestamptz(6)
   updated_at            DateTime @db.Timestamptz(6)
+  diagnostics           diagnostics[]
+  lib_reservation       lib_reservation_center?
+  
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -148,6 +160,9 @@ model diagnostics {
   register_id_code         String   @db.VarChar(55)
   created_at               DateTime @db.Timestamptz(6)
   updated_at               DateTime @db.Timestamptz(6)
+  encar                    encar_vehicles@relation(fields: [vehicle_id],references: [id])
+  diagnosis                diagnosis_items[]
+  center                   diagnostic_centers @relation(fields: [diagnostic_center_id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -165,8 +180,15 @@ model encar_vehicles {
   updated_at            DateTime @db.Timestamptz(6)
   details               vehicle_details?
   photos                vehicle_photos []
+  active                active_lots? 
+  accident_details      accident_details[]
+  owner                 owner_changes[]
+  insurance             insurance_certificates[]
+  accident              accident_and_change_histories?
+  car_info              car_info_changes[]
+  notjoined             not_joined_periods[]
+  diagnostics           diagnostics?
 }
-
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model insurance_certificates {
   id                BigInt   @id @default(autoincrement())
@@ -177,6 +199,7 @@ model insurance_certificates {
   use_type          String   @db.VarChar(55)
   created_at        DateTime @db.Timestamptz(6)
   updated_at        DateTime @db.Timestamptz(6)
+  encar             encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, registration_date], map: "insurance_certificates_vehicle_unique")
 }
@@ -247,6 +270,7 @@ model lib_diagnosis_codes {
   name       String   @db.VarChar(55)
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
+  diagnosis  diagnosis_items[]
 }
 
 model lib_diagnosis_comments {
@@ -256,6 +280,7 @@ model lib_diagnosis_comments {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
+  diagnosis       diagnosis_items[]
 }
 
 model lib_diagnosis_results {
@@ -266,6 +291,7 @@ model lib_diagnosis_results {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
+  diagnosis       diagnosis_items[]
 }
 
 model lib_districts {
@@ -337,6 +363,7 @@ model lib_reservation_center {
   error_translate                 Boolean  @default(false)
   created_at                      DateTime @db.Timestamptz(6)
   updated_at                      DateTime @db.Timestamptz(6)
+  center                          diagnostic_centers @relation(fields: [id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -395,6 +422,7 @@ model not_joined_periods {
   end_date   DateTime @db.Date
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
+  encar      encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, start_date, end_date], map: "vehicle_not_joined_unique")
 }
@@ -405,6 +433,7 @@ model owner_changes {
   date       DateTime @db.Date
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
+  encar      encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date], map: "vehicle_owner_changes_unique_index")
 }
@@ -493,6 +522,7 @@ model vehicle_details {
   body_type_id        Int 
   created_at          DateTime @db.Timestamptz(6)
   updated_at          DateTime @db.Timestamptz(6)
+  
   encar               encar_vehicles @relation(fields:[vehicle_id],references:[id])
   fuel                lib_fuels @relation(fields: [fuel_id],references: [id])
   colours             lib_colours @relation(fields: [colour_id],references: [id])

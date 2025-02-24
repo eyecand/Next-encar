@@ -17,28 +17,30 @@ export interface GetSearchParams {
 
 export interface ReturnProps {
   vehicle: {
-    id: bigint;
-    details: {
-      makes: {
-        make_short_name: string | null;
-      };
-      model: {
-        model_short_name: string | null;
-      };
-      grades: {
-        grade_english: string | null;
-      };
-      form_year: number;
-      origin_price: number | null;
-      mileage: number;
-      engine_displacement: number;
-      fuel: {
-        fuel_english: string | null;
-      };
-    } | null;
-    photos: {
-      url: string;
-    }[];
+    encar: {
+      id: bigint;
+      details: {
+        makes: {
+          make_short_name: string | null;
+        };
+        model: {
+          model_short_name: string | null;
+        };
+        grades: {
+          grade_english: string | null;
+        };
+        form_year: number;
+        origin_price: number | null;
+        mileage: number;
+        engine_displacement: number;
+        fuel: {
+          fuel_english: string | null;
+        };
+      } | null;
+      photos: {
+        url: string;
+      }[];
+    };
   }[];
   totalPage: number;
 }
@@ -73,7 +75,7 @@ export const findVehicle = async (
   const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
   const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
 
-  const vehiclePromise = prisma.encar_vehicles.findMany({
+  const vehiclePromise = prisma.active_lots.findMany({
     // where: {
     //   details: {
     //     isNot: null,
@@ -140,118 +142,138 @@ export const findVehicle = async (
     where: {
       AND: [
         {
-          details: {
-            isNot: null,
-          },
-        },
-        {
-          details: {
-            makes: {
-              make_short_name: makes,
+          encar: {
+            details: {
+              isNot: null,
             },
           },
         },
         {
-          details: {
-            model: {
-              model_short_name: model,
+          encar: {
+            details: {
+              makes: {
+                make_short_name: makes,
+              },
             },
           },
         },
         {
-          details: {
-            grades: {
-              grade_english: grades,
+          encar: {
+            details: {
+              model: {
+                model_short_name: model,
+              },
             },
           },
         },
         {
-          details: {
-            form_year: {
-              gte: currentMinYear,
-              lte: currentMaxYear,
+          encar: {
+            details: {
+              grades: {
+                grade_english: grades,
+              },
             },
           },
         },
         {
-          details: {
-            origin_price: {
-              gte: currentMinPrice,
-              lte: currentMaxPrice,
+          encar: {
+            details: {
+              form_year: {
+                gte: currentMinYear,
+                lte: currentMaxYear,
+              },
             },
           },
         },
         {
-          details: {
-            fuel: {
-              fuel_english: fuels,
+          encar: {
+            details: {
+              origin_price: {
+                gte: currentMinPrice,
+                lte: currentMaxPrice,
+              },
+            },
+          },
+        },
+        {
+          encar: {
+            details: {
+              fuel: {
+                fuel_english: fuels,
+              },
             },
           },
         },
       ],
     },
     select: {
-      id: true,
-      details: {
+      encar: {
         select: {
-          makes: {
+          id: true,
+          details: {
             select: {
-              make_short_name: true,
-            },
-          },
-          model: {
-            select: {
-              model_short_name: true,
-            },
-          },
-          grades: {
-            select: {
-              grade_english: true,
-            },
-          },
-          fuel: {
-            select: {
-              fuel_english: true,
-            },
-          },
+              makes: {
+                select: {
+                  make_short_name: true,
+                },
+              },
+              model: {
+                select: {
+                  model_short_name: true,
+                },
+              },
+              grades: {
+                select: {
+                  grade_english: true,
+                },
+              },
+              fuel: {
+                select: {
+                  fuel_english: true,
+                },
+              },
 
-          form_year: true,
-          engine_displacement: true,
-          mileage: true,
-          origin_price: true,
-        },
-      },
-      photos: {
-        select: {
-          url: true,
+              form_year: true,
+              engine_displacement: true,
+              mileage: true,
+              origin_price: true,
+            },
+          },
+          photos: {
+            select: {
+              url: true,
+            },
+          },
         },
       },
     },
     skip: +pagenum * +takePageSize,
     take: +takePageSize,
   });
-  const totalPagePromise = prisma.encar_vehicles.count({
+  const totalPagePromise = prisma.active_lots.count({
     where: {
-      details: {
-        makes: {
-          make_short_name: makes,
-        },
-        model: {
-          model_short_name: model,
-        },
-        grades: {
-          grade_english: grades,
-        },
-        fuel: {
-          fuel_english: fuels,
-        },
-        form_year: {
-          gte: currentMinYear,
-          lte: currentMaxYear,
-        },
-        origin_price: {
-          gte: currentMinPrice,
-          lte: currentMaxPrice,
+      encar: {
+        details: {
+          makes: {
+            make_short_name: makes,
+          },
+          model: {
+            model_short_name: model,
+          },
+          grades: {
+            grade_english: grades,
+          },
+          fuel: {
+            fuel_english: fuels,
+          },
+          form_year: {
+            gte: currentMinYear,
+            lte: currentMaxYear,
+          },
+          origin_price: {
+            gte: currentMinPrice,
+            lte: currentMaxPrice,
+          },
         },
       },
     },

@@ -7,7 +7,7 @@ export default async function DynamicImage({ url }: { url: string }) {
   return (
     // <h4>Hello</h4>
     <Image
-      className="relative"
+      className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
       alt="#"
       {...img}
       placeholder="blur"
