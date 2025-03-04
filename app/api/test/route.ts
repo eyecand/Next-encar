@@ -35,13 +35,47 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   // BigInt.prototype.toJSON = function () {
-  //   return this.toString();s
+  //   return this.toString();
   // };
-
+  // const first = await prisma.encar_vehicles.findFirst({
+  //   where: {
+  //     id: 75475,
+  //   },
+  //   include: {
+  //     accident_details: true,
+  //   },
+  // });
+  // const vehicles = await prisma.active_lots.findMany({
+  //   where: {
+  //     AND: [
+  //       {
+  //         encar: {
+  //           diagnostics: {
+  //             diagnosis: {
+  //               some: {
+  //                 diagnosis_result_id: 2,
+  //               },
+  //             },
+  //           },
+  //         },
+  //       },
+  //       { encar: { diagnostics: { isNot: null } } },
+  //     ],
+  //   },
+  //   select: {
+  //     encar: {
+  //       select: {
+  //         id: true,
+  //       },
+  //     },
+  //   },
+  // });
   const vehicles = await prisma.active_lots.findMany({
     select: {
       encar: {
-        select: {},
+        select: {
+          vehicle_id_on_auction: true,
+        },
       },
     },
   });

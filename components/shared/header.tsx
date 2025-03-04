@@ -10,6 +10,8 @@ import React from "react";
 import { useClickAway } from "react-use";
 import Image from "next/image";
 import axios from "axios";
+import { useCBRStore } from "@/store/cbr";
+import { useEURStore } from "@/store/eur";
 
 const socialItems = [
   {
@@ -47,11 +49,13 @@ interface ValuteData {
   Value: number;
   Previous: number;
 }
-
+// https://next-encar-git-main-eyecands-projects.vercel.app/
 const navitems = [{ id: "1", name: "Подбор авто", scrollname: "nomer" }];
 export const Header = () => {
   const [isSideMenuOpen, setSideMenue] = useState(false);
   const [cbr, setCBR] = useState<CBRPRops>();
+  const setCBRAll = useCBRStore((state) => state.setCBRStore);
+  const setCurrentEUR = useEURStore((state) => state.setEURStore);
   useEffect(() => {
     async function getCBR() {
       try {
@@ -67,12 +71,19 @@ export const Header = () => {
     }
     getCBR();
   }, []);
+  useEffect(() => {
+    if (cbr) {
+      setCBRAll(cbr?.Valute.KRW.Value);
+      setCurrentEUR(cbr?.Valute.EUR.Value);
+    }
+  });
   function openSideMenu() {
     setSideMenue(true);
   }
   function closeSideMenu() {
     setSideMenue(false);
   }
+
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md ">
@@ -80,7 +91,7 @@ export const Header = () => {
           <div>
             <a
               className="flex items-center"
-              href="http://localhost:3000"
+              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -135,7 +146,7 @@ export const Header = () => {
           {navitems.map((item) => (
             <a
               className="font-body text-white hover:text-red-500 hover:scale-105  transition-transform duration-200 ease-linear"
-              href="http://localhost:3000"
+              href="https://next-encar-git-main-eyecands-projects.vercel.app/"
               key={item.id}
             >
               {item.name}

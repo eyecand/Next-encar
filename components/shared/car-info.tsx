@@ -1,10 +1,16 @@
+"use client";
 import {
   AlertDiagnostic,
   BlockItem,
   StatisticAlertDialog,
   StatisticCar,
 } from "@/components/shared";
+
 import { detectFuels } from "@/hooks/use-fuels";
+import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
+import { useCBRStore } from "@/store/cbr";
+import { useEURStore } from "@/store/eur";
+import { Button } from "../ui/button";
 type AccidentProps = {
   current_accident_count: number;
   other_accident_count: number;
@@ -23,6 +29,16 @@ export type AccidentDetailsProps = {
   labor_cost: number;
   painting_cost: number;
 };
+export type DiagnosticsProps = {
+  actual_diagnostic_date: Date;
+  diagnosis: {
+    diagnosis_code_id: number;
+    diagnosis_result_id: number | null;
+    comments: {
+      comment_english: string | null;
+    } | null;
+  }[];
+};
 type InfoProps = {
   model: string | null | undefined;
   make: string | null | undefined;
@@ -39,6 +55,7 @@ type InfoProps = {
   accident_details: AccidentDetailsProps[];
   changeCount: number;
   plate_number: string | null;
+  diagnosis: DiagnosticsProps | null;
 };
 
 export const CarInfo = ({
@@ -55,6 +72,7 @@ export const CarInfo = ({
   accident_details,
   changeCount,
   plate_number,
+  diagnosis,
 }: InfoProps) => {
   const engine_displacement = engine
     ? (Math.round(engine) / 1000).toFixed(1)
@@ -63,7 +81,11 @@ export const CarInfo = ({
   const paAccident = accident?.other_accident_count ?? 0;
   const prAccident = accident?.current_accident_count ?? 0;
   const totalA = paAccident + prAccident;
-
+  const cbr = useCBRStore((state) => state.cbr);
+  const EUR = useEURStore((state) => state.eur);
+  const realEngine = engine ? engine : 1;
+  const realYears = years ? years : 2025;
+  const realFuel = fuel ? fuel : "Gasoline";
   return (
     <div className="w-full md:w-1/2">
       <div>
@@ -100,7 +122,8 @@ export const CarInfo = ({
         presentAccident={accident?.current_accident_count}
         countChanges={changeCount}
       />
-      <div className="flex flex-col xl:flex-row gap-4">
+
+      <div className="flex flex-col lg:flex-row gap-4">
         <StatisticAlertDialog
           make={make}
           model={model}
@@ -115,8 +138,23 @@ export const CarInfo = ({
           accident_details={accident_details}
           years={years}
         />
-        <AlertDiagnostic />
+        {diagnosis === null ? (
+          <div className="group relative w-full grow">
+            <Button
+              disabled={true}
+              className=" px-6 py-6 w-full   bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow"
+            >
+              Отчет осмотра авто
+            </Button>
+            <span className="pointer-events-none absolute -top-10 -left-12 w-max bg-gray-50 rounded-lg px-4 py-1 opacity-0 transition-opacity group-hover:opacity-100">
+              У данной машины отсутствует диагностика
+            </span>
+          </div>
+        ) : (
+          <AlertDiagnostic diagnosis={diagnosis} />
+        )}
       </div>
+
       {/* Total Price */}
       <div className="border-t border-zinc-200 mt-6 pt-6">
         <div className="table price w-full">
@@ -137,7 +175,20 @@ export const CarInfo = ({
             <div className="flex justify-between items-center text-zinc-500">
               <span>Стоимость в России</span>
               <span className="text-lg font-semibold text-zinc-700">
-                {priceWon} ₽
+                ~{" "}
+                {new Intl.NumberFormat("ru-RU")
+                  .format(
+                    FromKRWtoRUB(
+                      priceWon,
+                      cbr,
+                      EUR,
+                      realEngine,
+                      realFuel,
+                      realYears
+                    )
+                  )
+                  .replace(",", ".")}{" "}
+                ₽
               </span>
             </div>
           </div>

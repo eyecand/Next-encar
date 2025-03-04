@@ -3,6 +3,8 @@ import React from "react";
 import DynamicImage from "./dynamic-image";
 import Image from "next/image";
 import NotImage from "../../public/12.png";
+import { detectFuels } from "@/hooks/use-fuels";
+import { PriceAll } from "./price-on-mian-windows";
 
 interface ReturnProps {
   vehicle: {
@@ -33,6 +35,11 @@ interface ReturnProps {
   }[];
 }
 export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
+  // const destanatioPrice = (cbr: number, origin_price: number) => {
+  //   const finalCost =
+  //     origin_price * 10 * cbr + 2100 * cbr + 465000 + 5200 + 100000;
+  //   return finalCost;
+  // };
   return (
     <>
       <div className="isMobil flex-col items-center sm:flex-row    p-4  pb-0 sm:flex-wrap">
@@ -88,11 +95,19 @@ export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
                         <span className="text-gray-500 ">Двигатель:</span>
                         <div>
                           <span className="text-red-700 mx-[2px] md:mx-2">
-                            {item.encar.details.fuel.fuel_english}
+                            {detectFuels(
+                              item.encar.details.fuel.fuel_english
+                                ? item.encar.details.fuel.fuel_english
+                                : ""
+                            )}
                           </span>
-                          <span className="text-gray-400 ml-2">
-                            {item.encar.details.engine_displacement} cc
-                          </span>
+                          {item.encar.details.engine_displacement < 500 ? (
+                            ""
+                          ) : (
+                            <span className="text-gray-400 ml-2">
+                              {item.encar.details.engine_displacement} cc
+                            </span>
+                          )}
                         </div>
                       </div>
                       <div className="align-middle flex py-3 text-[12px]  whitespace-nowrap text-gray-900  justify-between items-baseline border-b  border-gray-200 relative">
@@ -105,14 +120,12 @@ export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
                       </div>
                     </div>
                     <div className="flex justify-center items-center text-black text-wrap text-[14px] whitespace-nowrap font-semibold pb-5">
-                      <span>
-                        {item.encar.details.origin_price
-                          ? new Intl.NumberFormat("ru-RU")
-                              .format(item.encar.details.origin_price * 10000)
-                              .replace(",", ".")
-                          : 0}{" "}
-                        W
-                      </span>
+                      <PriceAll
+                        price_origion={item.encar.details.origin_price}
+                        years={item.encar.details.form_year}
+                        fuel={item.encar.details.fuel.fuel_english}
+                        engine={item.encar.details.engine_displacement}
+                      />
                     </div>
                   </div>
                 </Link>
@@ -143,14 +156,6 @@ export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
                       ) : (
                         <DynamicImage url={item.encar.photos[0].url} />
                       )}
-
-                      {/* <Image
-                        className="w-auto h-auto"
-                        src={item.photos[0].url}
-                        alt="#"
-                        width={272}
-                        height={204}
-                      /> */}
                     </div>
                     <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
                       <div className="title">
@@ -164,15 +169,26 @@ export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
                         </div>
                       </div>
                       <div className="middle mt-1 text-[15px] leading-6">
+                        {item.encar.details.engine_displacement < 500 ? (
+                          ""
+                        ) : (
+                          <span className="whitespace-nowrap">
+                            {(
+                              Math.round(
+                                item.encar.details.engine_displacement
+                              ) / 1000
+                            ).toFixed(1)}{" "}
+                            л,{" "}
+                          </span>
+                        )}
+
                         <span className="whitespace-nowrap">
-                          {(
-                            Math.round(item.encar.details.engine_displacement) /
-                            1000
-                          ).toFixed(1)}{" "}
-                          л,{" "}
-                        </span>
-                        <span className="whitespace-nowrap">
-                          {item.encar.details.fuel.fuel_english},{" "}
+                          {detectFuels(
+                            item.encar.details.fuel.fuel_english
+                              ? item.encar.details.fuel.fuel_english
+                              : ""
+                          )}
+                          ,{" "}
                         </span>
                         <span className="whitespace-nowrap">
                           {item.encar.details.mileage} км
@@ -186,12 +202,12 @@ export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
                     </div>
                     <div className="price flex flex-shrink-0 flex-grow-0 w-[140px]">
                       <div className="flex-shrink-0 flex-grow-0 basis-full">
-                        {item.encar.details.origin_price
-                          ? new Intl.NumberFormat("ru-RU")
-                              .format(item.encar.details.origin_price * 10000)
-                              .replace(",", ".")
-                          : 0}{" "}
-                        W
+                        <PriceAll
+                          price_origion={item.encar.details.origin_price}
+                          years={item.encar.details.form_year}
+                          fuel={item.encar.details.fuel.fuel_english}
+                          engine={item.encar.details.engine_displacement}
+                        />
                       </div>
                     </div>
                   </div>

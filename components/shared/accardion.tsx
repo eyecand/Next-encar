@@ -11,7 +11,7 @@ export const Accardion: React.FC<Props> = ({ className }) => {
   const [view, setView] = React.useState(false);
 
   return (
-    <div className={cn("max-w-5xl", className)}>
+    <div className={cn("max-w-5xl mt-16", className)}>
       <div className="bg-white rounded-xl border-2">
         {/* Header */}
         <FormFilters />

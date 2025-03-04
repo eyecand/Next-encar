@@ -41,7 +41,7 @@ export const StatisticAlertDialog = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="px-6 py-4 w-full  bg-blue-300/90 hover:bg-blue-300 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
+        <Button className="px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative">
           отчет страховой компании
         </Button>
       </AlertDialogTrigger>
@@ -88,7 +88,8 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Дата первой страховке:
               <span className="text-base font-semibold text-black">
-                {accident_details.reverse()[0].date.toLocaleDateString()}
+                {accident_details.length > 0 &&
+                  accident_details.reverse()[0].date.toLocaleDateString()}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">

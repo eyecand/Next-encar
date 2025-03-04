@@ -14,7 +14,15 @@ export function BlockItem({ title, value }: BlockItemProps) {
           title
         )}
       </span>
-      <span className="font-semibold text-base md:text-lg">{value}</span>
+      <span className="font-semibold text-base md:text-lg">
+        {title === "Двигатель"
+          ? value
+            ? Number(value) < 500
+              ? "-"
+              : value
+            : "-"
+          : value}
+      </span>
     </div>
   );
 }
