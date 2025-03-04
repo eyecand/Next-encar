@@ -1,6 +1,7 @@
 import { CarInfo, SliderCarPage } from "@/components/shared";
 import { prisma } from "@/prisma/prisma-client";
 import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
 export default async function CarPage({
   params,
@@ -86,25 +87,28 @@ export default async function CarPage({
           {car.details?.model.model_short_name}
         </h1>
       </div>
-      <section className="  pt-4 flex md:flex-row flex-col mb-24">
-        <SliderCarPage imgSrc={car.photos} />
-        <CarInfo
-          make={car.details?.makes.make_short_name}
-          model={car.details?.model.model_short_name}
-          years={car.details?.form_year}
-          price={car.details?.origin_price}
-          fuel={car.details?.fuel.fuel_english}
-          transmission={car.details?.transmission.transmission_english}
-          mileage={car.details?.mileage}
-          grades={car.details?.grades.grade_english}
-          engine={car.details?.engine_displacement}
-          changeCount={car._count.car_info}
-          accident={car.accident}
-          accident_details={car.accident_details}
-          plate_number={car.vehicle_plate_number}
-          diagnosis={car.diagnostics}
-        />
-      </section>
+      <Suspense fallback={<p>Loading</p>}>
+        <section className="  pt-4 flex md:flex-row flex-col mb-24">
+          <SliderCarPage imgSrc={car.photos} />
+
+          <CarInfo
+            make={car.details?.makes.make_short_name}
+            model={car.details?.model.model_short_name}
+            years={car.details?.form_year}
+            price={car.details?.origin_price}
+            fuel={car.details?.fuel.fuel_english}
+            transmission={car.details?.transmission.transmission_english}
+            mileage={car.details?.mileage}
+            grades={car.details?.grades.grade_english}
+            engine={car.details?.engine_displacement}
+            changeCount={car._count.car_info}
+            accident={car.accident}
+            accident_details={car.accident_details}
+            plate_number={car.vehicle_plate_number}
+            diagnosis={car.diagnostics}
+          />
+        </section>
+      </Suspense>
     </div>
   );
 }

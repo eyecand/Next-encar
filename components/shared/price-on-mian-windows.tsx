@@ -14,9 +14,9 @@ export const PriceAll = ({ price_origion, years, fuel, engine }: Props) => {
   const realFuel = fuel ? fuel : "Gasoline";
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
-  console.log("ew", FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years));
   return (
     <span className="font-bold text-lg">
+      ~{" "}
       {new Intl.NumberFormat("ru-RU")
         .format(FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years))
         .replace(",", ".")}{" "}

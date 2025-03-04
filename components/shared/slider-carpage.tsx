@@ -11,7 +11,6 @@ import {
   Thumbnails,
   Counter,
 } from "yet-another-react-lightbox/plugins";
-
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
@@ -28,6 +27,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
   const allImg = imgSrc.map((item) => {
     return { src: item.url };
   });
+
   const handleLightBox = (i: number) => {
     setOpen(true);
     setIndex(i);
@@ -40,6 +40,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
           <Swiper
             spaceBetween={10}
             loop={true}
+            lazyPreloadPrevNext={1}
             pagination={{
               el: ".my-custom-pagination-div",
               clickable: true,
@@ -58,7 +59,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
             {imgSrc.map((element: { url: string }, i: number) => {
               return (
                 <SwiperSlide key={i} onClick={() => handleLightBox(i)}>
-                  <img src={element.url} />
+                  <img loading="lazy" src={element.url} />
                 </SwiperSlide>
               );
             })}
