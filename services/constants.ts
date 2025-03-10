@@ -5,4 +5,5 @@ export enum ApiRoutes {
   GRADES = "grades",
   FUELS = "fuels",
   YEARS = "years",
+  COUNT = "count",
 }

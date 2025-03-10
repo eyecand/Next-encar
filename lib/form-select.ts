@@ -27,27 +27,3 @@ export const encarWithParams =
       photos: true,
     },
   });
-export const FIRST_INFOSELECT = [
-  {
-    span: "Марка",
-    placeholder: "все",
-    name: "stamp_car",
-    prefixName: "react-select",
-  },
-  {
-    span: "Модель",
-    placeholder: "все",
-    name: "model_car",
-    prefixName: "react-select",
-  },
-  {
-    span: "Кузов",
-    placeholder: "все",
-    name: "body",
-  },
-  {
-    span: "Привод",
-    placeholder: "все",
-    name: "drive",
-  },
-];

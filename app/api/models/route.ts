@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-  const query = request.nextUrl.searchParams.get("query") || "";
+  const makes = request.nextUrl.searchParams.get("makes") || null;
 
   const model = await prisma.lib_models.findMany({
     distinct: ["model_short_name"],
@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
       details: {
         some: {
           makes: {
-            make_short_name: query,
+            make_short_name: makes,
           },
         },
       },

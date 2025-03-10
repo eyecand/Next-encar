@@ -35,11 +35,6 @@ interface ReturnProps {
   }[];
 }
 export const VehicleList: React.FC<ReturnProps> = ({ vehicle }) => {
-  // const destanatioPrice = (cbr: number, origin_price: number) => {
-  //   const finalCost =
-  //     origin_price * 10 * cbr + 2100 * cbr + 465000 + 5200 + 100000;
-  //   return finalCost;
-  // };
   return (
     <>
       <div className="isMobil flex-col items-center sm:flex-row    p-4  pb-0 sm:flex-wrap">

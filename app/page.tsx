@@ -1,7 +1,7 @@
 import {
-  Accardion,
   PaginationWithLinks,
   VehicleList,
+  FormFilters,
 } from "@/components/shared";
 
 import { findVehicle, GetSearchParams } from "@/lib/find-vehicle";
@@ -21,14 +21,14 @@ export default async function Home({
   const currentPage = parseInt((page as string) || "1");
   const take = parseInt((pageSize as string) || "10");
   // const currentPage = searchParams.page ?? 1;
-
+  console.log("currentPage", currentPage);
   return (
     <div className="mx-auto max-w-7xl mt-10">
       <h1 className="text-2xl md:text-4xl lg:text-[50px] font-bold px-5 mt-28 md:mt-32 lg:mt-40">
         Autofish - Продажа автомобилей
       </h1>
 
-      <Accardion />
+      <FormFilters />
       {/* Список товаров */}
 
       <div className="mt-10 max-w-5xl p-5">
@@ -66,7 +66,7 @@ export default async function Home({
         <VehicleList vehicle={vehicle} />
       </Suspense>
       <div className="mt-10">
-        {totalPage ? (
+        {totalPage > 10 ? (
           <PaginationWithLinks
             page={currentPage}
             pageSize={take}

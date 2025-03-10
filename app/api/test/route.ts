@@ -37,50 +37,91 @@ export async function GET() {
   // BigInt.prototype.toJSON = function () {
   //   return this.toString();
   // };
-  // const first = await prisma.encar_vehicles.findFirst({
-  //   where: {
-  //     id: 75475,
-  //   },
-  //   include: {
-  //     accident_details: true,
-  //   },
-  // });
-  // const vehicles = await prisma.active_lots.findMany({
-  //   where: {
-  //     AND: [
-  //       {
-  //         encar: {
-  //           diagnostics: {
-  //             diagnosis: {
-  //               some: {
-  //                 diagnosis_result_id: 2,
-  //               },
-  //             },
-  //           },
-  //         },
-  //       },
-  //       { encar: { diagnostics: { isNot: null } } },
-  //     ],
-  //   },
-  //   select: {
-  //     encar: {
-  //       select: {
-  //         id: true,
-  //       },
-  //     },
-  //   },
-  // });
-  const vehicles = await prisma.active_lots.findMany({
-    select: {
-      encar: {
-        select: {
-          vehicle_id_on_auction: true,
-        },
-      },
+  const first = await prisma.active_lots.findMany({
+    where: {
+      encar: { id: 87300 },
     },
   });
-  return NextResponse.json(vehicles);
+  return NextResponse.json(first);
 }
+// BigInt.prototype.toJSON = function () {
+//   return this.toString();
+// };
+// const first = await prisma.encar_vehicles.findFirst({
+//   where: {
+//     id: 75475,
+//   },
+//   include: {
+//     accident_details: true,
+//   },
+// });
+// const vehicles = await prisma.active_lots.findMany({
+//   where: {
+//     AND: [
+//       {
+//         encar: {
+//           diagnostics: {
+//             diagnosis: {
+//               some: {
+//                 diagnosis_result_id: 2,
+//               },
+//             },
+//           },
+//         },
+//       },
+//       { encar: { diagnostics: { isNot: null } } },
+//     ],
+//   },
+//   select: {
+//     encar: {
+//       select: {
+//         id: true,
+//       },
+//     },
+//   },
+// });
+/////////////////////////////////////////////////////////
+// const makes = request.nextUrl.searchParams.get("makes") || null;
+// if (makes) {
+//   const model = await prisma.lib_models.findMany({
+//     distinct: ["model_short_name"],
+//     where: {
+//       details: {
+//         some: {
+//           makes: {
+//             make_short_name: makes,
+//           },
+//         },
+//       },
+//     },
+//     select: {
+//       model_short_name: true,
+//     },
+//   });
+//   return NextResponse.json(model);
+// } else {
+//   const model = await prisma.lib_models.findMany({
+//     distinct: ["model_short_name"],
+
+//     select: {
+//       model_short_name: true,
+//     },
+//   });
+//   return NextResponse.json(model);
+// }
+/////////////////////////////////////////////////////////
+
+// const vehicles = await prisma.active_lots.findMany({
+//   select: {
+//     encar: {
+//       select: {
+//         vehicle_id_on_auction: true,
+//       },
+//     },
+//   },
+// });
+// return NextResponse.json(vehicles);
+
 // const json = (param: any): any => {
 //   return JSON.stringify(
 //     param,

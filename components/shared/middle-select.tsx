@@ -13,6 +13,8 @@ interface Props<T> {
   fuels: string | null;
   yearMin: string | null;
   yearMax: string | null;
+  priceMin: string | null;
+  priceMax: string | null;
 }
 interface iOption {
   value: string;
@@ -27,6 +29,8 @@ export const MiddleSelect: React.FC<Props<string | null>> = ({
   onChangeYearMax,
   onChangePriceMin,
   onChangePriceMax,
+  priceMin,
+  priceMax,
   fuels,
   yearMin,
   yearMax,
@@ -42,6 +46,7 @@ export const MiddleSelect: React.FC<Props<string | null>> = ({
               placeholder="Цена от, Р"
               type="number"
               min={0}
+              value={priceMin ? Number(priceMin) : ""}
               onChange={(e) => onChangePriceMin(e.target.value)}
             />
           </div>
@@ -49,6 +54,7 @@ export const MiddleSelect: React.FC<Props<string | null>> = ({
             <Input
               placeholder="до"
               type="number"
+              value={priceMax ? Number(priceMax) : ""}
               min={0}
               onChange={(e) => onChangePriceMax(e.target.value)}
             />

@@ -124,6 +124,12 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
       <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">
         <NoSSR
           placeholder="Марка"
+          defaultValue={[
+            {
+              value: make,
+              label: make,
+            },
+          ]}
           options={optionMakes}
           value={
             make
@@ -136,7 +142,6 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
               : []
           }
           onChange={(option) => handleMakesChange(option as iOption)}
-          isClearable
         />
       </div>
       <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">
@@ -156,7 +161,6 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
           }
           onChange={(option) => handleModelsChange(option as iOption)}
           isDisabled={!Boolean(make)}
-          isClearable
         />
       </div>
       <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">

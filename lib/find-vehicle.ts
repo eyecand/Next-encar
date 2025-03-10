@@ -9,6 +9,9 @@ export interface GetSearchParams {
   yearsMax?: string;
   priceMin?: string;
   priceMax?: string;
+  buisness?: string;
+  robber?: string;
+  insuarePrice?: string;
 }
 
 // export interface LayoutProps {
@@ -66,6 +69,9 @@ export const findVehicle = async (
     yearsMax,
     priceMin,
     priceMax,
+    buisness,
+    robber,
+    insuarePrice,
   } = await params;
 
   const pagenum = page ?? 0;
@@ -74,7 +80,8 @@ export const findVehicle = async (
   const currentMaxYear = Number(yearsMax) || DEFAULT_MAX_YEARS;
   const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
   const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
-
+  const currentRobber = robber ? robber : 1;
+  console.log("insuare", insuarePrice);
   const vehiclePromise = prisma.active_lots.findMany({
     // where: {
     //   details: {
@@ -204,6 +211,34 @@ export const findVehicle = async (
             },
           },
         },
+        {
+          encar: {
+            accident: { business: Number(buisness) === 2 ? true : false },
+          },
+        },
+        {
+          encar: {
+            accident: {
+              robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
+            },
+          },
+        },
+        {
+          encar: {
+            accident_details: {
+              some: {
+                insurance_benefit:
+                  Number(insuarePrice) === 1
+                    ? { gte: 1, lte: 1000000 }
+                    : Number(insuarePrice) === 2
+                    ? { gt: 1000000, lte: 3000000 }
+                    : Number(insuarePrice) === 3
+                    ? { gt: 3000000 }
+                    : 0,
+              },
+            },
+          },
+        },
       ],
     },
     select: {
@@ -273,6 +308,22 @@ export const findVehicle = async (
           origin_price: {
             gte: currentMinPrice,
             lte: currentMaxPrice,
+          },
+        },
+        accident: {
+          business: Number(buisness) === 2 ? true : false,
+          robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
+        },
+        accident_details: {
+          some: {
+            insurance_benefit:
+              Number(insuarePrice) === 1
+                ? { lte: 1000000 }
+                : Number(insuarePrice) === 2
+                ? { gt: 1000000, lte: 3000000 }
+                : Number(insuarePrice) === 3
+                ? { gt: 3000000 }
+                : 0,
           },
         },
       },
