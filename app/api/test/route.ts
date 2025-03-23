@@ -32,16 +32,33 @@ import { NextResponse } from "next/server";
 
 // export type encarType = Prisma.encar_vehiclesGetPayload<typeof encarWithParams>;
 // export type encarProps = Prisma.PromiseReturnType<typeof GET>;
-
+const DEFAULT_MIN_YEARS = 2000;
+const DEFAULT_MAX_YEARS = 2025;
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 2000000000;
 export async function GET() {
-  // BigInt.prototype.toJSON = function () {
-  //   return this.toString();
-  // };
+  BigInt.prototype.toJSON = function () {
+    return this.toString();
+  };
+  let makes = "Kia";
   const first = await prisma.active_lots.findMany({
     where: {
-      encar: { id: 87300 },
+      encar: {
+        details: { makes: { make_short_name: makes } },
+        accident_details: { some: { insurance_benefit: { gte: 1000000 } } },
+      },
     },
+    select: {
+      encar: {
+        select: {
+          accident_details: true,
+          details: { select: { makes: { select: { make_short_name: true } } } },
+        },
+      },
+    },
+    take: 100,
   });
+  console.log("makes", makes);
   return NextResponse.json(first);
 }
 // BigInt.prototype.toJSON = function () {

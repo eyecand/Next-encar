@@ -59,7 +59,6 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
   const currentCount = count ? count : 0;
   const optionInsuarePrice = [
     {
-      value: null,
       label: "Любая",
     },
     {

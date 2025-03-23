@@ -19,7 +19,7 @@ export interface GetSearchParams {
 // }
 
 export interface ReturnProps {
-  vehicle: {
+  vahicleAll: {
     encar: {
       id: bigint;
       details: {
@@ -40,6 +40,7 @@ export interface ReturnProps {
           fuel_english: string | null;
         };
       } | null;
+      accident_details: { insurance_benefit: number }[];
       photos: {
         url: string;
       }[];
@@ -82,6 +83,30 @@ export const findVehicle = async (
   const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
   const currentRobber = robber ? robber : 1;
   console.log("insuare", insuarePrice);
+  let benefit = {};
+
+  if (insuarePrice === "1" && insuarePrice !== undefined) {
+    benefit = {
+      ...benefit,
+
+      lte: 1000000,
+    };
+  }
+  if (insuarePrice === "2") {
+    benefit = {
+      ...benefit,
+      gt: 1000001,
+      lte: 3000000,
+    };
+  }
+  if (insuarePrice === "3") {
+    benefit = {
+      ...benefit,
+
+      gt: 3000100,
+    };
+  }
+  console.log("ben", benefit);
   const vehiclePromise = prisma.active_lots.findMany({
     // where: {
     //   details: {
@@ -225,18 +250,10 @@ export const findVehicle = async (
         },
         {
           encar: {
-            accident_details: {
-              some: {
-                insurance_benefit:
-                  Number(insuarePrice) === 1
-                    ? { gte: 1, lte: 1000000 }
-                    : Number(insuarePrice) === 2
-                    ? { gt: 1000000, lte: 3000000 }
-                    : Number(insuarePrice) === 3
-                    ? { gt: 3000000 }
-                    : 0,
-              },
-            },
+            AND: [
+              { accident_details: { every: { insurance_benefit: benefit } } },
+              {},
+            ],
           },
         },
       ],
@@ -274,6 +291,7 @@ export const findVehicle = async (
               origin_price: true,
             },
           },
+          accident_details: { select: { insurance_benefit: true } },
           photos: {
             select: {
               url: true,
@@ -314,18 +332,7 @@ export const findVehicle = async (
           business: Number(buisness) === 2 ? true : false,
           robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
         },
-        accident_details: {
-          some: {
-            insurance_benefit:
-              Number(insuarePrice) === 1
-                ? { lte: 1000000 }
-                : Number(insuarePrice) === 2
-                ? { gt: 1000000, lte: 3000000 }
-                : Number(insuarePrice) === 3
-                ? { gt: 3000000 }
-                : 0,
-          },
-        },
+        accident_details: { every: { insurance_benefit: benefit } },
       },
     },
   });
@@ -334,10 +341,13 @@ export const findVehicle = async (
     vehiclePromise,
     totalPagePromise,
   ]);
+  const vahicleAll = vehicle.filter(
+    (item) => item.encar.accident_details.length > 0
+  );
   // console.log("min", currentMinYear);
   // console.log("max", currentMaxYear);
   // console.log("total", totalPage);
-  return { vehicle, totalPage };
+  return { vahicleAll, totalPage };
 };
 
 // const totalPagePromise = prisma.encar_vehicles.count({
