@@ -15,7 +15,7 @@ export default async function Home({
   searchParams: ParamsProps;
 }) {
   const searchParamsValue = await searchParams;
-  const { page, pageSize, insuarePrice } = searchParamsValue;
+  const { page, pageSize } = searchParamsValue;
 
   const { vahicleAll, totalPage } = await findVehicle(searchParamsValue);
   const currentPage = parseInt((page as string) || "1");
