@@ -43,7 +43,7 @@ export function PaginationWithLinks({
   const searchParams = useSearchParams();
 
   const totalPageCount = Math.floor(totalCount / pageSize);
-  if (totalCount < 10) return null;
+
   const buildLink = useCallback(
     (newPage: number) => {
       const key = pageSearchParam || "page";
@@ -132,7 +132,7 @@ export function PaginationWithLinks({
 
     return items;
   };
-
+  if (totalCount < 10) return null;
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 w-full">
       {pageSizeSelectOptions && (
