@@ -20,10 +20,7 @@ export default async function Home({
   const { vahicleAll, totalPage } = await findVehicle(searchParamsValue);
   const currentPage = parseInt((page as string) || "1");
   const take = parseInt((pageSize as string) || "10");
-  // const currentPage = searchParams.page ?? 1;
-  // let vehecleList = vehicle;
-  // if (insuarePrice === "1" || insuarePrice === "2" || insuarePrice === "3")
-  //   vehecleList.filter((item) => item.encar.accident_details === undefined);
+
   return (
     <div className="mx-auto max-w-7xl mt-10">
       <h1 className="text-2xl md:text-4xl lg:text-[50px] font-bold px-5 mt-28 md:mt-32 lg:mt-40">
@@ -68,13 +65,11 @@ export default async function Home({
         <VehicleList vehicle={vahicleAll} />
       </Suspense>
       <div className="mt-10">
-        {totalPage > 10 ? (
-          <PaginationWithLinks
-            page={currentPage}
-            pageSize={take}
-            totalCount={totalPage}
-          />
-        ) : null}
+        <PaginationWithLinks
+          page={currentPage}
+          pageSize={take}
+          totalCount={totalPage}
+        />
       </div>
     </div>
   );

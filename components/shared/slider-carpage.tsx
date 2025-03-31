@@ -85,14 +85,4 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
       )}
     </div>
   );
-  // return imgSrc.length > 0 ? (
-  //   <div className="custom-swiper md:w-1/2 pr-0 pb-6 md:pr-6 md:pb-0">
-
-  //   </div>
-  // ) : (
-  //   <div className="custom-swiper md:w-1/2 pr-0 pb-6 md:pr-6 md:pb-0">
-  //     {" "}
-
-  //   </div>
-  // );
 };

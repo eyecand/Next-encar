@@ -12,11 +12,3 @@ export const getGrades = async (
     })
   ).data;
 };
-
-// export const getGrades = async (makes: string | null, model: string | null) => {
-//   const { data } = await axiosInstance.get<GradesProps[]>(ApiRoutes.GRADES, {
-//     params: { makes, model },
-//   });
-
-//   return { data, revalidate: 5 };
-// };

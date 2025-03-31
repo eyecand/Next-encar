@@ -79,7 +79,7 @@ export default async function CarPage({
   if (!car) {
     return notFound();
   }
-  // console.log("car", car);
+
   return (
     <div className="mx-auto px-5 max-w-[1280px] mt-24">
       <div className=" py-5 flex flex-col">
