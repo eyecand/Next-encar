@@ -1,8 +1,9 @@
 "use client";
 import { useFuels, useYears } from "@/hooks";
 import dynamic from "next/dynamic";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { detectFuels } from "@/hooks/use-fuels";
+import { iOption } from "./model";
 
 interface Props<T> {
   onChangeFuels: (value: T) => void;
@@ -15,10 +16,6 @@ interface Props<T> {
   yearMax: string | null;
   priceMin: string | null;
   priceMax: string | null;
-}
-interface iOption {
-  value: string;
-  label: string;
 }
 
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });

@@ -3,16 +3,7 @@ import { useMakes } from "@/hooks/useMakes";
 import { Api } from "@/services/api-client";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
-import { GradesProps, ModelProps } from "./form-filters";
-
-interface Option {
-  value: string | null;
-  label: string | null;
-}
-interface iOption {
-  value: string;
-  label: string;
-}
+import { GradesProps, ModelProps, Option, iOption } from "./model";
 interface Props<T> {
   onChangeMakes: (value: T) => void;
   onChangeModels: (value: T) => void;
@@ -72,7 +63,7 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
   grades.map((item) => {
     return optionsGrades.push({
       value: item.grades.grade_english,
-      label: item.grades.grade_english,
+      label: item.grades.grade_english.replace(" China Manufacturer", ""),
     });
   });
   useEffect(() => {
@@ -172,8 +163,8 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
             grade
               ? [
                   {
-                    value: grade,
-                    label: grade,
+                    value: grade.replace(" China Manufacturer", ""),
+                    label: grade.replace(" China Manufacturer", ""),
                   },
                 ]
               : []

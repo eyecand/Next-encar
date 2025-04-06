@@ -1,8 +1,8 @@
 "use client";
 import dynamic from "next/dynamic";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import React from "react";
-
+import { iOption, Option } from "./model";
 interface Props<T> {
   onChangeEngineMin: (value: T) => void;
   onChangeEngineMax: (value: T) => void;
@@ -22,14 +22,7 @@ interface Props<T> {
   changeNumber: string | null;
   insuarePrice: string | null;
 }
-interface iOption {
-  value: string;
-  label: string;
-}
-interface Option {
-  value: string | null;
-  label: string | null;
-}
+
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 export const AdvancedSelect: React.FC<Props<string | null>> = ({
   onChangeEngineMin,

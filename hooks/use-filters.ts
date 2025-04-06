@@ -1,103 +1,88 @@
-// import { useSearchParams } from "next/navigation";
-// import { useMemo } from "react";
-// import { useSet } from "react-use";
-// interface QueryFilters {
-//   makes: string;
-//   model: string;
-//   grade: string;
-// }
-
-// export interface Filtres {
-//   makesType: Set<string>;
-//   modelType: Set<string>;
-//   gradesType: Set<string>;
-// }
-// interface ReturnProps extends Filtres {
-//   toggleMakeType: (value: string) => void;
-//   resetMake: () => void;
-//   toggleModelType: (value: string) => void;
-//   resetModel: () => void;
-//   toggleGradesType: (value: string) => void;
-//   resetGrades: () => void;
-//   clearModel: () => void;
-// }
-// export const useFilters = (): ReturnProps => {
-//   const searchParams = useSearchParams() as unknown as Map<
-//     keyof QueryFilters,
-//     string
-//   >;
-//   const [makesType, { toggle: toggleMakeType, reset: resetMake }] = useSet(
-//     new Set<string>(searchParams.has("makes") ? searchParams.get("makes") : [])
-//   );
-//   const [
-//     modelType,
-//     { toggle: toggleModelType, reset: resetModel, clear: clearModel },
-//   ] = useSet(
-//     new Set<string>(searchParams.has("model") ? searchParams.get("model") : [])
-//   );
-//   const [gradesType, { toggle: toggleGradesType, reset: resetGrades }] = useSet(
-//     new Set<string>(searchParams.has("grade") ? searchParams.get("grade") : [])
-//   );
-
-//   return useMemo(
-//     () => ({
-//       makesType,
-//       modelType,
-//       gradesType,
-//       toggleMakeType,
-//       resetMake,
-//       toggleModelType,
-//       resetModel,
-//       toggleGradesType,
-//       resetGrades,
-//       clearModel,
-//     }),
-//     [makesType, modelType, gradesType]
-//   );
-// };
 import { useSearchParams } from "next/navigation";
-import { useMemo } from "react";
-import { useSet } from "react-use";
-export interface QueryFilters {
-  makes: string;
-  model: string;
-  grade: string;
+import { useMemo, useState } from "react";
+interface ReturnPros {
+  makesType: string | null;
+  modelType: string | null;
+  gradesType: string | null;
+  fuels: string | null;
+  yearsMin: string | null;
+  yearsMax: string | null;
+  priceMin: string | null;
+  priceMax: string | null;
+  engineMin: string | null;
+  engineMax: string | null;
+  buisness: string | null;
+  robber: string | null;
+  changeNumber: string | null;
+  changeOwner: string | null;
+  insuare: string | null;
+  insuarePrice: string | null;
+  setMakesType: (value: string | null) => void;
+  setModelType: (value: string | null) => void;
+  setGradesType: (value: string | null) => void;
+  setFuels: (value: string | null) => void;
+  setYearsMin: (value: string | null) => void;
+  setYearsMax: (value: string | null) => void;
+  setPriceMin: (value: string | null) => void;
+  setPriceMax: (value: string | null) => void;
+  setEngineMin: (value: string | null) => void;
+  setEngineMax: (value: string | null) => void;
+  setBuisness: (value: string | null) => void;
+  setRobber: (value: string | null) => void;
+  setChangeNumber: (value: string | null) => void;
+  setChangeOwner: (value: string | null) => void;
+  setInsuare: (value: string | null) => void;
+  setInsuarePrice: (value: string | null) => void;
 }
-interface Option {
-  value: string;
-  label: string;
-}
-export interface Filtres {
-  makesType: Set<string>;
-  modelType: Set<string>;
-  gradesType: Set<string>;
-}
-interface ReturnProps extends Filtres {
-  toggleMakesType: (value: string) => void;
-  toggleModelType: (value: string) => void;
-  resetMakes: () => void;
-  resetModel: () => void;
-  toggleGradesType: (value: string) => void;
-  resetGrades: () => void;
-  clearModel: () => void;
-  clearMakes: () => void;
-}
-export const useFilters = (): ReturnProps => {
+export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
-  const [
-    makesType,
-    { toggle: toggleMakesType, reset: resetMakes, clear: clearMakes },
-  ] = useSet(
-    new Set<string>(searchParams.has("makes") ? searchParams.get("makes") : [])
+  const [makesType, setMakesType] = useState(
+    searchParams.has("makes") ? searchParams.get("makes") : null
   );
-  const [
-    modelType,
-    { toggle: toggleModelType, reset: resetModel, clear: clearModel },
-  ] = useSet(
-    new Set<string>(searchParams.has("model") ? searchParams.get("model") : [])
+  const [modelType, setModelType] = useState(
+    searchParams.has("model") ? searchParams.get("model") : null
   );
-  const [gradesType, { toggle: toggleGradesType, reset: resetGrades }] = useSet(
-    new Set<string>(searchParams.has("grade") ? searchParams.get("grade") : [])
+  const [gradesType, setGradesType] = useState(
+    searchParams.has("grades") ? searchParams.get("grades") : null
+  );
+  const [fuels, setFuels] = useState(
+    searchParams.has("fuels") ? searchParams.get("fuels") : null
+  );
+  const [yearsMin, setYearsMin] = useState(
+    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+  );
+  const [yearsMax, setYearsMax] = useState(
+    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+  );
+  const [priceMin, setPriceMin] = useState<string | null>(
+    searchParams.has("priceMin") ? searchParams.get("priceMin") : null
+  );
+  const [priceMax, setPriceMax] = useState<string | null>(
+    searchParams.has("priceMax") ? searchParams.get("priceMax") : null
+  );
+  const [engineMin, setEngineMin] = useState<string | null>(
+    searchParams.has("engineMin") ? searchParams.get("engineMin") : null
+  );
+  const [engineMax, setEngineMax] = useState<string | null>(
+    searchParams.has("engineMax") ? searchParams.get("engineMax") : null
+  );
+  const [buisness, setBuisness] = useState(
+    searchParams.has("buisness") ? searchParams.get("buisness") : null
+  );
+  const [robber, setRobber] = useState(
+    searchParams.has("robber") ? searchParams.get("robber") : null
+  );
+  const [changeNumber, setChangeNumber] = useState(
+    searchParams.has("changeNumber") ? searchParams.get("changeNumber") : null
+  );
+  const [changeOwner, setChangeOwner] = useState(
+    searchParams.has("changeOwner") ? searchParams.get("changeOwner") : null
+  );
+  const [insuare, setInsuare] = useState(
+    searchParams.has("insuare") ? searchParams.get("insuare") : null
+  );
+  const [insuarePrice, setInsuarePrice] = useState(
+    searchParams.has("insuarePrice") ? searchParams.get("insuarePrice") : null
   );
 
   return useMemo(
@@ -105,15 +90,53 @@ export const useFilters = (): ReturnProps => {
       makesType,
       modelType,
       gradesType,
-      toggleMakesType,
-      toggleModelType,
-      resetModel,
-      resetMakes,
-      toggleGradesType,
-      resetGrades,
-      clearModel,
-      clearMakes,
+      fuels,
+      yearsMin,
+      yearsMax,
+      priceMin,
+      priceMax,
+      engineMin,
+      engineMax,
+      buisness,
+      robber,
+      changeNumber,
+      changeOwner,
+      insuare,
+      insuarePrice,
+      setMakesType,
+      setModelType,
+      setGradesType,
+      setFuels,
+      setYearsMin,
+      setYearsMax,
+      setPriceMin,
+      setPriceMax,
+      setEngineMin,
+      setEngineMax,
+      setBuisness,
+      setRobber,
+      setChangeNumber,
+      setChangeOwner,
+      setInsuare,
+      setInsuarePrice,
     }),
-    [makesType, modelType, gradesType]
+    [
+      makesType,
+      modelType,
+      gradesType,
+      fuels,
+      yearsMin,
+      yearsMax,
+      priceMin,
+      priceMax,
+      engineMin,
+      engineMax,
+      buisness,
+      robber,
+      changeNumber,
+      changeOwner,
+      insuare,
+      insuarePrice,
+    ]
   );
 };

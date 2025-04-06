@@ -11,90 +11,36 @@ import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { useCBRStore } from "@/store/cbr";
 import { useEURStore } from "@/store/eur";
 import { Button } from "../ui/button";
-type AccidentProps = {
-  current_accident_count: number;
-  other_accident_count: number;
-  robber_count: number;
-  flood_total_loss_count: number;
-  flood_part_loss_count: number;
-  government: boolean;
-  business: boolean;
-  loan: boolean;
-};
-export type AccidentDetailsProps = {
-  date: Date;
-  type: string;
-  insurance_benefit: number;
-  part_cost: number;
-  labor_cost: number;
-  painting_cost: number;
-};
-export type DiagnosticsProps = {
-  actual_diagnostic_date: Date;
-  diagnosis: {
-    diagnosis_code_id: number;
-    diagnosis_result_id: number | null;
-    comments: {
-      comment_english: string | null;
-    } | null;
-  }[];
-};
-type InfoProps = {
-  model: string | null | undefined;
-  make: string | null | undefined;
-  years: number | undefined;
-  price: number | null | undefined;
-  fuel: string | null | undefined;
-  transmission: string | null | undefined;
-  mileage: number | undefined;
-  // body: string | null | undefined;
-  grades: string | null | undefined;
-  engine: number | undefined;
-  // lot: string | null;
-  accident: AccidentProps | null;
-  accident_details: AccidentDetailsProps[];
-  changeCount: number;
-  plate_number: string | null;
-  diagnosis: DiagnosticsProps | null;
-};
+import { VehicleIdProps } from "@/app/vehicle/[id]/model";
 
 export const CarInfo = ({
-  make,
-  model,
-  years,
-  price,
-  fuel,
-  transmission,
-  mileage,
-  grades,
-  engine,
+  details,
+  _count,
   accident,
   accident_details,
-  changeCount,
-  plate_number,
-  diagnosis,
-}: InfoProps) => {
-  const engine_displacement = engine
-    ? (Math.round(engine) / 1000).toFixed(1)
-    : "";
-  const priceWon = price ? price * 10000 : 0;
-  const paAccident = accident?.other_accident_count ?? 0;
-  const prAccident = accident?.current_accident_count ?? 0;
-  const totalA = paAccident + prAccident;
+  diagnostics,
+  vehicle_plate_number,
+}: VehicleIdProps) => {
+  const totalAccident =
+    Number(accident?.other_accident_count) +
+    Number(accident?.current_accident_count);
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
-  const realEngine = engine ? engine : 1;
-  const realYears = years ? years : 2025;
-  const realFuel = fuel ? fuel : "Gasoline";
+  const realFuel = details?.fuel.fuel_english
+    ? details?.fuel.fuel_english
+    : "Gasoline";
   return (
     <div className="w-full md:w-1/2">
       <div>
         <h2 className="font-gilroy font-bold text-2xl lg:text-3xl mb-4 text-zinc-800">
-          {make} {model} {years}, {engine_displacement} л. из Кореи
+          {details?.makes.make_short_name} {details?.model.model_short_name}{" "}
+          {details?.form_year},{" "}
+          {(Math.round(Number(details?.engine_displacement)) / 1000).toFixed(1)}{" "}
+          л. из Кореи
         </h2>
         <div className="flex items-center">
-          {grades}{" "}
-          {totalA ? (
+          {details?.grades.grade_english}{" "}
+          {totalAccident ? (
             <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
               был в аварии
             </span>
@@ -106,13 +52,19 @@ export const CarInfo = ({
 
       <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <div className="space-y-4 w-full lg:w-1/2">
-          <BlockItem title="Год" value={years} />
-          <BlockItem title="Пробег, км" value={mileage} />
-          <BlockItem title="Трансмиссия" value={transmission} />
+          <BlockItem title="Год" value={details?.form_year} />
+          <BlockItem title="Пробег, км" value={details?.mileage} />
+          <BlockItem
+            title="Трансмиссия"
+            value={details?.transmission.transmission_english}
+          />
         </div>
         <div className="space-y-4 w-full lg:w-1/2">
-          <BlockItem title="Двигатель" value={engine} />
-          <BlockItem title="Топливо" value={detectFuels(fuel || "")} />
+          <BlockItem title="Двигатель" value={details?.engine_displacement} />
+          <BlockItem
+            title="Топливо"
+            value={detectFuels(String(details?.fuel.fuel_english))}
+          />
         </div>
       </div>
       <StatisticCar
@@ -120,25 +72,18 @@ export const CarInfo = ({
         robber={accident?.robber_count}
         pastAccident={accident?.other_accident_count}
         presentAccident={accident?.current_accident_count}
-        countChanges={changeCount}
+        countChanges={_count.car_info}
       />
 
       <div className="flex flex-col lg:flex-row gap-4">
         <StatisticAlertDialog
-          make={make}
-          model={model}
-          grades={grades}
-          engine={engine}
-          fuel={fuel}
-          plate_number={plate_number}
-          buisness={accident?.business}
-          goverment={accident?.government}
-          loan={accident?.loan}
-          robber={accident?.robber_count}
+          plate_number={vehicle_plate_number}
           accident_details={accident_details}
-          years={years}
+          details={details}
+          accident={accident}
         />
-        {diagnosis === null ? (
+        {diagnostics?.diagnosis === null ||
+        diagnostics?.diagnosis === undefined ? (
           <div className="group relative w-full grow">
             <Button
               disabled={true}
@@ -151,7 +96,7 @@ export const CarInfo = ({
             </span>
           </div>
         ) : (
-          <AlertDiagnostic diagnosis={diagnosis} />
+          <AlertDiagnostic diagnostics={diagnostics} />
         )}
       </div>
 
@@ -167,7 +112,7 @@ export const CarInfo = ({
               <span>Стоимость в Корее</span>
               <span className="text-lg font-semibold text-zinc-700">
                 {new Intl.NumberFormat("ru-RU")
-                  .format(priceWon)
+                  .format(Number(details?.origin_price) * 10000)
                   .replace(",", ".")}{" "}
                 ₩
               </span>
@@ -179,12 +124,12 @@ export const CarInfo = ({
                 {new Intl.NumberFormat("ru-RU")
                   .format(
                     FromKRWtoRUB(
-                      priceWon,
+                      Number(details?.origin_price) * 10000,
                       cbr,
                       EUR,
-                      realEngine,
+                      Number(details?.engine_displacement),
                       realFuel,
-                      realYears
+                      Number(details?.form_year)
                     )
                   )
                   .replace(",", ".")}{" "}

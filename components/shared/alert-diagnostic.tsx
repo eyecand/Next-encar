@@ -8,16 +8,14 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { DiagnosticsProps } from "./car-info";
 import Image from "next/image";
 import DiagnosticFront from "../../public/map_inspect_front.webp";
 import DiagnosticBack from "../../public/map_inspect_back.png";
+import { AlertDiagnosticProps } from "@/app/vehicle/[id]/model";
 type list = {
   [key: string]: string;
 };
-type Props = {
-  diagnosis: DiagnosticsProps | null;
-};
+
 const icons = [
   {
     name: "Замена",
@@ -50,11 +48,11 @@ const icons = [
     bg: "bg-amber-700",
   },
 ];
-export const AlertDiagnostic = ({ diagnosis }: Props) => {
-  const list = diagnosis?.diagnosis.filter(
-    (item) => item.diagnosis_result_id === 2
+export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
+  const list = diagnostics?.diagnosis.filter(
+    (item) => Number(item.diagnosis_result_id) === 2
   );
-  const commentList = diagnosis?.diagnosis.filter(
+  const commentList = diagnostics?.diagnosis.filter(
     (item) => item.comments !== null
   );
   const replaceDetail = (diagnosis_result_id: number) => {

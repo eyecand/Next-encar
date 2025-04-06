@@ -1,6 +1,6 @@
 import {
   AlertDialog,
-  AlertDialogCancel,
+  AlertDialogAction,
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
@@ -8,36 +8,15 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { AccidentDetailsProps } from "./car-info";
 import { detectFuels } from "@/hooks/use-fuels";
-type Props = {
-  model: string | null | undefined;
-  make: string | null | undefined;
-  fuel: string | null | undefined;
-  grades: string | null | undefined;
-  engine: number | undefined;
-  plate_number: string | null;
-  accident_details: AccidentDetailsProps[];
-  buisness: boolean | undefined;
-  goverment: boolean | undefined;
-  loan: boolean | undefined;
-  robber: number | undefined;
-  years: number | undefined;
-};
+import { StatisticAlertDialogProps } from "@/app/vehicle/[id]/model";
+
 export const StatisticAlertDialog = ({
-  make,
-  model,
-  grades,
-  engine,
-  fuel,
-  buisness,
-  goverment,
-  loan,
-  robber,
+  details,
   plate_number,
+  accident,
   accident_details,
-  years,
-}: Props) => {
+}: StatisticAlertDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -53,36 +32,38 @@ export const StatisticAlertDialog = ({
           <div className="grid grid-cols-2 bg-gray-200/50 p-4 rounded-md gap-x-10 gap-y-4 text-sm text-zinc-600">
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Производитель:
-              <span className="text-base font-semibold text-black">{make}</span>
+              <span className="text-base font-semibold text-black">
+                {details?.makes.make_short_name}
+              </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Модель:
               <span className="text-base font-semibold text-black uppercase">
-                {model}
+                {details?.model.model_short_name}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Версия:
               <span className="text-base font-semibold text-black uppercase">
-                {grades}
+                {details?.grades.grade_english}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Год производства:
               <span className="text-base font-semibold text-black uppercase">
-                {years}
+                {details?.form_year}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Объем двигателя:
               <span className="text-base font-semibold text-black uppercase">
-                {engine}
+                {details?.engine_displacement}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Тип топлива:
               <span className="text-base font-semibold text-black">
-                {detectFuels(fuel ? fuel : "")}
+                {detectFuels(String(details?.fuel.fuel_english))}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
@@ -101,25 +82,25 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Угоны:
               <span className="text-base font-semibold text-black">
-                {robber ? "Да" : "Нет"}
+                {accident && accident.robber_count ? "Да" : "Нет"}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Использование бизнесом (такси, аренды и т.д.):
               <span className="text-base font-semibold text-black">
-                {buisness ? "Да" : "Нет"}
+                {accident && accident.business ? "Да" : "Нет"}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Находилось в залоге:
               <span className="text-base font-semibold text-black">
-                {loan ? "Да" : "Нет"}
+                {accident && accident.loan ? "Да" : "Нет"}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Использовался правительством:
               <span className="text-base font-semibold text-black">
-                {goverment ? "Да" : "Нет"}
+                {accident && accident.government ? "Да" : "Нет"}
               </span>
             </div>
             {/* <div className="rounded-xl p-6 order-first md:order-last bg-light-gray dark:bg-dark-gray grow"></div> */}
@@ -223,7 +204,7 @@ export const StatisticAlertDialog = ({
           </p>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction>Продолжить</AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

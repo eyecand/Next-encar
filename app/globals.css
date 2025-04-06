@@ -222,7 +222,7 @@
   .Desktop {
     display: none;
   }
-  .isMobil {
+  .isMobile {
     display: block;
   }
 }
@@ -230,7 +230,7 @@
   .Desktop {
     display: flex;
   }
-  .isMobil {
+  .isMobile {
     display: none;
   }
 }

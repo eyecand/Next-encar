@@ -18,7 +18,7 @@ export function detectFuels(fuel: string) {
     ["LPG (Purchased by the public)"]: "СУГ(LPG)",
     Diesel: "Дизель",
     Electricity: "Электричество",
-    ["Gasolie+Electric"]: "Бензин + Электричество",
+    ["Gasoline+Electric"]: "Бензин + Электричество",
     Hydrogen: "Водород",
     ["Gasoline+LPG"]: "Бензин + СНГ",
     ["LPG + Electric"]: "СНГ + электричество",

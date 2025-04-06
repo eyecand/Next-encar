@@ -1,6 +1,6 @@
 import { axiosInstance } from "./instance";
 import { ApiRoutes } from "./constants";
-import { ModelProps } from "@/components/shared/form-filters";
+import { ModelProps } from "@/components/shared/Form/model";
 
 export const getModels = async (makes: string): Promise<ModelProps[]> => {
   return (
