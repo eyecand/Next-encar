@@ -8,7 +8,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { detectFuels } from "@/hooks/use-fuels";
+import { detectFuels } from "@/lib/detect-fuels";
 import { StatisticAlertDialogProps } from "@/app/vehicle/[id]/model";
 
 export const StatisticAlertDialog = ({

@@ -1,5 +1,5 @@
 import { Api } from "@/services/api-client";
-import React from "react";
+import React, { useEffect } from "react";
 
 interface ReturnProps {
   optionCounts: Option[];
@@ -11,6 +11,7 @@ interface Option {
 type Props = {
   count: number;
 };
+
 export const useCounts = (): ReturnProps => {
   const [count, setCount] = React.useState<Props>();
 
@@ -20,28 +21,49 @@ export const useCounts = (): ReturnProps => {
       label: "Все",
     },
   ];
-
-  React.useEffect(() => {
+  useEffect(() => {
     async function getCounts() {
       try {
+        const cachedData = localStorage.getItem("maxCountData");
+        const cachedTime = localStorage.getItem("maxCountData_time");
+        const CACHE_EXPIRATION_TIME = 60 * 1000; // 1 минута
+
+        if (
+          cachedData &&
+          cachedTime &&
+          Date.now() - Number(cachedTime) < CACHE_EXPIRATION_TIME
+        ) {
+          const parsedData = JSON.parse(cachedData) as Props;
+          setCount(parsedData);
+          return;
+        }
+
         const maxCount = await Api.count.getMaxCount();
         setCount(maxCount);
-        console.log("maxCount", maxCount);
+        localStorage.setItem("maxCountData", JSON.stringify(maxCount));
+        localStorage.setItem("maxCountData_time", Date.now().toString());
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
     getCounts();
   }, []);
+
+  // React.useEffect(() => {
+  //   async function getCounts() {
+  //     try {
+  //       const maxCount = await Api.count.getMaxCount();
+  //       setCount(maxCount);
+  //       console.log("maxCount", maxCount);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   }
+  //   getCounts();
+  // }, []);
   const currentCount = count?.count ? count.count : 1;
   for (let i = 1; i <= currentCount; i++) {
     optionCounts.push({ value: String(i), label: String(i) });
   }
-  //   fuels.map((item) => {
-  //     return optionFuels.push({
-  //       value: item.fuel_english,
-  //       label: detectFuels(item.fuel_english || ""),
-  //     });
-  //   });
   return { optionCounts };
 };

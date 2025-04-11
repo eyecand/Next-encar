@@ -1,7 +1,9 @@
-import { vehicle_details } from "@prisma/client";
 import { axiosInstance } from "./instance";
 import { ApiRoutes } from "./constants";
-
-export const getYears = async (): Promise<vehicle_details[]> => {
-  return (await axiosInstance.get<vehicle_details[]>(ApiRoutes.YEARS)).data;
+import { cache } from "react";
+type YearProps = {
+  form_year: number;
 };
+export const getYears = cache(async (): Promise<YearProps[]> => {
+  return (await axiosInstance.get<YearProps[]>(ApiRoutes.YEARS)).data;
+});

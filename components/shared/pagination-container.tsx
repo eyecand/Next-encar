@@ -41,8 +41,9 @@ export function PaginationWithLinks({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-
-  const totalPageCount = Math.floor(totalCount / pageSize);
+  const totalPageCount = Boolean(totalCount % 10)
+    ? Math.floor(totalCount / pageSize)
+    : Math.floor(totalCount / pageSize) - 1;
 
   const buildLink = useCallback(
     (newPage: number) => {
@@ -71,11 +72,11 @@ export function PaginationWithLinks({
     const maxVisiblePages = 5;
 
     if (totalPageCount <= maxVisiblePages) {
-      for (let i = 1; i <= totalPageCount; i++) {
+      for (let i = 0; i <= totalPageCount; i++) {
         items.push(
-          <PaginationItem key={i}>
+          <PaginationItem key={i + 1}>
             <PaginationLink href={buildLink(i)} isActive={page === i}>
-              {i}
+              {i + 1}
             </PaginationLink>
           </PaginationItem>
         );
@@ -83,7 +84,7 @@ export function PaginationWithLinks({
     } else {
       items.push(
         <PaginationItem key={1}>
-          <PaginationLink href={buildLink(1)} isActive={page === 1}>
+          <PaginationLink href={buildLink(0)} isActive={page === 0}>
             1
           </PaginationLink>
         </PaginationItem>
@@ -98,12 +99,12 @@ export function PaginationWithLinks({
       }
 
       const start = Math.max(2, page - 1);
-      const end = Math.min(totalPageCount - 1, page + 1);
+      const end = Math.min(totalPageCount, page + 1);
 
       for (let i = start; i <= end; i++) {
         items.push(
           <PaginationItem key={i}>
-            <PaginationLink href={buildLink(i)} isActive={page === i}>
+            <PaginationLink href={buildLink(i - 1)} isActive={page === i - 1}>
               {i}
             </PaginationLink>
           </PaginationItem>
@@ -119,12 +120,12 @@ export function PaginationWithLinks({
       }
 
       items.push(
-        <PaginationItem key={totalPageCount}>
+        <PaginationItem key={totalPageCount + 1}>
           <PaginationLink
             href={buildLink(totalPageCount)}
             isActive={page === totalPageCount}
           >
-            {totalPageCount}
+            {totalPageCount + 1}
           </PaginationLink>
         </PaginationItem>
       );
@@ -132,7 +133,7 @@ export function PaginationWithLinks({
 
     return items;
   };
-  if (totalCount < 10) return null;
+  if (totalCount <= 10) return null;
   return (
     <div className="flex flex-col md:flex-row items-center gap-3 w-full">
       {pageSizeSelectOptions && (
@@ -148,11 +149,11 @@ export function PaginationWithLinks({
         <PaginationContent className="max-sm:gap-0">
           <PaginationItem>
             <PaginationPrevious
-              href={buildLink(Math.max(page - 1, 1))}
-              aria-disabled={page === 1}
-              tabIndex={page === 1 ? -1 : undefined}
+              href={buildLink(Math.max(page - 1, 0))}
+              aria-disabled={page === 0}
+              tabIndex={page === 0 ? -1 : undefined}
               className={
-                page === 1 ? "pointer-events-none opacity-50" : undefined
+                page === 0 ? "pointer-events-none opacity-50" : undefined
               }
             />
           </PaginationItem>

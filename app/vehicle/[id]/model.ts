@@ -48,7 +48,7 @@ export type VehicleIdProps = {
     engine_displacement: number;
     transmission: { transmission_english: string | null };
   } | null;
-  _count: { car_info: number };
+  _count: { owner: number };
   vehicle_plate_number: string | null;
   accident_details: AccidentDetailsProps[];
   accident: AccidentProps | null;

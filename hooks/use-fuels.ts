@@ -1,7 +1,10 @@
+"use client";
+import { detectFuels } from "@/lib/detect-fuels";
 import { Api } from "@/services/api-client";
-import { lib_fuels } from "@prisma/client";
-import React from "react";
-
+import { useEffect, useState } from "react";
+type FuelProps = {
+  fuel_english: string | null;
+};
 interface ReturnProps {
   optionFuels: Option[];
 }
@@ -9,27 +12,11 @@ interface Option {
   value: string | null;
   label: string | null;
 }
-export type tpl = {
-  [key: string]: string;
-};
-export function detectFuels(fuel: string) {
-  const currentFuels: tpl = {
-    Gasoline: "Бензин",
-    ["LPG (Purchased by the public)"]: "СУГ(LPG)",
-    Diesel: "Дизель",
-    Electricity: "Электричество",
-    ["Gasoline+Electric"]: "Бензин + Электричество",
-    Hydrogen: "Водород",
-    ["Gasoline+LPG"]: "Бензин + СНГ",
-    ["LPG + Electric"]: "СНГ + электричество",
-    Other: "Другое",
-    ["Gasoline+CNG"]: "Бензин + СНГ",
-    CNG: "СПГ",
-  };
-  return currentFuels[fuel];
-}
+
+const FUEL_DATA_KEY = "fuelData";
+const CACHE_EXPIRATION_TIME = 24 * 60 * 60 * 1000; // 24 часа
 export const useFuels = (): ReturnProps => {
-  const [fuels, setFuels] = React.useState<lib_fuels[]>([]);
+  const [fuels, setFuels] = useState<FuelProps[]>([]);
 
   const optionFuels: Option[] = [
     {
@@ -37,15 +24,32 @@ export const useFuels = (): ReturnProps => {
       label: "Все",
     },
   ];
-  React.useEffect(() => {
+
+  useEffect(() => {
     async function getFuels() {
       try {
+        const cachedData = localStorage.getItem(FUEL_DATA_KEY);
+        const cachedTime = localStorage.getItem(`${FUEL_DATA_KEY}_time`);
+
+        if (
+          cachedData &&
+          cachedTime &&
+          Date.now() - Number(cachedTime) < CACHE_EXPIRATION_TIME
+        ) {
+          setFuels(JSON.parse(cachedData) as FuelProps[]);
+          return;
+        }
+
         const fuelsAll = await Api.fuels.getFuels();
         setFuels(fuelsAll);
+
+        localStorage.setItem(FUEL_DATA_KEY, JSON.stringify(fuelsAll));
+        localStorage.setItem(`${FUEL_DATA_KEY}_time`, Date.now().toString());
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
+
     getFuels();
   }, []);
   fuels.map((item) => {

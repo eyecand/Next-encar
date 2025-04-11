@@ -1,90 +1,115 @@
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { detectFuels } from "@/hooks/use-fuels";
-import DynamicImage from "@/components/shared/dynamic-image";
+import { detectFuels } from "@/lib/detect-fuels";
 import { PriceAll } from "@/components/shared/price-on-mian-windows";
+import { ImageLoader } from "../../../components/shared/image-loader";
 
 import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
 
 export const Mobile = ({ vehicle, className }: InterfaceProps) => {
   return (
-    <div className={cn(className, "flex-col gap-10  ")}>
+    <div
+      className={cn(
+        className,
+        "fflex-col items-center sm:flex-row p-4  pb-0 sm:flex-wrap"
+      )}
+    >
       {vehicle.length > 0 &&
         vehicle.map(
-          (item, index) =>
+          (item) =>
             item.encar.details !== null && (
               <Link
-                key={index}
+                key={item.encar.id}
                 target="_blank"
                 href={`/vehicle/${item.encar.id}`}
-                className=" p-5 max-w-5xl "
+                className={"w-[320px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3"}
               >
-                <div className="flex justify-between relative card-car">
-                  <div className="mr-5  w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">
+                <div
+                  className={`bg-white border-light-gray rounded-xl overflow-hidden flex flex-col relative
+                min-h-[300px] sm:transition-all border-[2.5px] sm:hover:shadow-xl sm:hover:-translate-y-2 shadow-md`}
+                >
+                  <div className="w-full flex">
                     {item.encar.photos.length === 0 ? (
                       <Image
                         className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
                         alt="not found"
                         src={NotImage}
                         width={350}
-                        height={250}
+                        height={276}
                       />
                     ) : (
-                      <DynamicImage url={item.encar.photos[0].url} />
+                      <ImageLoader imageUrl={item.encar.photos[0].url} />
                     )}
                   </div>
-                  <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
-                    <div className="title">
-                      <h3 className="inline text-[18px] leading-[25px]">
+
+                  <div className="p-1 sm:p-2 md:p-3 lg:p-4 grow flex flex-col">
+                    <div className="items-center justify-between min-h-[81px] flex gap-1 md:gap-3 py-1 md:py-3 text-gray-900 border-b border-gray-200 grow">
+                      <span className="font-bold text-xs sm:text-base lg:text-lg font-gilroy">
                         {item.encar.details.makes.make_short_name}{" "}
-                        {item.encar.details.model.model_short_name},{" "}
-                        {item.encar.details.form_year}
-                      </h3>
-                      <div className="text-[13px] leading-[20px] mt-1 text-gray-400">
-                        {item.encar.details.grades.grade_english}
+                        {item.encar.details.model.model_short_name}
+                      </span>
+                    </div>
+                    <div className="align-middle flex py-3 text-gray-900 text-[12px] lg:text-sm justify-between items-baseline border-b  border-gray-200 relative">
+                      <span className="text-gray-500">Год:</span>
+                      <div className="flex">
+                        <span className="text-red-700 mx-[2px] md:mx-2">
+                          {item.encar.details.form_year}
+                        </span>
+                        <span className="whitespace-nowrap">
+                          {item.encar.details.grades.grade_english}
+                        </span>
                       </div>
                     </div>
-                    <div className="middle mt-1 text-[15px] leading-6">
-                      {item.encar.details.engine_displacement < 500 ? (
-                        ""
-                      ) : (
-                        <span className="whitespace-nowrap">
-                          {(
-                            Math.round(item.encar.details.engine_displacement) /
-                            1000
-                          ).toFixed(1)}{" "}
-                          л,{" "}
+                    <div className="align-middle  text-[12px] lg:text-sm mx-[2px] flex py-3 whitespace-nowrap text-gray-900  justify-between items-baseline border-b  border-gray-200 relative">
+                      <span className="text-gray-500 ">Двигатель:</span>
+                      <div>
+                        <span className="text-red-700 mx-[2px] md:mx-2">
+                          {detectFuels(
+                            item.encar.details.fuel.fuel_english
+                              ? item.encar.details.fuel.fuel_english
+                              : ""
+                          )}
                         </span>
-                      )}
-
-                      <span className="whitespace-nowrap">
-                        {detectFuels(
-                          item.encar.details.fuel.fuel_english
-                            ? item.encar.details.fuel.fuel_english
-                            : ""
+                        {item.encar.details.engine_displacement < 500 ? (
+                          ""
+                        ) : (
+                          <span className="text-gray-400 ml-2">
+                            {item.encar.details.engine_displacement} cc
+                          </span>
                         )}
-                        ,{" "}
-                      </span>
-                      <span className="whitespace-nowrap">
-                        {item.encar.details.mileage} км
-                      </span>
+                      </div>
                     </div>
-                    <div className="button flex ">
-                      <div className="inline-flex bg-gray-300/50 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-2 py-[10px] rounded-xl mt-1">
-                        без пробега по РФ
+                    <div className="align-middle flex py-3 text-[12px]  whitespace-nowrap text-gray-900  justify-between items-baseline border-b  border-gray-200 relative">
+                      <span className="text-gray-500">Пробег:</span>
+                      <div className="flex items-center space-x-2">
+                        <span className="">
+                          {item.encar.details.mileage} км
+                        </span>
                       </div>
                     </div>
                   </div>
-                  <div className="price flex flex-shrink-0 flex-grow-0 w-[140px]">
-                    <div className="flex-shrink-0 flex-grow-0 basis-full">
-                      <PriceAll
-                        price_origion={item.encar.details.origin_price}
-                        years={item.encar.details.form_year}
-                        fuel={item.encar.details.fuel.fuel_english}
-                        engine={item.encar.details.engine_displacement}
-                      />
+                  <div className="flex justify-between items-center text-black text-wrap text-[14px] whitespace-nowrap font-semibold px-2 pb-5">
+                    <PriceAll
+                      price_origion={item.encar.details.origin_price}
+                      years={item.encar.details.form_year}
+                      fuel={item.encar.details.fuel.fuel_english}
+                      engine={item.encar.details.engine_displacement}
+                      isMobile={true}
+                    />
+                    <div className="flex flex-col">
+                      <span className="text-gray-400 text-[10px]">
+                        Цена в Корее
+                      </span>
+                      <span className="font-bold text-sm">
+                        {Intl.NumberFormat("ru", {
+                          notation: "compact",
+                        }).format(
+                          Number(item.encar.details.origin_price) * 10000
+                        )}{" "}
+                        ₩
+                      </span>
                     </div>
                   </div>
                 </div>

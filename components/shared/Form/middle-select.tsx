@@ -2,7 +2,7 @@
 import { useFuels, useYears } from "@/hooks";
 import dynamic from "next/dynamic";
 import { Input } from "../../ui/input";
-import { detectFuels } from "@/hooks/use-fuels";
+import { detectFuels } from "@/lib/detect-fuels";
 import { iOption } from "./model";
 
 interface Props<T> {
@@ -40,7 +40,7 @@ export const MiddleSelect: React.FC<Props<string | null>> = ({
         <div className=" p-0.5 gap-[0.5px] flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-sm ">
             <Input
-              placeholder="Цена от, Р"
+              placeholder="Цена от, тыс. вон"
               type="number"
               min={0}
               value={priceMin ? Number(priceMin) : ""}

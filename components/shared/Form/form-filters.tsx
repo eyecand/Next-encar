@@ -5,18 +5,19 @@ import { useRouter } from "next/navigation";
 import qs from "qs";
 import { BasicSelect } from "./basic-select";
 import { MiddleSelect } from "./middle-select";
-import { Button } from "../../ui/button";
+
 import { FaChevronDown } from "react-icons/fa";
 import { TiDeleteOutline } from "react-icons/ti";
 import { AdvancedSelect } from "./advanced-select";
 import { Api } from "@/services/api-client";
 import { useFilters } from "@/hooks/use-filters";
 import { CountProp } from "./model";
+import { ButtonSubmit } from "../button-submit";
+
 export const FormFilters = () => {
   const router = useRouter();
   const filters = useFilters();
   const [view, setView] = React.useState(false);
-
   const handleRemove = () => {
     filters.setMakesType(null);
     filters.setModelType(null);
@@ -155,9 +156,7 @@ export const FormFilters = () => {
           </div>
         </div>
         <div className="relative text-sm w-full grow sm:w-1/2 md:w-1/3">
-          <Button variant={"default"} type="submit" className="mt-2">
-            Найти автомобиль
-          </Button>
+          <ButtonSubmit />
         </div>
       </div>
     </form>

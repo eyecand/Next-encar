@@ -20,7 +20,7 @@ export const findVehicleId = async (id: string) => {
           },
         },
       },
-      // номер машины при каждом владеьце
+      // номер машины при каждом владельце
       car_info: { select: { date: true, plate_number: true } },
       // затраты на ремонт по страховке
       accident_details: {
@@ -47,7 +47,7 @@ export const findVehicleId = async (id: string) => {
         },
       },
       // количество владельцев
-      _count: { select: { car_info: { where: { vehicle_id: +id } } } },
+      _count: { select: { owner: { where: { vehicle_id: +id } } } },
 
       details: {
         select: {

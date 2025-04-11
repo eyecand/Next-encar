@@ -21,7 +21,7 @@ export default async function Home({
   const { page, pageSize } = searchParamsValue;
 
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
-  const currentPage = parseInt((page as string) || "1");
+  const currentPage = parseInt((page as string) || "0");
   const take = parseInt((pageSize as string) || "10");
   return (
     <div className="mx-auto max-w-7xl mt-10">
@@ -42,7 +42,7 @@ export default async function Home({
       <Suspense fallback={<LoadingSpinner />}>
         <VehicleList vehicle={vehicle} />
       </Suspense>
-      <div className="mt-10">
+      <div className="mt-16">
         <PaginationWithLinks
           page={currentPage}
           pageSize={take}

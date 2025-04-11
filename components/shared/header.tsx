@@ -1,6 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
-
+import { useCallback, useEffect, useState } from "react";
 import React from "react";
 import Image from "next/image";
 import axios from "axios";
@@ -26,26 +25,43 @@ interface ValuteData {
   Value: number;
   Previous: number;
 }
+const CBR_DATA_KEY = "cbrData";
+const CACHE_EXPIRATION_TIME = 60 * 60 * 1000; // 1 час
 // https://next-encar-git-main-eyecands-projects.vercel.app/
 export const Header = () => {
-  const [cbr, setCBR] = useState<CBRPRops>();
   const setCBRAll = useCBRStore((state) => state.setCBRStore);
   const setCurrentEUR = useEURStore((state) => state.setEURStore);
-  useEffect(() => {
-    async function getCBR() {
-      try {
-        const makesAll = (
-          await axios.get<CBRPRops>(
-            "https://www.cbr-xml-daily.ru/daily_json.js"
-          )
-        ).data;
-        setCBR(makesAll);
-      } catch (error) {
-        console.log(error);
+  const [cbr, setCBR] = useState<CBRPRops>();
+  const getCBR = useCallback(async () => {
+    try {
+      const cachedData = localStorage.getItem(CBR_DATA_KEY);
+      const cachedTime = localStorage.getItem(`${CBR_DATA_KEY}_time`);
+
+      if (
+        cachedData &&
+        cachedTime &&
+        Date.now() - Number(cachedTime) < CACHE_EXPIRATION_TIME
+      ) {
+        setCBR(JSON.parse(cachedData) as CBRPRops);
+        return;
       }
+
+      const makesAll = (
+        await axios.get<CBRPRops>("https://www.cbr-xml-daily.ru/daily_json.js")
+      ).data;
+      setCBR(makesAll);
+
+      localStorage.setItem(CBR_DATA_KEY, JSON.stringify(makesAll));
+      localStorage.setItem(`${CBR_DATA_KEY}_time`, Date.now().toString());
+    } catch (error) {
+      console.log(error);
     }
-    getCBR();
   }, []);
+
+  useEffect(() => {
+    getCBR();
+  }, [getCBR]);
+
   useEffect(() => {
     if (cbr) {
       setCBRAll(cbr?.Valute.KRW.Value);
@@ -60,7 +76,7 @@ export const Header = () => {
           <div>
             <a
               className="flex items-center"
-              href="http://localhost:3000"
+              href="http://185.139.68.11/"
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -82,8 +98,8 @@ export const Header = () => {
         </div>
         <div className="hidden md:flex items-center md:mr-16 lg:mr-32">
           {/* navitems */}
-          <a href="http://localhost:3000">
-            <button className="text-white text-[15px] uppercase bg-red-500/90 px-4 rounded-lg py-2 hover:bg-red-500/70 transition-colors duration-200 ease-in">
+          <a href="http://185.139.68.11/">
+            <button className="text-white text-[15px] uppercase bg-rose-500/90 px-4 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
               оставить заявку
             </button>
           </a>

@@ -6,7 +6,7 @@ import {
   StatisticCar,
 } from "@/components/shared";
 
-import { detectFuels } from "@/hooks/use-fuels";
+import { detectFuels } from "@/lib/detect-fuels";
 import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { useCBRStore } from "@/store/cbr";
 import { useEURStore } from "@/store/eur";
@@ -56,7 +56,11 @@ export const CarInfo = ({
           <BlockItem title="Пробег, км" value={details?.mileage} />
           <BlockItem
             title="Трансмиссия"
-            value={details?.transmission.transmission_english}
+            value={
+              details?.transmission.transmission_english === "Otto"
+                ? "Auto"
+                : details?.transmission.transmission_english
+            }
           />
         </div>
         <div className="space-y-4 w-full lg:w-1/2">
@@ -72,7 +76,7 @@ export const CarInfo = ({
         robber={accident?.robber_count}
         pastAccident={accident?.other_accident_count}
         presentAccident={accident?.current_accident_count}
-        countChanges={_count.car_info}
+        countChanges={_count.owner}
       />
 
       <div className="flex flex-col lg:flex-row gap-4">

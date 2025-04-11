@@ -12,3 +12,5 @@ export { AlertDiagnostic } from "./alert-diagnostic";
 export { PriceAll } from "./price-on-mian-windows";
 export { AdvancedSelect } from "./Form/advanced-select";
 export { LoadingSpinner } from "./loading-spinner";
+export { Spinner } from "./spinner";
+export { ButtonSubmit } from "./button-submit";

@@ -1,10 +1,10 @@
+"use client";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
-import { detectFuels } from "@/hooks/use-fuels";
-import DynamicImage from "@/components/shared/dynamic-image";
+import { detectFuels } from "@/lib/detect-fuels";
 import { PriceAll } from "@/components/shared/price-on-mian-windows";
-
+import { ImageLoader } from "../../../components/shared/image-loader";
 import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
 
@@ -32,7 +32,7 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         height={250}
                       />
                     ) : (
-                      <DynamicImage url={item.encar.photos[0].url} />
+                      <ImageLoader imageUrl={item.encar.photos[0].url} />
                     )}
                   </div>
                   <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
@@ -77,14 +77,28 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                       </div>
                     </div>
                   </div>
-                  <div className="price flex flex-shrink-0 flex-grow-0 w-[140px]">
+                  <div className="price flex flex-shrink-0 flex-grow-0 w-[260px]">
                     <div className="flex-shrink-0 flex-grow-0 basis-full">
                       <PriceAll
                         price_origion={item.encar.details.origin_price}
                         years={item.encar.details.form_year}
                         fuel={item.encar.details.fuel.fuel_english}
                         engine={item.encar.details.engine_displacement}
+                        isMobile={false}
                       />
+                      <div className="flex flex-col items-end mt-2">
+                        <span className="text-gray-400 text-sm">
+                          Цена в Корее
+                        </span>
+                        <span className="font-bold text-lg">
+                          {Intl.NumberFormat("ru", {
+                            notation: "compact",
+                          }).format(
+                            Number(item.encar.details.origin_price) * 10000
+                          )}{" "}
+                          ₩
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </div>

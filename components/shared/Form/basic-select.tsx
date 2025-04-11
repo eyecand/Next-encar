@@ -66,6 +66,7 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
       label: item.grades.grade_english.replace(" China Manufacturer", ""),
     });
   });
+
   useEffect(() => {
     async function test(params: string) {
       try {
@@ -82,6 +83,7 @@ export const BasicSelect: React.FC<Props<string | null>> = ({
       try {
         setIsGrades(true);
         const response = await Api.grades.getGrades(makes, model);
+
         setGrades(response);
       } catch (error) {
         console.log(error);

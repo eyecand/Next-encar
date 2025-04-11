@@ -8,19 +8,33 @@ type Props = {
   years: number;
   fuel: string | null;
   engine: number;
+  isMobile: boolean;
 };
-export const PriceAll = ({ price_origion, years, fuel, engine }: Props) => {
+export const PriceAll = ({
+  price_origion,
+  years,
+  fuel,
+  engine,
+  isMobile,
+}: Props) => {
   const priceWon = price_origion ? price_origion * 10000 : 0;
   const realFuel = fuel ? fuel : "Gasoline";
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
   return (
-    <span className="font-bold text-lg">
-      ~{" "}
-      {new Intl.NumberFormat("ru-RU")
-        .format(FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years))
-        .replace(",", ".")}{" "}
-      ₽
-    </span>
+    <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
+      <span
+        className={`text-gray-400  ${isMobile ? "text-[10px]" : "text-sm"}`}
+      >
+        Цена во Владивостоке
+      </span>
+      <span className={`font-bold ${isMobile ? "text-sm" : "text-lg"}`}>
+        ~{" "}
+        {new Intl.NumberFormat("ru-RU")
+          .format(FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years))
+          .replace(",", ".")}{" "}
+        ₽
+      </span>
+    </div>
   );
 };
