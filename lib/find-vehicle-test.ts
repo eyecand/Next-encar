@@ -19,7 +19,7 @@ export interface GetSearchParams {
 }
 
 export interface ReturnProps {
-  vehicle: {
+  vehicleTest: {
     encar: {
       id: bigint;
       details: {
@@ -46,7 +46,7 @@ export interface ReturnProps {
     };
   }[];
 
-  totalPage: number;
+  totalTest: number;
 }
 import { prisma } from "@/prisma/prisma-client";
 
@@ -56,7 +56,7 @@ const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 2000000000;
 const DEFAULT_MIN_ENGINE = 0;
 const DEFAULT_MAX_ENGINE = 10000;
-export const findVehicleV2 = async (
+export const findVehicleTEST = async (
   params: GetSearchParams
 ): Promise<ReturnProps> => {
   const {
@@ -98,7 +98,7 @@ export const findVehicleV2 = async (
     benefit = { some: { insurance_benefit: { gt: 3000100 } } };
   }
 
-  const vehicle = await prisma.active_lots.findMany({
+  const vehicleTest = await prisma.active_lots.findMany({
     where: {
       encar: {
         details: {
@@ -126,7 +126,9 @@ export const findVehicleV2 = async (
         accident_details: benefit,
       },
     },
-    orderBy: { encar: { details: { form_year: "desc" } } },
+    orderBy: {
+      encar: { details: { form_year: "desc" } },
+    },
     select: {
       encar: {
         select: {
@@ -189,9 +191,9 @@ export const findVehicleV2 = async (
       },
     },
   });
-  // Нужно проверять условия на наличие owner & по намерам!
+  // Нужно проверять условия на наличие owner & по номерам!
   if (Boolean(changeNumber) && Boolean(changeOwner)) {
-    const vehicleAll = await prisma.active_lots.findMany({
+    const vehicle = await prisma.active_lots.findMany({
       where: {
         encar: {
           details: {
@@ -241,21 +243,21 @@ export const findVehicleV2 = async (
         },
       },
     });
-    const vehcarOwner = vehicleAll.filter(
+    const vehcarOwner = vehicle.filter(
       (veh) => veh.encar._count.owner === Number(changeOwner)
     );
     const vehcarNumer = vehcarOwner.filter(
       (veh) => veh.encar._count.car_info === Number(changeNumber)
     );
     return {
-      vehicle: vehcarNumer.slice(
+      vehicleTest: vehcarNumer.slice(
         +pagenum * +takePageSize,
         +pagenum * +takePageSize + +takePageSize
       ),
-      totalPage: vehcarNumer.length,
+      totalTest: vehcarNumer.length,
     };
   } else if (Boolean(changeNumber)) {
-    const vehicleAll = await prisma.active_lots.findMany({
+    const vehicle = await prisma.active_lots.findMany({
       where: {
         encar: {
           details: {
@@ -305,18 +307,18 @@ export const findVehicleV2 = async (
         },
       },
     });
-    const vehcarinfo = vehicleAll.filter(
+    const vehcarinfo = vehicle.filter(
       (veh) => veh.encar._count.car_info === Number(changeNumber)
     );
     return {
-      vehicle: vehcarinfo.slice(
+      vehicleTest: vehcarinfo.slice(
         +pagenum * +takePageSize,
         +pagenum * +takePageSize + +takePageSize
       ),
-      totalPage: vehcarinfo.length,
+      totalTest: vehcarinfo.length,
     };
   } else if (Boolean(changeOwner)) {
-    const vehicleAll = await prisma.active_lots.findMany({
+    const vehicle = await prisma.active_lots.findMany({
       where: {
         encar: {
           details: {
@@ -366,17 +368,17 @@ export const findVehicleV2 = async (
         },
       },
     });
-    const vehOwner = vehicleAll.filter(
+    const vehOwner = vehicle.filter(
       (veh) => veh.encar._count.owner === Number(changeOwner)
     );
     return {
-      vehicle: vehOwner.slice(
+      vehicleTest: vehOwner.slice(
         +pagenum * +takePageSize,
         +pagenum * +takePageSize + +takePageSize
       ),
-      totalPage: vehOwner.length,
+      totalTest: vehOwner.length,
     };
   }
 
-  return { vehicle, totalPage };
+  return { vehicleTest, totalTest: totalPage };
 };
