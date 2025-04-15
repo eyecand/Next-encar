@@ -17,6 +17,7 @@ interface ReturnPros {
   changeOwner: string | null;
   insuare: string | null;
   insuarePrice: string | null;
+  sort: string | null;
   setMakesType: (value: string | null) => void;
   setModelType: (value: string | null) => void;
   setGradesType: (value: string | null) => void;
@@ -33,6 +34,7 @@ interface ReturnPros {
   setChangeOwner: (value: string | null) => void;
   setInsuare: (value: string | null) => void;
   setInsuarePrice: (value: string | null) => void;
+  setSort: (value: string | null) => void;
 }
 export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
@@ -84,7 +86,9 @@ export const useFilters = (): ReturnPros => {
   const [insuarePrice, setInsuarePrice] = useState(
     searchParams.has("insuarePrice") ? searchParams.get("insuarePrice") : null
   );
-
+  const [sort, setSort] = useState(
+    searchParams.has("sort") ? searchParams.get("sort") : null
+  );
   return useMemo(
     () => ({
       makesType,
@@ -103,6 +107,7 @@ export const useFilters = (): ReturnPros => {
       changeOwner,
       insuare,
       insuarePrice,
+      sort,
       setMakesType,
       setModelType,
       setGradesType,
@@ -119,6 +124,7 @@ export const useFilters = (): ReturnPros => {
       setChangeOwner,
       setInsuare,
       setInsuarePrice,
+      setSort,
     }),
     [
       makesType,
@@ -137,6 +143,7 @@ export const useFilters = (): ReturnPros => {
       changeOwner,
       insuare,
       insuarePrice,
+      sort,
     ]
   );
 };

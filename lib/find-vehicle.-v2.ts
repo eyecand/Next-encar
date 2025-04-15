@@ -16,6 +16,7 @@ export interface GetSearchParams {
   insuarePrice?: string;
   changeOwner?: string;
   changeNumber?: string;
+  sort?: string;
 }
 
 export interface ReturnProps {
@@ -77,6 +78,7 @@ export const findVehicleV2 = async (
     insuarePrice,
     changeOwner,
     changeNumber,
+    sort,
   } = await params;
   const pagenum = page ?? 0;
   const takePageSize = pageSize ?? 10;
@@ -97,7 +99,20 @@ export const findVehicleV2 = async (
   if (insuarePrice === "3") {
     benefit = { some: { insurance_benefit: { gt: 3000100 } } };
   }
-
+  let sortLabel = {};
+  if (sort === "priceMin") {
+    sortLabel = { details: { origin_price: "asc" } };
+  } else if (sort === "priceMax") {
+    sortLabel = { details: { origin_price: "desc" } };
+  } else if (sort === "dateMin") {
+    sortLabel = { created_at: "asc" };
+  } else if (sort === "dateMax") {
+    sortLabel = { created_at: "desc" };
+  } else if (sort === "yearMin") {
+    sortLabel = { details: { form_year: "asc" } };
+  } else if (sort === "yearMax") {
+    sortLabel = { details: { form_year: "asc" } };
+  }
   const vehicle = await prisma.active_lots.findMany({
     where: {
       encar: {
@@ -126,7 +141,9 @@ export const findVehicleV2 = async (
         accident_details: benefit,
       },
     },
-    orderBy: { encar: { details: { form_year: "desc" } } },
+    orderBy: {
+      encar: sortLabel,
+    },
     select: {
       encar: {
         select: {
@@ -219,6 +236,9 @@ export const findVehicleV2 = async (
           accident_details: benefit,
         },
       },
+      orderBy: {
+        encar: sortLabel,
+      },
       select: {
         encar: {
           select: {
@@ -283,6 +303,9 @@ export const findVehicleV2 = async (
           accident_details: benefit,
         },
       },
+      orderBy: {
+        encar: sortLabel,
+      },
       select: {
         encar: {
           select: {
@@ -343,6 +366,9 @@ export const findVehicleV2 = async (
           },
           accident_details: benefit,
         },
+      },
+      orderBy: {
+        encar: sortLabel,
       },
       select: {
         encar: {

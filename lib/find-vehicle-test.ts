@@ -16,6 +16,7 @@ export interface GetSearchParams {
   insuarePrice?: string;
   changeOwner?: string;
   changeNumber?: string;
+  sort?: string;
 }
 
 export interface ReturnProps {
@@ -77,6 +78,7 @@ export const findVehicleTEST = async (
     insuarePrice,
     changeOwner,
     changeNumber,
+    sort,
   } = await params;
   const pagenum = page ?? 0;
   const takePageSize = pageSize ?? 10;
@@ -96,6 +98,20 @@ export const findVehicleTEST = async (
   }
   if (insuarePrice === "3") {
     benefit = { some: { insurance_benefit: { gt: 3000100 } } };
+  }
+  let sortLabel = {};
+  if (sort === "priceMin") {
+    sortLabel = { details: { origin_price: "asc" } };
+  } else if (sort === "priceMax") {
+    sortLabel = { details: { origin_price: "desc" } };
+  } else if (sort === "dateMin") {
+    sortLabel = { created_at: "asc" };
+  } else if (sort === "dateMax") {
+    sortLabel = { created_at: "desc" };
+  } else if (sort === "yearMin") {
+    sortLabel = { details: { form_year: "asc" } };
+  } else if (sort === "yearMax") {
+    sortLabel = { details: { form_year: "asc" } };
   }
 
   const vehicleTest = await prisma.active_lots.findMany({
@@ -127,7 +143,7 @@ export const findVehicleTEST = async (
       },
     },
     orderBy: {
-      encar: { details: { form_year: "desc" } },
+      encar: sortLabel,
     },
     select: {
       encar: {
@@ -221,6 +237,7 @@ export const findVehicleTEST = async (
           accident_details: benefit,
         },
       },
+      orderBy: sortLabel,
       select: {
         encar: {
           select: {
@@ -285,6 +302,7 @@ export const findVehicleTEST = async (
           accident_details: benefit,
         },
       },
+      orderBy: sortLabel,
       select: {
         encar: {
           select: {
@@ -346,6 +364,7 @@ export const findVehicleTEST = async (
           accident_details: benefit,
         },
       },
+      orderBy: sortLabel,
       select: {
         encar: {
           select: {

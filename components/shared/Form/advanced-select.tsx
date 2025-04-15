@@ -21,6 +21,7 @@ interface Props<T> {
   changeOwner: string | null;
   changeNumber: string | null;
   insuarePrice: string | null;
+  loadingCount: boolean;
 }
 
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
@@ -42,6 +43,7 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
   changeOwner,
   changeNumber,
   insuarePrice,
+  loadingCount,
 }) => {
   const optionCounts: Option[] = [
     {
@@ -163,6 +165,8 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-sm ">
             <NoSSR
+              isDisabled={loadingCount}
+              isLoading={loadingCount}
               placeholder="Количество номеров"
               options={optionCounts}
               value={
@@ -181,6 +185,8 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-sm ">
             <NoSSR
+              isDisabled={loadingCount}
+              isLoading={loadingCount}
               placeholder="Количество владельцев"
               options={optionCounts}
               value={
