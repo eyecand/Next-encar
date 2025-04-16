@@ -100,16 +100,18 @@ export const findVehicleV2 = async (
     benefit = { some: { insurance_benefit: { gt: 3000100 } } };
   }
   let sortLabel = {};
-  if (sort === "priceMin") {
+  if (sort === "all") {
+    sortLabel = {};
+  } else if (sort === "priceMin") {
     sortLabel = { details: { origin_price: "asc" } };
   } else if (sort === "priceMax") {
     sortLabel = { details: { origin_price: "desc" } };
-  } else if (sort === "dateMin") {
-    sortLabel = { created_at: "asc" };
-  } else if (sort === "dateMax") {
-    sortLabel = { created_at: "desc" };
+  } else if (sort === "mileageMin") {
+    sortLabel = { details: { mileage: "desc" } };
+  } else if (sort === "mileageMax") {
+    sortLabel = { details: { mileage: "asc" } };
   } else if (sort === "yearMin") {
-    sortLabel = { details: { form_year: "asc" } };
+    sortLabel = { details: { form_year: "desc" } };
   } else if (sort === "yearMax") {
     sortLabel = { details: { form_year: "asc" } };
   }

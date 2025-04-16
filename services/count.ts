@@ -1,7 +1,9 @@
 import { axiosInstance } from "./instance";
 import { ApiRoutes } from "./constants";
-import { cache } from "react";
 
-export const getMaxCount = cache(async () => {
-  return (await axiosInstance.get(ApiRoutes.COUNT)).data;
-});
+export const getMaxCountNomer = async () => {
+  return (await axiosInstance.get(ApiRoutes.COUNT_NOMER)).data;
+};
+export const getMaxCountOwner = async () => {
+  return (await axiosInstance.get(ApiRoutes.COUNT_OWNER)).data;
+};

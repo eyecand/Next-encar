@@ -38,7 +38,7 @@ export const useCounts = (): ReturnProps => {
           return;
         }
 
-        const maxCount = await Api.count.getMaxCount();
+        const maxCount = await Api.count.getMaxCountNomer();
         setCount(maxCount);
         localStorage.setItem("maxCountData", JSON.stringify(maxCount));
         localStorage.setItem("maxCountData_time", Date.now().toString());

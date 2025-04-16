@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import qs from "qs";
 import { BasicSelect } from "./basic-select";
@@ -25,13 +25,31 @@ import { ButtonSubmit } from "../button-submit";
 export const FormFilters = ({ totalTest }: { totalTest: number }) => {
   const router = useRouter();
   const filters = useFilters();
-  const isMounted = React.useRef(false);
-  const [view, setView] = React.useState(false);
-  const [loadingCount, setLoadingCount] = React.useState(false);
+  const isMounted = useRef(false);
+  const [view, setView] = useState(false);
+  const [loadingCount, setLoadingCount] = useState(false);
   useEffect(() => {
     if (isMounted.current) {
       const firstQuery = qs.stringify(
-        { sort: filters.sort },
+        {
+          makes: filters.makesType,
+          model: filters.modelType,
+          grades: filters.gradesType,
+          fuels: filters.fuels,
+          yearsMin: filters.yearsMin,
+          yearsMax: filters.yearsMax,
+          priceMin: filters.priceMin,
+          priceMax: filters.priceMax,
+          engineMin: filters.engineMin,
+          engineMax: filters.engineMax,
+          buisness: filters.buisness,
+          robber: filters.robber,
+          changeNumber: filters.changeNumber,
+          changeOwner: filters.changeOwner,
+          insuare: filters.insuare,
+          insuarePrice: filters.insuarePrice,
+          sort: filters.sort,
+        },
         { arrayFormat: "comma", skipNulls: true }
       );
       router.push(`?${firstQuery}`, { scroll: false });
@@ -86,20 +104,33 @@ export const FormFilters = ({ totalTest }: { totalTest: number }) => {
       scroll: false,
     });
   };
-  const [countServer, setCountcountServer] = React.useState<CountProp>();
+  const [countNomer, setCountNomer] = useState<CountProp>();
+  const [countOwner, setCountOwner] = useState<CountProp>();
   React.useEffect(() => {
-    async function getCounts() {
+    async function getCountsNomer() {
       try {
         setLoadingCount(true);
-        const maxCount = await Api.count.getMaxCount();
-        setCountcountServer(maxCount);
+        const maxCount = await Api.count.getMaxCountNomer();
+        setCountNomer(maxCount);
       } catch (error) {
         console.log(error);
       } finally {
         setLoadingCount(false);
       }
     }
-    getCounts();
+    async function getCountsOwner() {
+      try {
+        setLoadingCount(true);
+        const maxCountOwner = await Api.count.getMaxCountOwner();
+        setCountOwner(maxCountOwner);
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoadingCount(false);
+      }
+    }
+    getCountsNomer();
+    getCountsOwner();
   }, []);
   return (
     <>
@@ -143,7 +174,8 @@ export const FormFilters = ({ totalTest }: { totalTest: number }) => {
             onChangeInsuare={filters.setInsuare}
             onChangeInsuarePrice={filters.setInsuarePrice}
             insuare={filters.insuare}
-            count={countServer?.count}
+            count={countNomer?.count}
+            countOwner={countOwner?.count}
             engineMin={filters.engineMin}
             engineMax={filters.engineMax}
             buisness={filters.buisness}
@@ -191,12 +223,18 @@ export const FormFilters = ({ totalTest }: { totalTest: number }) => {
             {totalTest.toLocaleString()} объявления
           </h2>
         </div>
-        <Select onValueChange={(value) => filters.setSort(value)}>
+        <Select
+          value={Boolean(filters.sort) ? String(filters.sort) : "all"}
+          onValueChange={(value) => filters.setSort(value)}
+        >
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Сортировка" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
+              <SelectItem value="all">
+                <div className="flex items-center">Любой</div>
+              </SelectItem>
               <SelectItem value="priceMin">
                 <div className="flex items-center">
                   Стоимость{" "}
@@ -222,16 +260,16 @@ export const FormFilters = ({ totalTest }: { totalTest: number }) => {
                   <IoIosArrowRoundDown className="text-gray-400 text-[22px]" />
                 </div>
               </SelectItem>
-              <SelectItem value="dateMax">
+              <SelectItem value="mileageMax">
                 <div className="flex items-center">
-                  Дата объявления{" "}
+                  Пробег{" "}
                   <IoIosArrowRoundUp className="text-gray-400 text-[22px]" />
                 </div>
               </SelectItem>
 
-              <SelectItem value="dateMin">
+              <SelectItem value="mileageMin">
                 <div className="flex items-center">
-                  Дата объявления{" "}
+                  Пробег{" "}
                   <IoIosArrowRoundDown className="text-gray-400 text-[22px]" />
                 </div>
               </SelectItem>

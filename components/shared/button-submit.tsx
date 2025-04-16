@@ -17,7 +17,7 @@ export const ButtonSubmit = () => {
         variant={"default"}
         type="submit"
         disabled={pending}
-        className="mt-2"
+        className="mt-2 w-[160px]"
       >
         {pending ? <Spinner /> : "Найти автомобиль"}
       </Button>

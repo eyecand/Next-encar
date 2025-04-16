@@ -13,6 +13,7 @@ interface Props<T> {
   onChangeInsuare: (value: T) => void;
   onChangeInsuarePrice: (value: T) => void;
   count: number | undefined;
+  countOwner: number | undefined;
   insuare: string | null;
   engineMin: string | null;
   engineMax: string | null;
@@ -44,6 +45,7 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
   changeNumber,
   insuarePrice,
   loadingCount,
+  countOwner,
 }) => {
   const optionCounts: Option[] = [
     {
@@ -51,7 +53,12 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
       label: "Все",
     },
   ];
-  const currentCount = count ? count : 0;
+  const optionCountsOwner: Option[] = [
+    {
+      value: null,
+      label: "Все",
+    },
+  ];
   const optionInsuarePrice = [
     {
       label: "Любая",
@@ -69,10 +76,15 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
       label: "больше 3000000 W",
     },
   ];
-  if (currentCount)
-    for (let i = 1; i <= currentCount; i++) {
+  if (count)
+    for (let i = 1; i <= count; i++) {
       optionCounts.push({ value: String(i), label: String(i) });
     }
+  if (countOwner) {
+    for (let i = 1; i <= countOwner; i++) {
+      optionCountsOwner.push({ value: String(i), label: String(i) });
+    }
+  }
   return (
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
@@ -188,10 +200,12 @@ export const AdvancedSelect: React.FC<Props<string | null>> = ({
               isDisabled={loadingCount}
               isLoading={loadingCount}
               placeholder="Количество владельцев"
-              options={optionCounts}
+              options={optionCountsOwner}
               value={
                 changeOwner
-                  ? optionCounts.filter((item) => item.value === changeOwner)
+                  ? optionCountsOwner.filter(
+                      (item) => item.value === changeOwner
+                    )
                   : []
               }
               onChange={(option) => {

@@ -2,7 +2,7 @@ import { prisma } from "@/prisma/prisma-client";
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  const makes = await prisma.car_info_changes.groupBy({
+  const countOwner = await prisma.owner_changes.groupBy({
     by: ["vehicle_id"],
     _count: {
       id: true,
@@ -12,6 +12,7 @@ export async function GET() {
         id: "desc",
       },
     },
+    take: 1,
   });
-  return NextResponse.json({ count: makes[0]._count.id });
+  return NextResponse.json({ count: countOwner[0]._count.id });
 }
