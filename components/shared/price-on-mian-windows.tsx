@@ -1,6 +1,7 @@
 "use client";
 import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { useCBRStore } from "@/store/cbr";
+import { useCityState } from "@/store/city-filter";
 import { useEURStore } from "@/store/eur";
 
 type Props = {
@@ -21,17 +22,23 @@ export const PriceAll = ({
   const realFuel = fuel ? fuel : "Gasoline";
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
+  const stateCity = useCityState((state) => state.cityState);
+  console.log("state", stateCity);
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span
         className={`text-gray-400  ${isMobile ? "text-[10px]" : "text-sm"}`}
       >
-        Цена во Владивостоке
+        {" "}
+        {(stateCity === 0 || stateCity == 1) && "Цена во Владивостоке"}
+        {stateCity === 2 && "Цена в Москве"}
       </span>
       <span className={`font-bold ${isMobile ? "text-sm" : "text-lg"}`}>
         ~{" "}
         {new Intl.NumberFormat("ru-RU")
-          .format(FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years))
+          .format(
+            FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years, stateCity)
+          )
           .replace(",", ".")}{" "}
         ₽
       </span>

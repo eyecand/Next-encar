@@ -4,7 +4,8 @@ export function FromKRWtoRUB(
   EUR: number,
   engine: number,
   fuel: string,
-  year: number
+  year: number,
+  stateCity?: number
 ) {
   const currentYear = new Date().getFullYear();
   const differentYear = currentYear - year;
@@ -152,6 +153,6 @@ export function FromKRWtoRUB(
       }
     }
   }
-
+  if (stateCity === 2) result = result + 200000;
   return Math.floor(result);
 }

@@ -4,6 +4,8 @@ import dynamic from "next/dynamic";
 import { optionCities, optionBenefit, optionSort } from "./constanst";
 import { iOption } from "./model";
 import { detectSort } from "./lib";
+import { useEffect } from "react";
+import { useCityState } from "@/store/city-filter";
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 
 export const FourthLine: React.FC<Props<string | null>> = ({
@@ -14,6 +16,10 @@ export const FourthLine: React.FC<Props<string | null>> = ({
   cities,
   sort,
 }) => {
+  const setCityState = useCityState((state) => state.setCityState);
+  useEffect(() => {
+    setCityState(Number(cities));
+  }, [cities]);
   return (
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
