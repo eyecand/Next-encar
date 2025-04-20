@@ -22,7 +22,7 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                 className=" p-5 max-w-5xl "
               >
                 <div className="flex justify-between relative card-car">
-                  <div className="mr-5  w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">
+                  <div className="mr-5 relative w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">
                     {item.encar.photos.length === 0 ? (
                       <Image
                         className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"

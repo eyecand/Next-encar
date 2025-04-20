@@ -14,7 +14,6 @@ export default async function CarPage({
   if (!vehicleId) {
     return notFound();
   }
-  console.log("номер машины при каждом владельце", vehicleId.car_info);
   return (
     <div className="mx-auto px-5 max-w-[1280px] mt-24">
       <div className=" py-5 flex flex-col">

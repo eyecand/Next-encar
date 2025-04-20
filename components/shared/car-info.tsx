@@ -12,6 +12,7 @@ import { useCBRStore } from "@/store/cbr";
 import { useEURStore } from "@/store/eur";
 import { Button } from "../ui/button";
 import { VehicleIdProps } from "@/app/vehicle/[id]/model";
+import { detectTransmission } from "./form-korea-cars/second-line/lib";
 
 export const CarInfo = ({
   details,
@@ -56,11 +57,9 @@ export const CarInfo = ({
           <BlockItem title="Пробег, км" value={details?.mileage} />
           <BlockItem
             title="Трансмиссия"
-            value={
-              details?.transmission.transmission_english === "Otto"
-                ? "Auto"
-                : details?.transmission.transmission_english
-            }
+            value={detectTransmission(
+              String(details?.transmission.transmission_english)
+            )}
           />
         </div>
         <div className="space-y-4 w-full lg:w-1/2">

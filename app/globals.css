@@ -93,16 +93,21 @@
 .yearMax__indicator-separator {
   display: none !important;
 }
-.yearMin__control {
-  border-right: 1px !important;
-  border-top-right-radius: 0px !important;
-  border-bottom-right-radius: 0px !important;
+
+.yearMin__control--is-focused,
+.yearMax__control--is-focused,
+.make__control--is-focused,
+.model__control--is-focused,
+.fuels__control--is-focused,
+.privod__control--is-focused,
+.transmission__control--is-focused,
+.benifit__control--is-focused,
+.city__control--is-focused,
+.sort__control--is-focused {
+  box-shadow: 0 0 0 1px #f3a114 !important;
+  border-color: #f3a114 !important;
 }
-.yearMax__control {
-  border-left: 1px !important;
-  border-top-left-radius: 0px !important;
-  border-bottom-left-radius: 0px !important;
-}
+
 /* ///////////////////// */
 .accordion {
   width: 100%;
@@ -218,7 +223,7 @@
   }
 }
 
-@media (max-width: 650px) {
+@media (max-width: 640px) {
   .Desktop {
     display: none;
   }
@@ -226,7 +231,7 @@
     display: block;
   }
 }
-@media (min-width: 650px) {
+@media (min-width: 640px) {
   .Desktop {
     display: flex;
   }

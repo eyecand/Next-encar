@@ -26,6 +26,7 @@ export async function GET() {
     where: { encar: { details: { form_year: 2320 } } },
     select: { encar: { select: { details: { select: { form_year: true } } } } },
   });
+
   return NextResponse.json(first);
 }
 // BigInt.prototype.toJSON = function () {

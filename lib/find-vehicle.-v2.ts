@@ -1,3 +1,220 @@
+import { prisma } from "@/prisma/prisma-client";
+
+const DEFAULT_MIN_YEARS = 2000;
+const DEFAULT_MAX_YEARS = 2025;
+const DEFAULT_MIN_PRICE = 0;
+const DEFAULT_MAX_PRICE = 2000000000;
+const DEFAULT_MIN_ENGINE = 0;
+const DEFAULT_MAX_ENGINE = 10000;
+const DEFAULT_MIN_MILEAGE = 0;
+const DEFAULT_MAX_MILEAGE = 1000000;
+export const findVehicleV2 = async (
+  params: GetSearchParams
+): Promise<ReturnProps> => {
+  const {
+    makes,
+    model,
+    fuels,
+    page,
+    pageSize,
+    yearsMin,
+    yearsMax,
+    priceMin,
+    priceMax,
+    engineMin,
+    engineMax,
+    insuarePrice,
+    sort,
+    privod,
+    mileageMax,
+    mileageMin,
+    transmission,
+  } = await params;
+  const pagenum = page ?? 0;
+  const takePageSize = pageSize ?? 10;
+  const currentMinYear = Number(yearsMin) || DEFAULT_MIN_YEARS;
+  const currentMaxYear = Number(yearsMax) || DEFAULT_MAX_YEARS;
+  const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
+  const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
+  const currentMinEngine = Number(engineMin) || DEFAULT_MIN_ENGINE;
+  const currentMaxEngine = Number(engineMax) || DEFAULT_MAX_ENGINE;
+  const currentMinMileage = Number(mileageMin) || DEFAULT_MIN_MILEAGE;
+  const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
+  let benefit = {};
+  if (insuarePrice === "1") {
+    benefit = { every: { insurance_benefit: { lte: 0 } } };
+  }
+  if (insuarePrice === "2") {
+    benefit = { some: { insurance_benefit: { gt: 2 } } };
+  }
+
+  let sortLabel = {};
+  if (sort === "all") {
+    sortLabel = {};
+  } else if (sort === "priceMin") {
+    sortLabel = { details: { origin_price: "desc" } };
+  } else if (sort === "priceMax") {
+    sortLabel = { details: { origin_price: "asc" } };
+  } else if (sort === "mileageMin") {
+    sortLabel = { details: { mileage: "desc" } };
+  } else if (sort === "mileageMax") {
+    sortLabel = { details: { mileage: "asc" } };
+  } else if (sort === "yearMin") {
+    sortLabel = { details: { form_year: "desc" } };
+  } else if (sort === "yearMax") {
+    sortLabel = { details: { form_year: "asc" } };
+  } else if (sort === "engineMin") {
+    sortLabel = { details: { engine_displacement: "desc" } };
+  } else if (sort === "engineMax") {
+    sortLabel = { details: { engine_displacement: "asc" } };
+  } else if (sort === "dateMin") {
+    sortLabel = { details: { created_at: "desc" } };
+  } else if (sort === "dateMax") {
+    sortLabel = { details: { created_at: "asc" } };
+  }
+
+  let tr = {};
+  if (transmission === "Otto") {
+    tr = { transmission_english: "Otto" };
+  } else if (transmission === "Manual") {
+    tr = { transmission_english: "Manual" };
+  } else if (transmission === "CVT") {
+    tr = { transmission_english: "CVT" };
+  } else if (transmission === "passivity, Semioto") {
+    tr = {
+      OR: [
+        { transmission_english: "passivity" },
+        { transmission_english: "Semioto" },
+      ],
+    };
+  }
+  let fuel = {};
+  if (fuels === "Gasoline") {
+    fuel = { fuel_english: "Gasoline" };
+  } else if (fuels === "Diesel") {
+    fuel = { fuel_english: "Diesel" };
+  } else if (fuels === "Gasoline+Electric") {
+    fuel = { fuel_english: "Gasoline+Electric" };
+  } else if (fuels === "Electricity") {
+    fuel = { fuel_english: "Electricity" };
+  } else if (
+    fuels ===
+    "LPG (Purchased by the public), Hydrogen, Gasoline+LPG, LPG + Electric, Gasoline+CNG, CNG"
+  ) {
+    fuel = {
+      OR: [
+        { fuel_english: "LPG (Purchased by the public)" },
+        { fuel_english: "Hydrogen" },
+        { fuel_english: "Gasoline+LPG" },
+        { fuel_english: "LPG + Electric" },
+        { fuel_english: "Gasoline+CNG" },
+        { fuel_english: "CNG" },
+      ],
+    };
+  }
+  console.log("privod", privod);
+
+  const vehiclePromise = prisma.active_lots.findMany({
+    where: {
+      encar: {
+        details: {
+          makes: { make_short_name: makes },
+          model: { model_short_name: model },
+          grades: { grade_english: { contains: privod } },
+          fuel: fuel,
+          form_year: {
+            gte: currentMinYear,
+            lte: currentMaxYear,
+          },
+          origin_price: {
+            gte: currentMinPrice,
+            lte: currentMaxPrice,
+          },
+          engine_displacement: {
+            gte: currentMinEngine,
+            lte: currentMaxEngine,
+          },
+          mileage: {
+            gte: currentMinMileage,
+            lte: currentMaxMileage,
+          },
+          transmission: tr,
+        },
+
+        accident_details: benefit,
+      },
+    },
+    orderBy: {
+      encar: sortLabel,
+    },
+    select: {
+      encar: {
+        select: {
+          id: true,
+          details: {
+            select: {
+              makes: { select: { make_short_name: true } },
+              model: { select: { model_short_name: true } },
+              grades: { select: { grade_english: true } },
+              fuel: { select: { fuel_english: true } },
+              form_year: true,
+              engine_displacement: true,
+              mileage: true,
+              origin_price: true,
+            },
+          },
+          photos: { select: { url: true } },
+        },
+      },
+    },
+
+    skip: +pagenum * +takePageSize,
+    take: +takePageSize,
+  });
+
+  const totalPagePromise = prisma.active_lots.count({
+    where: {
+      encar: {
+        details: {
+          makes: {
+            make_short_name: makes,
+          },
+          model: {
+            model_short_name: model,
+          },
+          grades: {
+            grade_english: { contains: privod },
+          },
+          fuel: fuel,
+          form_year: {
+            gte: currentMinYear,
+            lte: currentMaxYear,
+          },
+          origin_price: {
+            gte: currentMinPrice,
+            lte: currentMaxPrice,
+          },
+          engine_displacement: {
+            gte: currentMinEngine,
+            lte: currentMaxEngine,
+          },
+          mileage: {
+            gte: currentMinMileage,
+            lte: currentMaxMileage,
+          },
+          transmission: tr,
+        },
+
+        accident_details: benefit,
+      },
+    },
+  });
+  const [vehicle, totalPage] = await Promise.all([
+    vehiclePromise,
+    totalPagePromise,
+  ]);
+  return { vehicle, totalPage };
+};
 export interface GetSearchParams {
   makes?: string;
   model?: string;
@@ -17,6 +234,11 @@ export interface GetSearchParams {
   changeOwner?: string;
   changeNumber?: string;
   sort?: string;
+  privod?: string;
+  transmission: string;
+  mileageMin: string;
+  mileageMax: string;
+  cities: string;
 }
 
 export interface ReturnProps {
@@ -49,362 +271,3 @@ export interface ReturnProps {
 
   totalPage: number;
 }
-import { prisma } from "@/prisma/prisma-client";
-
-const DEFAULT_MIN_YEARS = 2000;
-const DEFAULT_MAX_YEARS = 2025;
-const DEFAULT_MIN_PRICE = 0;
-const DEFAULT_MAX_PRICE = 2000000000;
-const DEFAULT_MIN_ENGINE = 0;
-const DEFAULT_MAX_ENGINE = 10000;
-export const findVehicleV2 = async (
-  params: GetSearchParams
-): Promise<ReturnProps> => {
-  const {
-    makes,
-    model,
-    grades,
-    fuels,
-    page,
-    pageSize,
-    yearsMin,
-    yearsMax,
-    priceMin,
-    priceMax,
-    engineMin,
-    engineMax,
-    buisness,
-    robber,
-    insuarePrice,
-    changeOwner,
-    changeNumber,
-    sort,
-  } = await params;
-  const pagenum = page ?? 0;
-  const takePageSize = pageSize ?? 10;
-  const currentMinYear = Number(yearsMin) || DEFAULT_MIN_YEARS;
-  const currentMaxYear = Number(yearsMax) || DEFAULT_MAX_YEARS;
-  const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
-  const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
-  const currentMinEngine = Number(engineMin) || DEFAULT_MIN_ENGINE;
-  const currentMaxEngine = Number(engineMax) || DEFAULT_MAX_ENGINE;
-  const currentRobber = robber ? robber : 1;
-  let benefit = {};
-  if (insuarePrice === "1" && insuarePrice !== undefined) {
-    benefit = { some: { insurance_benefit: { lte: 1000000 } } };
-  }
-  if (insuarePrice === "2") {
-    benefit = { some: { insurance_benefit: { gt: 1000001, lte: 3000000 } } };
-  }
-  if (insuarePrice === "3") {
-    benefit = { some: { insurance_benefit: { gt: 3000100 } } };
-  }
-  let sortLabel = {};
-  if (sort === "all") {
-    sortLabel = {};
-  } else if (sort === "priceMin") {
-    sortLabel = { details: { origin_price: "asc" } };
-  } else if (sort === "priceMax") {
-    sortLabel = { details: { origin_price: "desc" } };
-  } else if (sort === "mileageMin") {
-    sortLabel = { details: { mileage: "desc" } };
-  } else if (sort === "mileageMax") {
-    sortLabel = { details: { mileage: "asc" } };
-  } else if (sort === "yearMin") {
-    sortLabel = { details: { form_year: "desc" } };
-  } else if (sort === "yearMax") {
-    sortLabel = { details: { form_year: "asc" } };
-  }
-  const vehicle = await prisma.active_lots.findMany({
-    where: {
-      encar: {
-        details: {
-          makes: { make_short_name: makes },
-          model: { model_short_name: model },
-          grades: { grade_english: grades },
-          fuel: { fuel_english: fuels },
-          form_year: {
-            gte: currentMinYear,
-            lte: currentMaxYear,
-          },
-          origin_price: {
-            gte: currentMinPrice,
-            lte: currentMaxPrice,
-          },
-          engine_displacement: {
-            gte: currentMinEngine,
-            lte: currentMaxEngine,
-          },
-        },
-        accident: {
-          business: Number(buisness) === 2 ? true : false,
-          robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
-        },
-        accident_details: benefit,
-      },
-    },
-    orderBy: {
-      encar: sortLabel,
-    },
-    select: {
-      encar: {
-        select: {
-          id: true,
-          details: {
-            select: {
-              makes: { select: { make_short_name: true } },
-              model: { select: { model_short_name: true } },
-              grades: { select: { grade_english: true } },
-              fuel: { select: { fuel_english: true } },
-              form_year: true,
-              engine_displacement: true,
-              mileage: true,
-              origin_price: true,
-            },
-          },
-          photos: { select: { url: true } },
-          _count: { select: { owner: true, car_info: true } },
-        },
-      },
-    },
-
-    skip: +pagenum * +takePageSize,
-    take: +takePageSize,
-  });
-  const totalPage = await prisma.active_lots.count({
-    where: {
-      encar: {
-        details: {
-          makes: {
-            make_short_name: makes,
-          },
-          model: {
-            model_short_name: model,
-          },
-          grades: {
-            grade_english: grades,
-          },
-          fuel: {
-            fuel_english: fuels,
-          },
-          form_year: {
-            gte: currentMinYear,
-            lte: currentMaxYear,
-          },
-          origin_price: {
-            gte: currentMinPrice,
-            lte: currentMaxPrice,
-          },
-          engine_displacement: {
-            gte: currentMinEngine,
-            lte: currentMaxEngine,
-          },
-        },
-        accident: {
-          business: Number(buisness) === 2 ? true : false,
-          robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
-        },
-        accident_details: benefit,
-      },
-    },
-  });
-  // Нужно проверять условия на наличие owner & по намерам!
-  if (Boolean(changeNumber) && Boolean(changeOwner)) {
-    const vehicleAll = await prisma.active_lots.findMany({
-      where: {
-        encar: {
-          details: {
-            makes: { make_short_name: makes },
-            model: { model_short_name: model },
-            grades: { grade_english: grades },
-            fuel: { fuel_english: fuels },
-            form_year: {
-              gte: currentMinYear,
-              lte: currentMaxYear,
-            },
-            origin_price: {
-              gte: currentMinPrice,
-              lte: currentMaxPrice,
-            },
-            engine_displacement: {
-              gte: currentMinEngine,
-              lte: currentMaxEngine,
-            },
-          },
-          accident: {
-            business: Number(buisness) === 2 ? true : false,
-            robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
-          },
-          accident_details: benefit,
-        },
-      },
-      orderBy: {
-        encar: sortLabel,
-      },
-      select: {
-        encar: {
-          select: {
-            id: true,
-            details: {
-              select: {
-                makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
-                grades: { select: { grade_english: true } },
-                fuel: { select: { fuel_english: true } },
-                form_year: true,
-                engine_displacement: true,
-                mileage: true,
-                origin_price: true,
-              },
-            },
-            photos: { select: { url: true } },
-            _count: { select: { car_info: true, owner: true } },
-          },
-        },
-      },
-    });
-    const vehcarOwner = vehicleAll.filter(
-      (veh) => veh.encar._count.owner === Number(changeOwner)
-    );
-    const vehcarNumer = vehcarOwner.filter(
-      (veh) => veh.encar._count.car_info === Number(changeNumber)
-    );
-    return {
-      vehicle: vehcarNumer.slice(
-        +pagenum * +takePageSize,
-        +pagenum * +takePageSize + +takePageSize
-      ),
-      totalPage: vehcarNumer.length,
-    };
-  } else if (Boolean(changeNumber)) {
-    const vehicleAll = await prisma.active_lots.findMany({
-      where: {
-        encar: {
-          details: {
-            makes: { make_short_name: makes },
-            model: { model_short_name: model },
-            grades: { grade_english: grades },
-            fuel: { fuel_english: fuels },
-            form_year: {
-              gte: currentMinYear,
-              lte: currentMaxYear,
-            },
-            origin_price: {
-              gte: currentMinPrice,
-              lte: currentMaxPrice,
-            },
-            engine_displacement: {
-              gte: currentMinEngine,
-              lte: currentMaxEngine,
-            },
-          },
-          accident: {
-            business: Number(buisness) === 2 ? true : false,
-            robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
-          },
-          accident_details: benefit,
-        },
-      },
-      orderBy: {
-        encar: sortLabel,
-      },
-      select: {
-        encar: {
-          select: {
-            id: true,
-            details: {
-              select: {
-                makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
-                grades: { select: { grade_english: true } },
-                fuel: { select: { fuel_english: true } },
-                form_year: true,
-                engine_displacement: true,
-                mileage: true,
-                origin_price: true,
-              },
-            },
-            photos: { select: { url: true } },
-            _count: { select: { car_info: true } },
-          },
-        },
-      },
-    });
-    const vehcarinfo = vehicleAll.filter(
-      (veh) => veh.encar._count.car_info === Number(changeNumber)
-    );
-    return {
-      vehicle: vehcarinfo.slice(
-        +pagenum * +takePageSize,
-        +pagenum * +takePageSize + +takePageSize
-      ),
-      totalPage: vehcarinfo.length,
-    };
-  } else if (Boolean(changeOwner)) {
-    const vehicleAll = await prisma.active_lots.findMany({
-      where: {
-        encar: {
-          details: {
-            makes: { make_short_name: makes },
-            model: { model_short_name: model },
-            grades: { grade_english: grades },
-            fuel: { fuel_english: fuels },
-            form_year: {
-              gte: currentMinYear,
-              lte: currentMaxYear,
-            },
-            origin_price: {
-              gte: currentMinPrice,
-              lte: currentMaxPrice,
-            },
-            engine_displacement: {
-              gte: currentMinEngine,
-              lte: currentMaxEngine,
-            },
-          },
-          accident: {
-            business: Number(buisness) === 2 ? true : false,
-            robber_count: Number(currentRobber) === 1 ? 0 : { gte: 1 },
-          },
-          accident_details: benefit,
-        },
-      },
-      orderBy: {
-        encar: sortLabel,
-      },
-      select: {
-        encar: {
-          select: {
-            id: true,
-            details: {
-              select: {
-                makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
-                grades: { select: { grade_english: true } },
-                fuel: { select: { fuel_english: true } },
-                form_year: true,
-                engine_displacement: true,
-                mileage: true,
-                origin_price: true,
-              },
-            },
-            photos: { select: { url: true } },
-            _count: { select: { owner: true } },
-          },
-        },
-      },
-    });
-    const vehOwner = vehicleAll.filter(
-      (veh) => veh.encar._count.owner === Number(changeOwner)
-    );
-    return {
-      vehicle: vehOwner.slice(
-        +pagenum * +takePageSize,
-        +pagenum * +takePageSize + +takePageSize
-      ),
-      totalPage: vehOwner.length,
-    };
-  }
-
-  return { vehicle, totalPage };
-};

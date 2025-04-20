@@ -18,6 +18,11 @@ interface ReturnPros {
   insuare: string | null;
   insuarePrice: string | null;
   sort: string | null;
+  privod: string | null;
+  transmission: string | null;
+  mileageMin: string | null;
+  mileageMax: string | null;
+  cities: string | null;
   setMakesType: (value: string | null) => void;
   setModelType: (value: string | null) => void;
   setGradesType: (value: string | null) => void;
@@ -34,7 +39,12 @@ interface ReturnPros {
   setChangeOwner: (value: string | null) => void;
   setInsuare: (value: string | null) => void;
   setInsuarePrice: (value: string | null) => void;
+  setPrivod: (value: string | null) => void;
   setSort: (value: string | null) => void;
+  setTransmission: (value: string | null) => void;
+  setMileageMin: (value: string | null) => void;
+  setMileageMax: (value: string | null) => void;
+  setCities: (value: string | null) => void;
 }
 export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
@@ -89,6 +99,21 @@ export const useFilters = (): ReturnPros => {
   const [sort, setSort] = useState(
     searchParams.has("sort") ? searchParams.get("sort") : null
   );
+  const [privod, setPrivod] = useState(
+    searchParams.has("privod") ? searchParams.get("privod") : null
+  );
+  const [transmission, setTransmission] = useState(
+    searchParams.has("transmission") ? searchParams.get("transmission") : null
+  );
+  const [mileageMin, setMileageMin] = useState(
+    searchParams.has("mileageMin") ? searchParams.get("mileageMin") : null
+  );
+  const [mileageMax, setMileageMax] = useState(
+    searchParams.has("mileageMax") ? searchParams.get("mileageMax") : null
+  );
+  const [cities, setCities] = useState(
+    searchParams.has("cities") ? searchParams.get("cities") : null
+  );
   return useMemo(
     () => ({
       makesType,
@@ -108,6 +133,11 @@ export const useFilters = (): ReturnPros => {
       insuare,
       insuarePrice,
       sort,
+      privod,
+      transmission,
+      mileageMin,
+      mileageMax,
+      cities,
       setMakesType,
       setModelType,
       setGradesType,
@@ -125,6 +155,11 @@ export const useFilters = (): ReturnPros => {
       setInsuare,
       setInsuarePrice,
       setSort,
+      setPrivod,
+      setTransmission,
+      setMileageMin,
+      setMileageMax,
+      setCities,
     }),
     [
       makesType,
@@ -144,6 +179,11 @@ export const useFilters = (): ReturnPros => {
       insuare,
       insuarePrice,
       sort,
+      privod,
+      transmission,
+      mileageMin,
+      mileageMax,
+      cities,
     ]
   );
 };
