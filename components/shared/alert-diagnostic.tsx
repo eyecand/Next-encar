@@ -1,3 +1,4 @@
+"use client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,6 +13,7 @@ import Image from "next/image";
 import DiagnosticFront from "../../public/map_inspect_front.webp";
 import DiagnosticBack from "../../public/map_inspect_back.png";
 import { AlertDiagnosticProps } from "@/app/vehicle/[id]/model";
+import { useEffect, useRef, useState } from "react";
 type list = {
   [key: string]: string;
 };
@@ -49,6 +51,33 @@ const icons = [
   },
 ];
 export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openDialog = () => {
+    setIsOpen(true);
+  };
+
+  const handleConfirm = () => {
+    console.log("Confirmed!");
+    setIsOpen(false); // Close the dialog after confirmation
+  };
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, setIsOpen]);
   const list = diagnostics?.diagnosis.filter(
     (item) => Number(item.diagnosis_result_id) === 2
   );
@@ -69,13 +98,16 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
     return listDetail[diagnosis_result_id];
   };
   return (
-    <AlertDialog>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild>
-        <Button className=" px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
+        <Button
+          onClick={openDialog}
+          className=" px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow"
+        >
           Отчет осмотра авто
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent ref={ref}>
         <AlertDialogHeader>
           <AlertDialogTitle>
             <div className="flex items-center justify-between">
@@ -142,7 +174,9 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
           </div>
         </div>
         <AlertDialogFooter>
-          <AlertDialogAction>Продолжить</AlertDialogAction>
+          <AlertDialogAction onClick={handleConfirm}>
+            Продолжить
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

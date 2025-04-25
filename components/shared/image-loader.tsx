@@ -35,14 +35,9 @@ export const ImageLoader = ({ imageUrl }: { imageUrl: string }) => {
             width={320}
             height={240}
           />
-          <div className="absolute items-center flex w-[40%] h-[7%] sm:w-[40%] sm:h-[20%]  bg-black rounded-b-lg rounded-s-lg bottom-[56%] sm:bottom-0 right-0 pl-1">
-            <Image
-              className="w-[30%] sm:w-[35%]"
-              src={SVG}
-              alt="#"
-              sizes="20"
-            />
-            <p className="text-white text-[12px] sm:text-[8px] md:text-[10px] md:ml-2 lg:text-sm">
+          <div className="absolute items-center gap-3 sm:gap-0 flex w-[40%] h-[20%]  bg-black rounded-b-lg rounded-s-lg bottom-0 right-0 pl-1">
+            <Image className="w-[35%]" src={SVG} alt="#" sizes="20" />
+            <p className="text-white text-[16px] sm:text-[8px] md:text-[10px] md:ml-2 lg:text-sm">
               Autofish
             </p>
           </div>

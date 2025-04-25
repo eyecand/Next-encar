@@ -61,10 +61,10 @@ export const useFilters = (): ReturnPros => {
     searchParams.has("fuels") ? searchParams.get("fuels") : null
   );
   const [yearsMin, setYearsMin] = useState(
-    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+    searchParams.has("yearsMin") ? searchParams.get("yearsMin") : null
   );
   const [yearsMax, setYearsMax] = useState(
-    searchParams.has("yearMin") ? searchParams.get("yearMin") : null
+    searchParams.has("yearsMax") ? searchParams.get("yearsMax") : null
   );
   const [priceMin, setPriceMin] = useState<string | null>(
     searchParams.has("priceMin") ? searchParams.get("priceMin") : null

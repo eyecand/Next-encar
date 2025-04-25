@@ -28,6 +28,8 @@ type DiagnosticsProps = {
 };
 
 export type VehicleIdProps = {
+  id: string;
+  advertisements: { price: number } | null;
   details: {
     model: {
       model_short_name: string | null;
@@ -43,12 +45,10 @@ export type VehicleIdProps = {
       color_english: string | null;
     };
     form_year: number;
-    origin_price: number | null;
     mileage: number;
     engine_displacement: number;
     transmission: { transmission_english: string | null };
   } | null;
-  _count: { owner: number };
   vehicle_plate_number: string | null;
   accident_details: AccidentDetailsProps[];
   accident: AccidentProps | null;
@@ -73,7 +73,6 @@ export type StatisticAlertDialogProps = {
       color_english: string | null;
     };
     form_year: number;
-    origin_price: number | null;
     mileage: number;
     engine_displacement: number;
     transmission: { transmission_english: string | null };

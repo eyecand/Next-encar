@@ -1,3 +1,4 @@
+"use client";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,6 +11,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { detectFuels } from "@/lib/detect-fuels";
 import { StatisticAlertDialogProps } from "@/app/vehicle/[id]/model";
+import { detectMake } from "./form-korea-cars/first-line/lib";
+import { useEffect, useRef, useState } from "react";
 
 export const StatisticAlertDialog = ({
   details,
@@ -17,14 +20,45 @@ export const StatisticAlertDialog = ({
   accident,
   accident_details,
 }: StatisticAlertDialogProps) => {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openDialog = () => {
+    setIsOpen(true);
+  };
+
+  const handleConfirm = () => {
+    console.log("Confirmed!");
+    setIsOpen(false); // Close the dialog after confirmation
+  };
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dialogRef.current &&
+        !dialogRef.current.contains(event.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isOpen, setIsOpen]);
   return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
+    <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
+      <AlertDialogTrigger onClick={openDialog} asChild>
         <Button className="px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative">
           отчет страховой компании
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+
+      <AlertDialogContent ref={dialogRef}>
         <AlertDialogHeader>
           <AlertDialogTitle>
             Отчёт страховой компании для авто {plate_number}
@@ -33,7 +67,7 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Производитель:
               <span className="text-base font-semibold text-black">
-                {details?.makes.make_short_name}
+                {detectMake(String(details?.makes.make_short_name))}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
@@ -45,7 +79,10 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Версия:
               <span className="text-base font-semibold text-black uppercase">
-                {details?.grades.grade_english}
+                {String(details?.grades.grade_english).replace(
+                  " China Manufacturer",
+                  ""
+                )}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
@@ -204,7 +241,9 @@ export const StatisticAlertDialog = ({
           </p>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogAction>Продолжить</AlertDialogAction>
+          <AlertDialogAction onClick={handleConfirm}>
+            Продолжить
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

@@ -23,7 +23,6 @@ export const PriceAll = ({
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
   const stateCity = useCityState((state) => state.cityState);
-  console.log("state", stateCity);
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span

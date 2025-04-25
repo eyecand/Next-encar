@@ -54,11 +54,16 @@ export const useYears = (): ReturnProps => {
 
     getYears();
   }, []);
-  years.map((item) => {
-    return optionYears.push({
-      value: String(item.form_year),
-      label: String(item.form_year),
+
+  years
+    .filter((item) => item.form_year >= 2020)
+    .reverse()
+    .map((item) => {
+      return optionYears.push({
+        value: String(item.form_year),
+        label: String(item.form_year),
+      });
     });
-  });
+
   return { optionYears, yearsLoading };
 };

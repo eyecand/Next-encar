@@ -84,6 +84,7 @@ model advertisements {
   advertisement_status_id    BigInt
   created_at                 DateTime @db.Timestamptz(6)
   updated_at                 DateTime @db.Timestamptz(6)
+   encar                    encar_vehicles@relation(fields: [vehicle_id],references: [id])
 }
 
 model car_info_changes {
@@ -188,6 +189,7 @@ model encar_vehicles {
   car_info              car_info_changes[]
   notjoined             not_joined_periods[]
   diagnostics           diagnostics?
+  advertisements        advertisements?
 }
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model insurance_certificates {

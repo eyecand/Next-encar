@@ -15,7 +15,7 @@ export const optionBenefit: Option[] = [
     label: "Все",
   },
   {
-    value: "1",
+    value: "3",
     label: "Нет",
   },
   {

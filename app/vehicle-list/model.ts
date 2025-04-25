@@ -2,6 +2,7 @@ export interface VehicleListProps {
   vehicle: {
     encar: {
       id: bigint;
+      advertisements: { price: number } | null;
       details: {
         makes: {
           make_short_name: string | null;
@@ -13,7 +14,6 @@ export interface VehicleListProps {
           grade_english: string | null;
         };
         form_year: number;
-        origin_price: number | null;
         mileage: number;
         engine_displacement: number;
         fuel: {

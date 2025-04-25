@@ -1,7 +1,7 @@
 import { prisma } from "@/prisma/prisma-client";
 
-const DEFAULT_MIN_YEARS = 2000;
-const DEFAULT_MAX_YEARS = 2025;
+const DEFAULT_MIN_YEARS = 2020;
+const DEFAULT_MAX_YEARS = new Date().getFullYear();
 const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 2000000000;
 const DEFAULT_MIN_ENGINE = 0;
@@ -41,8 +41,8 @@ export const findVehicleV2 = async (
   const currentMinMileage = Number(mileageMin) || DEFAULT_MIN_MILEAGE;
   const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
   let benefit = {};
-  if (insuarePrice === "1") {
-    benefit = { every: { insurance_benefit: { lte: 0 } } };
+  if (insuarePrice === "3") {
+    benefit = { none: { insurance_benefit: { gte: 1 } } };
   }
   if (insuarePrice === "2") {
     benefit = { some: { insurance_benefit: { gt: 2 } } };
@@ -112,11 +112,26 @@ export const findVehicleV2 = async (
       ],
     };
   }
-  console.log("privod", privod);
+  // const vehicles = await prisma.$queryRaw<any[]>(Prisma.sql`
+  //   SELECT ev.*
+  //   FROM encar_vehicles ev
+  //   LEFT JOIN accident_details ad ON ev.id = ad.vehicle_id
+  //   WHERE ad.vehicle_id IS NULL  -- No accident details
+  //      OR NOT EXISTS (
+  //         SELECT 1
+  //         FROM accident_details ad2
+  //         WHERE ad2.vehicle_id = ev.id
+  //           AND ad2.insurance_benefit > 0
+  //      );
+  // `);
+  // console.log("total", vehicles.length);
 
   const vehiclePromise = prisma.active_lots.findMany({
     where: {
       encar: {
+        advertisements: {
+          price: { gte: currentMinPrice, lte: currentMaxPrice },
+        },
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
@@ -125,10 +140,6 @@ export const findVehicleV2 = async (
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
-          },
-          origin_price: {
-            gte: currentMinPrice,
-            lte: currentMaxPrice,
           },
           engine_displacement: {
             gte: currentMinEngine,
@@ -151,6 +162,7 @@ export const findVehicleV2 = async (
       encar: {
         select: {
           id: true,
+          advertisements: { select: { price: true } },
           details: {
             select: {
               makes: { select: { make_short_name: true } },
@@ -160,7 +172,6 @@ export const findVehicleV2 = async (
               form_year: true,
               engine_displacement: true,
               mileage: true,
-              origin_price: true,
             },
           },
           photos: { select: { url: true } },
@@ -175,6 +186,9 @@ export const findVehicleV2 = async (
   const totalPagePromise = prisma.active_lots.count({
     where: {
       encar: {
+        advertisements: {
+          price: { gte: currentMinPrice, lte: currentMaxPrice },
+        },
         details: {
           makes: {
             make_short_name: makes,
@@ -245,6 +259,7 @@ export interface ReturnProps {
   vehicle: {
     encar: {
       id: bigint;
+      advertisements: { price: number } | null;
       details: {
         makes: {
           make_short_name: string | null;
@@ -256,7 +271,6 @@ export interface ReturnProps {
           grade_english: string | null;
         };
         form_year: number;
-        origin_price: number | null;
         mileage: number;
         engine_displacement: number;
         fuel: {

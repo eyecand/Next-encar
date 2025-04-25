@@ -7,13 +7,14 @@ import { ImageLoader } from "../../../components/shared/image-loader";
 
 import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
+import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 
 export const Mobile = ({ vehicle, className }: InterfaceProps) => {
   return (
     <div
       className={cn(
         className,
-        "fflex-col items-center sm:flex-row p-4  pb-0 sm:flex-wrap"
+        "flex-col items-center sm:flex-row p-4  pb-0 sm:flex-wrap"
       )}
     >
       {vehicle.length > 0 &&
@@ -30,7 +31,7 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                   className={`bg-white border-light-gray rounded-xl overflow-hidden flex flex-col relative
                 min-h-[300px] sm:transition-all border-[2.5px] sm:hover:shadow-xl sm:hover:-translate-y-2 shadow-md`}
                 >
-                  <div className="w-full flex">
+                  <div className="w-full flex relative">
                     {item.encar.photos.length === 0 ? (
                       <Image
                         className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
@@ -47,7 +48,9 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                   <div className="p-1 sm:p-2 md:p-3 lg:p-4 grow flex flex-col">
                     <div className="items-center justify-between min-h-[81px] flex gap-1 md:gap-3 py-1 md:py-3 text-gray-900 border-b border-gray-200 grow">
                       <span className="font-bold text-xs sm:text-base lg:text-lg font-gilroy">
-                        {item.encar.details.makes.make_short_name}{" "}
+                        {detectMake(
+                          String(item.encar.details.makes.make_short_name)
+                        )}{" "}
                         {item.encar.details.model.model_short_name}
                       </span>
                     </div>
@@ -92,7 +95,7 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                   </div>
                   <div className="flex justify-between items-center text-black text-wrap text-[14px] whitespace-nowrap font-semibold px-2 pb-5">
                     <PriceAll
-                      price_origion={item.encar.details.origin_price}
+                      price_origion={Number(item.encar.advertisements?.price)}
                       years={item.encar.details.form_year}
                       fuel={item.encar.details.fuel.fuel_english}
                       engine={item.encar.details.engine_displacement}
@@ -106,7 +109,7 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                         {Intl.NumberFormat("ru", {
                           notation: "compact",
                         }).format(
-                          Number(item.encar.details.origin_price) * 10000
+                          Number(item.encar.advertisements?.price) * 10000
                         )}{" "}
                         ₩
                       </span>

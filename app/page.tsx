@@ -26,6 +26,7 @@ export default async function Home({
       <h1 className="text-2xl md:text-4xl lg:text-[50px] font-bold px-5 mt-28 md:mt-32 lg:mt-40">
         Autofish - Продажа автомобилей
       </h1>
+
       <FormKoreaCars />
       {/* <FormFilters totalTest={totalPage} /> */}
       {/* Список товаров */}

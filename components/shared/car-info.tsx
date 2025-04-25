@@ -3,9 +3,8 @@ import {
   AlertDiagnostic,
   BlockItem,
   StatisticAlertDialog,
-  StatisticCar,
 } from "@/components/shared";
-
+import { IoCopyOutline } from "react-icons/io5";
 import { detectFuels } from "@/lib/detect-fuels";
 import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { useCBRStore } from "@/store/cbr";
@@ -13,15 +12,29 @@ import { useEURStore } from "@/store/eur";
 import { Button } from "../ui/button";
 import { VehicleIdProps } from "@/app/vehicle/[id]/model";
 import { detectTransmission } from "./form-korea-cars/second-line/lib";
-
+import { detectMake } from "./form-korea-cars/first-line/lib";
+import { useState } from "react";
+import { IoIosCheckmark } from "react-icons/io";
 export const CarInfo = ({
   details,
-  _count,
   accident,
   accident_details,
   diagnostics,
   vehicle_plate_number,
+  advertisements,
+  id,
 }: VehicleIdProps) => {
+  const copyLink = `https://autofish.ru/vehicle/${id}`;
+  const [isCopy, setIsCopy] = useState(false);
+  const copyText = async () => {
+    try {
+      setIsCopy(true);
+      await navigator.clipboard.writeText(copyLink);
+      setTimeout(() => setIsCopy(false), 2000);
+    } catch (error) {
+      console.error(`Failed to copy: ${error}`);
+    }
+  };
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);
@@ -32,29 +45,52 @@ export const CarInfo = ({
     : "Gasoline";
   return (
     <div className="w-full md:w-1/2">
-      <div>
-        <h2 className="font-gilroy font-bold text-2xl lg:text-3xl mb-4 text-zinc-800">
-          {details?.makes.make_short_name} {details?.model.model_short_name}{" "}
-          {details?.form_year},{" "}
-          {(Math.round(Number(details?.engine_displacement)) / 1000).toFixed(1)}{" "}
-          л. из Кореи
-        </h2>
-        <div className="flex items-center">
-          {details?.grades.grade_english}{" "}
-          {totalAccident ? (
-            <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
-              был в аварии
-            </span>
-          ) : (
-            ""
-          )}
+      <div className="flex">
+        <div className="w-[90%]">
+          <h2 className="font-gilroy font-bold flex text-2xl lg:text-3xl mb-4 text-zinc-800">
+            {detectMake(String(details?.makes.make_short_name))}{" "}
+            {details?.model.model_short_name} {details?.form_year},{" "}
+            {(Math.round(Number(details?.engine_displacement)) / 1000).toFixed(
+              1
+            )}{" "}
+            л. из Кореи
+          </h2>{" "}
+          <div className="flex items-center">
+            {details?.grades.grade_english}{" "}
+            {totalAccident ? (
+              <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
+                был в аварии
+              </span>
+            ) : (
+              ""
+            )}
+          </div>
         </div>
+        <button
+          disabled={isCopy}
+          className="ml-2 w-[10%] flex pt-0 mt-[10px] items-start"
+        >
+          {" "}
+          {isCopy ? (
+            <IoIosCheckmark size={25} />
+          ) : (
+            <IoCopyOutline
+              className="cursor-pointer hover:text-gray-500"
+              onClick={copyText}
+              size={20}
+            />
+          )}
+        </button>
       </div>
-
       <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <div className="space-y-4 w-full lg:w-1/2">
           <BlockItem title="Год" value={details?.form_year} />
-          <BlockItem title="Пробег, км" value={details?.mileage} />
+          <BlockItem
+            title="Пробег, км"
+            value={new Intl.NumberFormat("ru-RU")
+              .format(Number(details?.mileage))
+              .replace(",", ".")}
+          />
           <BlockItem
             title="Трансмиссия"
             value={detectTransmission(
@@ -70,15 +106,8 @@ export const CarInfo = ({
           />
         </div>
       </div>
-      <StatisticCar
-        flood={accident?.flood_total_loss_count}
-        robber={accident?.robber_count}
-        pastAccident={accident?.other_accident_count}
-        presentAccident={accident?.current_accident_count}
-        countChanges={_count.owner}
-      />
 
-      <div className="flex flex-col lg:flex-row gap-4">
+      <div className="flex flex-col lg:flex-row gap-4 mt-7">
         <StatisticAlertDialog
           plate_number={vehicle_plate_number}
           accident_details={accident_details}
@@ -115,7 +144,7 @@ export const CarInfo = ({
               <span>Стоимость в Корее</span>
               <span className="text-lg font-semibold text-zinc-700">
                 {new Intl.NumberFormat("ru-RU")
-                  .format(Number(details?.origin_price) * 10000)
+                  .format(Number(advertisements?.price) * 10000)
                   .replace(",", ".")}{" "}
                 ₩
               </span>
@@ -127,7 +156,7 @@ export const CarInfo = ({
                 {new Intl.NumberFormat("ru-RU")
                   .format(
                     FromKRWtoRUB(
-                      Number(details?.origin_price) * 10000,
+                      Number(advertisements?.price) * 10000,
                       cbr,
                       EUR,
                       Number(details?.engine_displacement),
@@ -146,9 +175,13 @@ export const CarInfo = ({
           Владивосток. Расчёт может быть некорректным. <br /> Обратитесь к нам,
           оставив заявку, чтобы получить консультацию.
         </p>
-        <button className="w-full p-4 bg-blue-600 text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-blue-600/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
-          оставить заявку
-        </button>
+        <a
+          href={`https://t.me/Avademus?text=Просматривал данный авто, ${copyLink}`}
+        >
+          <button className="w-full p-4 bg-blue-600 text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-blue-600/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
+            оставить заявку
+          </button>
+        </a>
       </div>
       {/* <PriceInfo priceEn={data.average_cost_japan} priceRub={data.full_duty} /> */}
     </div>

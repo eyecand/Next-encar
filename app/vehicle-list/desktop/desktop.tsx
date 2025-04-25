@@ -7,6 +7,7 @@ import { PriceAll } from "@/components/shared/price-on-mian-windows";
 import { ImageLoader } from "../../../components/shared/image-loader";
 import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
+import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 
 export const Desktop = ({ vehicle, className }: InterfaceProps) => {
   return (
@@ -38,7 +39,9 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                   <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
                     <div className="title">
                       <h3 className="inline text-[18px] leading-[25px]">
-                        {item.encar.details.makes.make_short_name}{" "}
+                        {detectMake(
+                          String(item.encar.details.makes.make_short_name)
+                        )}{" "}
                         {item.encar.details.model.model_short_name},{" "}
                         {item.encar.details.form_year}
                       </h3>
@@ -71,16 +74,11 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         {item.encar.details.mileage} км
                       </span>
                     </div>
-                    <div className="button flex ">
-                      <div className="inline-flex bg-gray-300/50 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-2 py-[10px] rounded-xl mt-1">
-                        без пробега по РФ
-                      </div>
-                    </div>
                   </div>
                   <div className="price flex flex-shrink-0 flex-grow-0 w-[260px]">
                     <div className="flex-shrink-0 flex-grow-0 basis-full">
                       <PriceAll
-                        price_origion={item.encar.details.origin_price}
+                        price_origion={Number(item.encar.advertisements?.price)}
                         years={item.encar.details.form_year}
                         fuel={item.encar.details.fuel.fuel_english}
                         engine={item.encar.details.engine_displacement}
@@ -93,8 +91,9 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         <span className="font-bold text-lg">
                           {Intl.NumberFormat("ru", {
                             notation: "compact",
+                            maximumFractionDigits: 2,
                           }).format(
-                            Number(item.encar.details.origin_price) * 10000
+                            Number(item.encar.advertisements?.price) * 10000
                           )}{" "}
                           ₩
                         </span>

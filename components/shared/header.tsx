@@ -26,7 +26,7 @@ interface ValuteData {
   Previous: number;
 }
 const CBR_DATA_KEY = "cbrData";
-const CACHE_EXPIRATION_TIME = 60 * 60 * 1000; // 1 час
+const CACHE_EXPIRATION_TIME = 60 * 30 * 1000; // 1 час
 // https://next-encar-git-main-eyecands-projects.vercel.app/
 export const Header = () => {
   const setCBRAll = useCBRStore((state) => state.setCBRStore);
@@ -64,7 +64,7 @@ export const Header = () => {
 
   useEffect(() => {
     if (cbr) {
-      setCBRAll(cbr?.Valute.KRW.Value);
+      setCBRAll(Number((cbr?.Valute.KRW.Value * 1.075).toFixed(2)));
       setCurrentEUR(cbr?.Valute.EUR.Value);
     }
   });
@@ -76,7 +76,7 @@ export const Header = () => {
           <div>
             <a
               className="flex items-center"
-              href="http://185.139.68.11/"
+              href="https://autofish.ru/"
               onClick={() => {
                 window.scrollTo({
                   top: 0,
@@ -94,11 +94,13 @@ export const Header = () => {
         </div>
 
         <div className="hidden md:flex  items-center ">
-          <span className="text-white">KRW/RUB: {cbr?.Valute.KRW.Value}</span>
+          <span className="text-white">
+            KRW/RUB: {(Number(cbr?.Valute.KRW.Value) * 1.075).toFixed(2)}
+          </span>
         </div>
         <div className="hidden md:flex items-center md:mr-16 lg:mr-32">
           {/* navitems */}
-          <a href="http://185.139.68.11/">
+          <a href="https://t.me/Avademus">
             <button className="text-white text-[15px] uppercase bg-rose-500/90 px-4 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
               оставить заявку
             </button>

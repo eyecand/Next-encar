@@ -4,6 +4,7 @@ export const findVehicleId = async (id: string) => {
   const vahicleId = await prisma.encar_vehicles.findFirst({
     where: { id: Number(id) },
     include: {
+      advertisements: { select: { price: true } },
       diagnostics: {
         select: {
           actual_diagnostic_date: true,
@@ -46,8 +47,6 @@ export const findVehicleId = async (id: string) => {
           loan: true,
         },
       },
-      // количество владельцев
-      _count: { select: { owner: { where: { vehicle_id: +id } } } },
 
       details: {
         select: {
@@ -55,7 +54,6 @@ export const findVehicleId = async (id: string) => {
           form_year: true,
           engine_displacement: true,
           mileage: true,
-          origin_price: true,
           fuel: {
             select: {
               fuel_english: true,
