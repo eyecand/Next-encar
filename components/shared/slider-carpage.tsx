@@ -16,6 +16,7 @@ import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import Image from "next/image";
 import NotImage from "../../public/12.png";
+import Logo from "../../public/Logo_jpeg.jpg";
 type SliderProps = {
   imgSrc: {
     url: string;
@@ -34,6 +35,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
   };
   return (
     <div className="custom-swiper md:w-1/2 pr-0 pb-6 md:pr-6 md:pb-0">
+      {/* <Image src="/Logo_jpeg.jpg" width={200} height={100} alt="#" /> */}
       {imgSrc.length > 0 ? (
         <>
           {" "}
@@ -54,12 +56,19 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
                 ].style.backgroundImage = `url(${imgSrc[i].url})`;
               }
             }}
-            className=" w-full md:w-full max-h-[275px] sm:max-h-[325px]  md:max-h-[350px] lg:max-h-[400px]"
+            className="relative w-full md:w-full max-h-[275px] sm:max-h-[325px]  md:max-h-[350px] lg:max-h-[400px]"
           >
             {imgSrc.map((element: { url: string }, i: number) => {
               return (
-                <SwiperSlide key={i} onClick={() => handleLightBox(i)}>
+                <SwiperSlide
+                  className="relative"
+                  key={i}
+                  onClick={() => handleLightBox(i)}
+                >
                   <img loading="lazy" src={element.url} />
+                  <div className="absolute w-[38%] h-[20%] bottom-[5%] right-0 rounded-b-lg rounded-s-lg">
+                    <Image className="w-[35%]" src={Logo} alt="#" sizes="20" />
+                  </div>
                 </SwiperSlide>
               );
             })}

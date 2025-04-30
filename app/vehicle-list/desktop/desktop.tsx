@@ -71,7 +71,10 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         ,{" "}
                       </span>
                       <span className="whitespace-nowrap">
-                        {item.encar.details.mileage} км
+                        {new Intl.NumberFormat("ru-RU")
+                          .format(Number(item.encar.details.mileage))
+                          .replace(",", ".")}{" "}
+                        км
                       </span>
                     </div>
                   </div>

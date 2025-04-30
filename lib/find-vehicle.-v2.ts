@@ -190,23 +190,13 @@ export const findVehicleV2 = async (
           price: { gte: currentMinPrice, lte: currentMaxPrice },
         },
         details: {
-          makes: {
-            make_short_name: makes,
-          },
-          model: {
-            model_short_name: model,
-          },
-          grades: {
-            grade_english: { contains: privod },
-          },
+          makes: { make_short_name: makes },
+          model: { model_short_name: model },
+          grades: { grade_english: { contains: privod } },
           fuel: fuel,
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
-          },
-          origin_price: {
-            gte: currentMinPrice,
-            lte: currentMaxPrice,
           },
           engine_displacement: {
             gte: currentMinEngine,
@@ -223,6 +213,7 @@ export const findVehicleV2 = async (
       },
     },
   });
+
   const [vehicle, totalPage] = await Promise.all([
     vehiclePromise,
     totalPagePromise,

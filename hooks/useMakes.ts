@@ -7,6 +7,7 @@ interface ReturnProps {
 }
 export const useMakes = (): ReturnProps => {
   const [makes, setMakes] = React.useState<lib_makes[]>([]);
+  let makesSet = new Set();
   React.useEffect(() => {
     async function getMakes() {
       try {

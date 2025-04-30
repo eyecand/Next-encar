@@ -22,13 +22,14 @@ type DiagnosticsProps = {
     diagnosis_code_id: number;
     diagnosis_result_id: number | null;
     comments: {
-      comment_english: string | null;
+      comment_russian: string | null;
     } | null;
   }[];
 };
 
 export type VehicleIdProps = {
   id: string;
+  auctionId: number;
   advertisements: { price: number } | null;
   details: {
     model: {

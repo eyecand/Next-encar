@@ -15,6 +15,7 @@ import { detectTransmission } from "./form-korea-cars/second-line/lib";
 import { detectMake } from "./form-korea-cars/first-line/lib";
 import { useState } from "react";
 import { IoIosCheckmark } from "react-icons/io";
+import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
 export const CarInfo = ({
   details,
   accident,
@@ -23,6 +24,7 @@ export const CarInfo = ({
   vehicle_plate_number,
   advertisements,
   id,
+  auctionId,
 }: VehicleIdProps) => {
   const copyLink = `https://autofish.ru/vehicle/${id}`;
   const [isCopy, setIsCopy] = useState(false);
@@ -43,17 +45,20 @@ export const CarInfo = ({
   const realFuel = details?.fuel.fuel_english
     ? details?.fuel.fuel_english
     : "Gasoline";
+
   return (
     <div className="w-full md:w-1/2">
       <div className="flex">
         <div className="w-[90%]">
           <h2 className="font-gilroy font-bold flex text-2xl lg:text-3xl mb-4 text-zinc-800">
             {detectMake(String(details?.makes.make_short_name))}{" "}
-            {details?.model.model_short_name} {details?.form_year},{" "}
-            {(Math.round(Number(details?.engine_displacement)) / 1000).toFixed(
-              1
-            )}{" "}
-            л. из Кореи
+            {details?.model.model_short_name} {details?.form_year}
+            {realFuel === "Electricity"
+              ? " "
+              : `, ${(
+                  Math.round(Number(details?.engine_displacement)) / 1000
+                ).toFixed(1)} л. `}
+            из Кореи
           </h2>{" "}
           <div className="flex items-center">
             {details?.grades.grade_english}{" "}
@@ -106,7 +111,18 @@ export const CarInfo = ({
           />
         </div>
       </div>
-
+      {/* Ссылка на оригинальное обьявление */}
+      <div className="group relative w-full grow mt-7">
+        <a
+          target="_blank"
+          href={`https://fem.encar.com/cars/detail/${String(auctionId)}`}
+        >
+          {" "}
+          <Button className=" px-6 py-6 w-full   bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
+            Перейти к объявлению
+          </Button>
+        </a>
+      </div>
       <div className="flex flex-col lg:flex-row gap-4 mt-7">
         <StatisticAlertDialog
           plate_number={vehicle_plate_number}
@@ -170,7 +186,15 @@ export const CarInfo = ({
             </div>
           </div>
         </div>
-        <p className="text-sm text-zinc-600 mt-8 mb-4">
+        <CalculationAlert
+          engine={Number(details?.engine_displacement)}
+          fuel={realFuel}
+          priceEn={Number(advertisements?.price) * 10000}
+          year={Number(details?.form_year)}
+          EUR={EUR}
+          KRW={cbr}
+        />
+        <p className="text-sm text-zinc-600 mt-6 mb-6">
           Стоимость является ориентировочной, включая все расходы в г.
           Владивосток. Расчёт может быть некорректным. <br /> Обратитесь к нам,
           оставив заявку, чтобы получить консультацию.

@@ -14,7 +14,7 @@ export const findVehicleId = async (id: string) => {
               diagnosis_result_id: true,
               comments: {
                 select: {
-                  comment_english: true,
+                  comment_russian: true,
                 },
               },
             },

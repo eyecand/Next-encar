@@ -60,7 +60,6 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
   };
 
   const handleConfirm = () => {
-    console.log("Confirmed!");
     setIsOpen(false); // Close the dialog after confirmation
   };
   useEffect(() => {
@@ -167,8 +166,8 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
           </h4>
           <div className="flex flex-col">
             {commentList?.map((item) => (
-              <span className="mb-3" key={item.comments?.comment_english}>
-                - {item.comments?.comment_english}
+              <span className="mb-3" key={item.comments?.comment_russian}>
+                - {item.comments?.comment_russian}
               </span>
             ))}
           </div>

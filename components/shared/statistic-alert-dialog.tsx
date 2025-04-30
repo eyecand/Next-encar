@@ -29,7 +29,6 @@ export const StatisticAlertDialog = ({
   };
 
   const handleConfirm = () => {
-    console.log("Confirmed!");
     setIsOpen(false); // Close the dialog after confirmation
   };
   useEffect(() => {

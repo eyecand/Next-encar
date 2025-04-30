@@ -88,7 +88,10 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                       <span className="text-gray-500">Пробег:</span>
                       <div className="flex items-center space-x-2">
                         <span className="">
-                          {item.encar.details.mileage} км
+                          {new Intl.NumberFormat("ru-RU")
+                            .format(Number(item.encar.details.mileage))
+                            .replace(",", ".")}{" "}
+                          км
                         </span>
                       </div>
                     </div>

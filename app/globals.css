@@ -109,67 +109,18 @@
 }
 
 /* ///////////////////// */
-.accordion {
-  width: 100%;
-}
 
-.accordion-item {
-  margin-bottom: 5px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column-reverse; /* Изменено для расположения контента сверху */
-}
-
-.accordion-header {
-  padding: 10px;
-  background-color: #f0f0f0;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.accordion-header.active {
-  background-color: #e1e1e1;
-}
-
-.accordion-icon {
-  font-size: 1.2rem;
-  font-weight: bold;
-  transition: transform 0.3s ease-in-out;
-}
-
-.accordion-content {
-  padding: 10px;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease-in-out;
-}
-
-.accordion-content.active {
-  max-height: 1000px;
-}
-.subtitle-page::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -21px;
-  width: 100%;
-  height: 2px;
-  background-color: black;
-}
 .card-car::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -25%;
+  bottom: -20%;
   width: 100%;
   height: 2px;
   background-color: rgb(212, 209, 209);
 }
 /*----------------------------------------*/
+
 /*------------SWIPER---------------*/
 .custom-swiper .swiper .swiper-wrapper .swiper-slide img {
   width: 100%;
@@ -177,8 +128,7 @@
   object-position: center;
 }
 /*-----PAGINATION-----*/
-.my-custom-pagination-div {
-}
+
 .my-custom-pagination-div .swiper-pagination-bullet {
   border-radius: 0;
   width: 100%;
@@ -198,6 +148,20 @@
 .my-custom-pagination-div .swiper-pagination-bullet {
   opacity: 1;
 }
+.swiper-pagination-bullet {
+  position: relative;
+}
+.swiper-pagination-bullet::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 36%;
+  height: 23%;
+  right: 0;
+  background-image: url("/Logo_jpeg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
 .my-custom-pagination-div .swiper-pagination-bullet-active {
   opacity: 0.3;
 }
@@ -216,13 +180,17 @@
   border-radius: 50%;
   opacity: 0.5;
 }
+
+.swiper-pagination-bullet {
+  position: relative;
+}
 @media (max-width: 768px) {
   .custom-swiper .swiper-button-next,
   .custom-swiper .swiper-button-prev {
     display: none;
   }
 }
-
+/* Vehical-card  */
 @media (max-width: 640px) {
   .Desktop {
     display: none;
@@ -238,4 +206,161 @@
   .isMobile {
     display: none;
   }
+}
+/* swiper bullet - autofish block */
+@media (max-width: 320px) {
+  .swiper-pagination-bullet::after {
+    width: 30%;
+    height: 20%;
+    bottom: -4px;
+  }
+}
+@media (max-width: 345px) {
+  .swiper-pagination-bullet::after {
+    bottom: -5px;
+  }
+}
+@media (max-width: 415px) {
+  .swiper-pagination-bullet::after {
+    bottom: -4px;
+  }
+}
+@media (max-width: 416px) {
+  .swiper-pagination-bullet::after {
+    width: 100%;
+    height: 100%;
+  }
+}
+@media (max-width: 499px) {
+  .swiper-pagination-bullet::after {
+    width: 52%;
+    height: 26%;
+  }
+}
+@media (min-width: 670px) {
+  .swiper-pagination-bullet::after {
+    width: 40%;
+    height: 40%;
+    bottom: -6px;
+  }
+}
+@media (min-width: 768px) {
+  .swiper-pagination-bullet::after {
+    width: 50%;
+    height: 30%;
+    bottom: -4px;
+  }
+}
+@media (min-width: 1024px) {
+  .swiper-pagination-bullet::after {
+    bottom: -2px;
+  }
+}
+@media (min-width: 1024px) {
+  .swiper-pagination-bullet::after {
+    bottom: 0px;
+  }
+}
+/* //////////////////////////////////// */
+.yarl__slide_current::after {
+  content: "";
+  position: absolute;
+  bottom: 20%;
+  width: 31%;
+  height: 20%;
+  right: 9%;
+  background-image: url("/Logo_jpeg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+@media (min-width: 320px) {
+  .yarl__slide_current::after {
+    width: 30%;
+    height: 25%;
+    bottom: 20%;
+    right: 3%;
+  }
+}
+@media (max-width: 560px) {
+  .yarl__slide_current::after {
+    width: 30%;
+    height: 25%;
+    bottom: 15% !important;
+    right: 3% !important;
+  }
+}
+@media (max-width: 800px) {
+  .yarl__slide_current::after {
+    width: 35%;
+    height: 25%;
+    bottom: 12%;
+    right: 4%;
+  }
+}
+@media (min-width: 800px) {
+  .yarl__slide_current::after {
+    width: 30%;
+    height: 25%;
+    bottom: 13%;
+    right: 10%;
+  }
+}
+@media (min-width: 900px) {
+  .yarl__slide_current::after {
+    width: 30%;
+    height: 25%;
+    bottom: 15%;
+    right: 14%;
+  }
+}
+@media (min-width: 1000px) {
+  .yarl__slide_current::after {
+    width: 25%;
+    height: 25%;
+    bottom: 15%;
+    right: 18%;
+  }
+}
+@media (min-width: 1100px) {
+  .yarl__slide_current::after {
+    width: 23%;
+    height: 20%;
+    bottom: 20%;
+    right: 21%;
+  }
+}
+@media (min-width: 1200px) {
+  .yarl__slide_current::after {
+    right: 23%;
+    bottom: 18%;
+  }
+}
+@media (min-width: 1300px) {
+  .yarl__slide_current::after {
+    bottom: 22%;
+    right: 25%;
+  }
+}
+@media (min-width: 1400px) {
+  .yarl__slide_current::after {
+    width: 20%;
+    bottom: 21%;
+    right: 27%;
+  }
+}
+@media (min-width: 1500px) {
+  .yarl__slide_current::after {
+    bottom: 22%;
+  }
+}
+.yarl__thumbnails_thumbnail::after {
+  content: "";
+  position: absolute;
+  bottom: 7%;
+  width: 40%;
+  height: 25%;
+  right: 3%;
+  background-image: url("/Logo_jpeg.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
 }

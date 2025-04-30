@@ -17,7 +17,7 @@ export default async function CarPage({
     return notFound();
   }
   const shareUrl = `https://autofish.ru/vehicle/${id}`;
-  const shareTitle = "Добый день!";
+  const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
 
   return (
@@ -40,6 +40,7 @@ export default async function CarPage({
 
           <CarInfo
             id={id}
+            auctionId={vehicleId.vehicle_id_on_auction}
             advertisements={vehicleId.advertisements}
             details={vehicleId.details}
             accident={vehicleId.accident}

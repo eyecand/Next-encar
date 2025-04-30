@@ -22,9 +22,15 @@ export async function GET() {
   //   take: 100,
   // });
 
-  const first = await prisma.active_lots.findMany({
-    where: { encar: { details: { form_year: 2320 } } },
-    select: { encar: { select: { details: { select: { form_year: true } } } } },
+  const first = await prisma.active_lots.count({
+    where: {
+      encar: {
+        details: {
+          form_year: { gte: 2020, lte: 2025 },
+          makes: { make_short_name: "Others" },
+        },
+      },
+    },
   });
 
   return NextResponse.json(first);
