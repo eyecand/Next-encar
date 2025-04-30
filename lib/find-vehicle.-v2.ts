@@ -42,7 +42,7 @@ export const findVehicleV2 = async (
   const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
   let benefit = {};
   if (insuarePrice === "3") {
-    benefit = { none: { insurance_benefit: { gte: 1 } } };
+    benefit = { some: { insurance_benefit: { not: { gte: 10000 } } } };
   }
   if (insuarePrice === "2") {
     benefit = { some: { insurance_benefit: { gt: 2 } } };
@@ -186,14 +186,7 @@ export const findVehicleV2 = async (
   const totalPagePromise = prisma.active_lots.count({
     where: {
       encar: {
-        advertisements: {
-          price: { gte: currentMinPrice, lte: currentMaxPrice },
-        },
         details: {
-          makes: { make_short_name: makes },
-          model: { model_short_name: model },
-          grades: { grade_english: { contains: privod } },
-          fuel: fuel,
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
@@ -206,9 +199,7 @@ export const findVehicleV2 = async (
             gte: currentMinMileage,
             lte: currentMaxMileage,
           },
-          transmission: tr,
         },
-
         accident_details: benefit,
       },
     },

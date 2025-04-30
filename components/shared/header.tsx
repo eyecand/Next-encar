@@ -64,7 +64,7 @@ export const Header = () => {
 
   useEffect(() => {
     if (cbr) {
-      setCBRAll(Number((cbr?.Valute.KRW.Value * 1.075).toFixed(2)));
+      setCBRAll(Number((cbr?.Valute.KRW.Value).toFixed(2)));
       setCurrentEUR(cbr?.Valute.EUR.Value);
     }
   });
@@ -95,7 +95,7 @@ export const Header = () => {
 
         <div className="hidden md:flex  items-center ">
           <span className="text-white">
-            KRW/RUB: {(Number(cbr?.Valute.KRW.Value) * 1.075).toFixed(2)}
+            KRW/RUB: {Number(cbr?.Valute.KRW.Value).toFixed(2)}
           </span>
         </div>
         <div className="hidden md:flex items-center md:mr-16 lg:mr-32">

@@ -61,7 +61,10 @@ export const CarInfo = ({
             из Кореи
           </h2>{" "}
           <div className="flex items-center">
-            {details?.grades.grade_english}{" "}
+            {String(details?.grades.grade_english).replace(
+              " China Manufacturer",
+              ""
+            )}{" "}
             {totalAccident ? (
               <span className="bg-rose-50 border-rose-100  text-rose-600 ml-4 px-3 py-1 rounded-full">
                 был в аварии

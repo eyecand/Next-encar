@@ -46,7 +46,9 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         {item.encar.details.form_year}
                       </h3>
                       <div className="text-[13px] leading-[20px] mt-1 text-gray-400">
-                        {item.encar.details.grades.grade_english}
+                        {String(
+                          item.encar.details.grades.grade_english
+                        ).replace(" China Manufacturer", "")}
                       </div>
                     </div>
                     <div className="middle mt-1 text-[15px] leading-6">

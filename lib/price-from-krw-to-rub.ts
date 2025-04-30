@@ -63,7 +63,7 @@ export function FromKRWtoRUB(
             2100 * KRW;
         }
       }
-    } else if (differentYear >= 3 && differentYear < 5) {
+    } else if (differentYear >= 3 && differentYear <= 5) {
       if (engine <= 1000) {
         result =
           origin_price * 0.001 * KRW +
@@ -107,7 +107,7 @@ export function FromKRWtoRUB(
           100000 +
           2100 * KRW;
       }
-    } else if (differentYear >= 5) {
+    } else if (differentYear > 5) {
       if (engine <= 1000) {
         result =
           origin_price * 0.001 * KRW +

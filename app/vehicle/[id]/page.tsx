@@ -19,7 +19,6 @@ export default async function CarPage({
   const shareUrl = `https://autofish.ru/vehicle/${id}`;
   const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
-
   return (
     <div className="mx-auto px-5 max-w-[1280px] mt-24">
       <div className=" py-5 flex items-baseline">

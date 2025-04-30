@@ -61,7 +61,9 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                           {item.encar.details.form_year}
                         </span>
                         <span className="whitespace-nowrap">
-                          {item.encar.details.grades.grade_english}
+                          {String(
+                            item.encar.details.grades.grade_english
+                          ).replace(" China Manufacturer", "")}
                         </span>
                       </div>
                     </div>

@@ -10,6 +10,7 @@ import {
   Fullscreen,
   Thumbnails,
   Counter,
+  Zoom,
 } from "yet-another-react-lightbox/plugins";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/counter.css";
@@ -25,6 +26,7 @@ type SliderProps = {
 export const SliderCarPage = ({ imgSrc }: SliderProps) => {
   const [open, setOpen] = useState(false);
   const [index, setIndex] = useState(0);
+
   const allImg = imgSrc.map((item) => {
     return { src: item.url };
   });
@@ -73,14 +75,20 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
               );
             })}
           </Swiper>
-          <Lightbox
-            plugins={[Fullscreen, Counter, Thumbnails]}
-            open={open}
-            slides={allImg}
-            close={() => setOpen(false)}
-            index={index}
-            on={{ view: ({ index: currentIndex }) => setIndex(currentIndex) }}
-          />
+          <>
+            <Lightbox
+              plugins={[Fullscreen, Counter, Thumbnails, Zoom]}
+              open={open}
+              slides={allImg}
+              close={() => setOpen(false)}
+              index={index}
+              animation={{ zoom: 500 }}
+              zoom={{
+                maxZoomPixelRatio: 10,
+              }}
+              on={{ view: ({ index: currentIndex }) => setIndex(currentIndex) }}
+            />
+          </>
           <div className="my-custom-pagination-div mt-2 grid grid-cols-6 gap-1"></div>
         </>
       ) : (
