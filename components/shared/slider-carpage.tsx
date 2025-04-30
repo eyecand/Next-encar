@@ -79,6 +79,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
             <Lightbox
               plugins={[Fullscreen, Counter, Thumbnails, Zoom]}
               open={open}
+              controller={{ closeOnBackdropClick: true }}
               slides={allImg}
               close={() => setOpen(false)}
               index={index}

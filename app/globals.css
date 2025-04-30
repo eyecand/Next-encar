@@ -274,9 +274,9 @@
   background-size: contain;
   background-repeat: no-repeat;
 }
-
-@media (min-width: 930px) {
-  .yarl__slide_current .yarl__slide_wrapper {
-    transform: scale(1.4) translateX(0px) translateY(0px) !important;
-  }
+.yarl__slide_current .yarl__slide_wrapper img {
+  transform: scale(1.4) translateX(0px) translateY(0px) !important;
 }
+/* @media (min-width: 930px) {
+  
+} */
