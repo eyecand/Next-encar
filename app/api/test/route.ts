@@ -22,15 +22,8 @@ export async function GET() {
   //   take: 100,
   // });
 
-  const first = await prisma.active_lots.count({
-    where: {
-      encar: {
-        details: {
-          form_year: { gte: 2020, lte: 2025 },
-          makes: { make_short_name: "Others" },
-        },
-      },
-    },
+  const first = await prisma.lib_makes.findMany({
+    select: { make_short_name: true },
   });
 
   return NextResponse.json(first);

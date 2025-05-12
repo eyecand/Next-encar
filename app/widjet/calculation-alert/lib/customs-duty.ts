@@ -36,7 +36,7 @@ export function CustomsDuty(
           result = engine * 3.5 * EUR + 3400;
         }
       }
-    } else if (differentYear >= 3 && differentYear < 5) {
+    } else if (differentYear >= 3 && differentYear <= 5) {
       if (engine <= 1000) {
         result = engine * 1.5 * EUR + 5200;
       } else if (engine > 1000 && engine <= 1500) {
@@ -50,7 +50,7 @@ export function CustomsDuty(
       } else if (engine > 3000) {
         result = engine * 3.6 * EUR + 5200;
       }
-    } else if (differentYear >= 5) {
+    } else if (differentYear > 5) {
       if (engine <= 1000) {
         result = engine * 3 * EUR + 5200;
       } else if (engine > 1000 && engine <= 1500) {

@@ -42,7 +42,7 @@ export const findVehicleV2 = async (
   const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
   let benefit = {};
   if (insuarePrice === "3") {
-    benefit = { some: { insurance_benefit: { not: { gte: 10000 } } } };
+    benefit = { every: { insurance_benefit: { equals: 0 } } };
   }
   if (insuarePrice === "2") {
     benefit = { some: { insurance_benefit: { gt: 2 } } };
@@ -112,19 +112,6 @@ export const findVehicleV2 = async (
       ],
     };
   }
-  // const vehicles = await prisma.$queryRaw<any[]>(Prisma.sql`
-  //   SELECT ev.*
-  //   FROM encar_vehicles ev
-  //   LEFT JOIN accident_details ad ON ev.id = ad.vehicle_id
-  //   WHERE ad.vehicle_id IS NULL  -- No accident details
-  //      OR NOT EXISTS (
-  //         SELECT 1
-  //         FROM accident_details ad2
-  //         WHERE ad2.vehicle_id = ev.id
-  //           AND ad2.insurance_benefit > 0
-  //      );
-  // `);
-  // console.log("total", vehicles.length);
 
   const vehiclePromise = prisma.active_lots.findMany({
     where: {
@@ -186,7 +173,14 @@ export const findVehicleV2 = async (
   const totalPagePromise = prisma.active_lots.count({
     where: {
       encar: {
+        advertisements: {
+          price: { gte: currentMinPrice, lte: currentMaxPrice },
+        },
         details: {
+          makes: { make_short_name: makes },
+          model: { model_short_name: model },
+          grades: { grade_english: { contains: privod } },
+          fuel: fuel,
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
@@ -199,7 +193,9 @@ export const findVehicleV2 = async (
             gte: currentMinMileage,
             lte: currentMaxMileage,
           },
+          transmission: tr,
         },
+
         accident_details: benefit,
       },
     },
