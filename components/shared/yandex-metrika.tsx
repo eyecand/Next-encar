@@ -1,68 +1,34 @@
 "use client";
 
-import Script from "next/script";
-import React from "react";
+import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import ym, { YMInitializer } from "react-yandex-metrika";
 
-type YandexMetrikaInitParameters = {
-  accurateTrackBounce?: boolean | number;
-  childIframe?: boolean;
-  clickmap?: boolean;
-  defer?: boolean;
-  ecommerce?: boolean | string | [];
-  params?: unknown | [];
-  userParams?: unknown;
-  trackHash?: boolean;
-  trackLinks?: boolean;
-  trustedDomains?: string[];
-  type?: number;
-  webvisor?: boolean;
-  triggerEvent?: boolean;
-  sendTitle?: boolean;
-};
-type Props = {
-  id: number;
-  initParameters: YandexMetrikaInitParameters;
-};
+const YM_COUNTER_ID = 101646780; // Замените на ваш ID счетчика
 
-export const YandexMetrikaInitializer: React.FC<Props> = ({
-  id,
-  initParameters,
-}) => {
-  /* eslint-disable @next/next/no-img-element */
-  return (
-    <>
-      <Script type="text/javascript" id={`ym_${id}`}>
-        {`(function (m, e, t, r, i, k, a) {
-  m[i] =
-    m[i] ||
-    function () {
-      (m[i].a = m[i].a || []).push(arguments);
-    };
-  m[i].l = 1 * new Date();
-  for (var j = 0; j < document.scripts.length; j++) {
-    if (document.scripts[j].src === r) {
-      return;
+const YandexMetrika = () => {
+  const pathname = usePathname();
+
+  // Отправляем событие "hit" при изменении маршрута
+  useEffect(() => {
+    if (pathname) {
+      ym("hit", pathname);
     }
-  }
-  (k = e.createElement(t)),
-    (a = e.getElementsByTagName(t)[0]),
-    (k.async = 1),
-    (k.src = r),
-    a.parentNode.insertBefore(k, a);
-})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+  }, [pathname]);
 
-ym(${id}, "init", ${JSON.stringify(initParameters)});`}
-      </Script>
-      <noscript>
-        <div>
-          <img
-            src={`https://mc.yandex.ru/watch/${id}`}
-            style={{ position: "absolute", left: "-9999px;" }}
-            alt=""
-          />
-        </div>
-      </noscript>
-    </>
+  return (
+    <YMInitializer
+      accounts={[YM_COUNTER_ID]}
+      options={{
+        defer: true,
+        webvisor: true,
+        clickmap: true,
+        trackLinks: true,
+        accurateTrackBounce: true,
+      }}
+      version="2"
+    />
   );
 };
-//   <head><YandexMetrikaInitializer id={101646780} initParameters={{ webvisor: true, defer: true,clickmap:true,trackLinks:true,accurateTrackBounce:true}}/></head>
+
+export default YandexMetrika;

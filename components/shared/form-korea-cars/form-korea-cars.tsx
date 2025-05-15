@@ -54,7 +54,7 @@ export const FormKoreaCars = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="sm:mx-0 text-zinc-800 max-w-5xl mt-16  bg-gray-100 grid grid-cols-12 grid-flow-dense rounded-t-xl p-3 sm:p-4 lg:p-6 gap-2 transition-opacity duration-400 ease-in"
+      className="sm:mx-0 text-zinc-800 max-w-5xl mt-10 bg-gray-100 grid grid-cols-12 grid-flow-dense rounded-t-xl p-3 sm:p-4 lg:p-5 gap-2 transition-opacity duration-400 ease-in"
     >
       <FirstLine
         onChangeMakes={filters.setMakesType}

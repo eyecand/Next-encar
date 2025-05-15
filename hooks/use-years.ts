@@ -56,8 +56,8 @@ export const useYears = (): ReturnProps => {
   }, []);
 
   years
-    .filter((item) => item.form_year >= 2020)
-    .reverse()
+    .filter((item) => item.form_year >= 2000)
+    .filter((item) => item.form_year < 2026)
     .map((item) => {
       return optionYears.push({
         value: String(item.form_year),

@@ -22,15 +22,15 @@ export default async function Home({
   const take = parseInt((pageSize as string) || "10");
 
   return (
-    <div className="mx-auto max-w-7xl mt-10">
-      <h1 className="text-2xl md:text-4xl lg:text-[50px] font-bold px-5 mt-28 md:mt-32 lg:mt-40">
+    <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-10">
+      <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
         Autofish - Продажа автомобилей
       </h1>
 
       <FormKoreaCars />
       {/* <FormFilters totalTest={totalPage} /> */}
       {/* Список товаров */}
-      <div className="mt-10 max-w-5xl p-5">
+      <div className="max-w-5xl p-5">
         <div className=" border-b-2 py-5">
           <h2 className="inline-block font-bold text-xl relative subtitle-page">
             {totalPage.toLocaleString()} объявления

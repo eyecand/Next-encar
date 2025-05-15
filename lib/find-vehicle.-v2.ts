@@ -1,6 +1,6 @@
 import { prisma } from "@/prisma/prisma-client";
 
-const DEFAULT_MIN_YEARS = 2020;
+const DEFAULT_MIN_YEARS = 2000;
 const DEFAULT_MAX_YEARS = new Date().getFullYear();
 const DEFAULT_MIN_PRICE = 0;
 const DEFAULT_MAX_PRICE = 2000000000;

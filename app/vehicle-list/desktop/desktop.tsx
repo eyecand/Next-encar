@@ -26,17 +26,17 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                   <div className="mr-5 relative w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">
                     {item.encar.photos.length === 0 ? (
                       <Image
-                        className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
+                        className="rounded-md"
                         alt="not found"
                         src={NotImage}
-                        width={350}
-                        height={250}
+                        width={320}
+                        height={240}
                       />
                     ) : (
                       <ImageLoader imageUrl={item.encar.photos[0].url} />
                     )}
                   </div>
-                  <div className="params flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
+                  <div className="flex-grow-0 flex-shrink basis-[400px] min-w-[232px] mr-5">
                     <div className="title">
                       <h3 className="inline text-[18px] leading-[25px]">
                         {detectMake(
@@ -80,7 +80,7 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                       </span>
                     </div>
                   </div>
-                  <div className="price flex flex-shrink-0 flex-grow-0 w-[260px]">
+                  <div className="flex flex-shrink-0 flex-grow-0 w-[260px]">
                     <div className="flex-shrink-0 flex-grow-0 basis-full">
                       <PriceAll
                         price_origion={Number(item.encar.advertisements?.price)}
