@@ -67,6 +67,7 @@ export const findVehicleId = async (id: string) => {
           transmission: { select: { transmission_english: true } },
         },
       },
+      lib_sell_types: { select: { sell_type: true } },
       photos: {
         select: {
           url: true,

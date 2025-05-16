@@ -50,7 +50,24 @@ export const FormKoreaCars = () => {
       scroll: false,
     });
   };
-
+  const handleRemove = () => {
+    filters.setMakesType(null);
+    filters.setModelType(null);
+    filters.setPrivod(null);
+    filters.setFuels(null);
+    filters.setYearsMin(null);
+    filters.setYearsMax(null);
+    filters.setTransmission(null);
+    filters.setPriceMin("");
+    filters.setPriceMax("");
+    filters.setEngineMin(null);
+    filters.setEngineMax(null);
+    filters.setMileageMin(null);
+    filters.setMileageMax(null);
+    filters.setInsuarePrice(null);
+    filters.setCities(null);
+    filters.setSort(null);
+  };
   return (
     <form
       onSubmit={handleSubmit}
@@ -96,7 +113,7 @@ export const FormKoreaCars = () => {
         onChangeCities={filters.setCities}
         onChangeSort={filters.setSort}
       />
-      <ButtonSubmit />
+      <ButtonSubmit handleRemove={handleRemove} />
     </form>
   );
 };

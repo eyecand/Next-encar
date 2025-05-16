@@ -1,9 +1,7 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -13,6 +11,7 @@ import { detectFuels } from "@/lib/detect-fuels";
 import { StatisticAlertDialogProps } from "@/app/vehicle/[id]/model";
 import { detectMake } from "./form-korea-cars/first-line/lib";
 import { useEffect, useRef, useState } from "react";
+import { IoIosClose } from "react-icons/io";
 
 export const StatisticAlertDialog = ({
   details,
@@ -59,9 +58,17 @@ export const StatisticAlertDialog = ({
 
       <AlertDialogContent ref={dialogRef}>
         <AlertDialogHeader>
-          <AlertDialogTitle>
-            Отчёт страховой компании для авто {plate_number}
-          </AlertDialogTitle>
+          <div className="flex justify-between mb-3">
+            <AlertDialogTitle>
+              Отчёт страховой компании для авто {plate_number}
+            </AlertDialogTitle>
+            <IoIosClose
+              onClick={handleConfirm}
+              size={30}
+              className="cursor-pointer mb-1 hover:text-gray-400 transition-colors duration-150 ease-linear"
+            />
+          </div>
+
           <div className="grid grid-cols-2 bg-gray-200/50 p-4 rounded-md gap-x-10 gap-y-4 text-sm text-zinc-600">
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Производитель:
@@ -239,11 +246,6 @@ export const StatisticAlertDialog = ({
             гарантией отсутствия повреждения автомобиля.
           </p>
         </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={handleConfirm}>
-            Продолжить
-          </AlertDialogAction>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

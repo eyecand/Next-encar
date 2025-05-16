@@ -61,7 +61,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-gray-400  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"make"}
               placeholder="Любая марка"
@@ -84,7 +84,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
 
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-gray-400  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"model"}
               placeholder="Любая модель"
@@ -108,7 +108,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
       </div>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5 gap-[0.5px] flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix="yearMin"
               placeholder="Год от"
@@ -130,7 +130,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
               }}
             />
           </div>
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix="yearMax"
               placeholder="Год до"

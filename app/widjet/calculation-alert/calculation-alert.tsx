@@ -1,15 +1,13 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-
+import { IoIosClose } from "react-icons/io";
 import { PriceView } from "./lib/price-view";
 import { PriceViewCalclation } from "./lib/price-view-calculation";
 import { TooltipUI } from "./lib/tooltip-ui";
@@ -75,19 +73,24 @@ export const CalculationAlert = ({
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent ref={alertRef}>
-        <AlertDialogHeader>
+        <AlertDialogHeader className="flex flex-row justify-between items-center">
           <AlertDialogTitle>Подробный рассчет</AlertDialogTitle>
+          <IoIosClose
+            onClick={handleConfirm}
+            size={32}
+            className="cursor-pointer hover:text-gray-400 transition-colors duration-150 ease-linear"
+          />
         </AlertDialogHeader>
 
         <div className="gap-4 lg:gap-12 w-full border-t border-zinc-100 pt-4 flex md:flex-row flex-col items-center">
           <div className="flex flex-col md:flex-row md:items-center gap-6 w-full justify-center">
             <p className="text-base text-zinc-700">Стоимость авто</p>
-            <div className="flex items-center justify-between gap-6">
-              <div className="w-full relative font-medium">
+            <div className="flex items-center justify-between gap-3">
+              <div className="max-w-[200px] relative font-medium">
                 <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center pr-3">
                   ₩
                 </span>
-                <span className="border border-b-2 rounded-lg py-2 px-14">
+                <span className="border border-b-2 rounded-lg py-2 px-12">
                   <PriceView
                     tilda={true}
                     price={String(priceEn)}
@@ -96,7 +99,7 @@ export const CalculationAlert = ({
                   />
                 </span>
               </div>
-              ~{" "}
+              ~
               <PriceViewCalclation
                 price={priceEn}
                 valute={Number(KRW)}
@@ -106,19 +109,8 @@ export const CalculationAlert = ({
             </div>
           </div>
         </div>
-        <div className="bg-zinc-50 -mx-6 p-6 relative min-w-full flex items-center justify-center my-8 text-red-600 gap-2 text-xl font-bold bg-">
-          Итого:{" "}
-          <PriceView
-            tilda={true}
-            className=""
-            label="₽"
-            price={String(total)}
-          />
-          {fuel === "Electricity" && (
-            <TooltipUI title="Для более кореектного расчета свяжитесь с оператором" />
-          )}
-        </div>
-        <div className="flex flex-col lg:flex-row gap-4 lg:gap-12">
+
+        <div className="mt-5 flex flex-col lg:flex-row gap-4 lg:gap-12">
           <div className="lg:basis-1/2">
             <div>
               <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
@@ -188,7 +180,7 @@ export const CalculationAlert = ({
           </div>
           <div className="lg:basis-1/2">
             <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
-              Итого России
+              Итого в России
               <PriceView
                 tilda={true}
                 price={String(totalRussia)}
@@ -200,7 +192,7 @@ export const CalculationAlert = ({
               <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
                 <div className="flex items-center justify-start gap-2">
                   <span className="whitespace-nowrap font-semibold text-zinc-600">
-                    Услуги растаможивания и забора авто
+                    Услуги брокера
                   </span>
                 </div>
                 <PriceView
@@ -231,11 +223,18 @@ export const CalculationAlert = ({
             </div>
           </div>
         </div>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={handleConfirm}>
-            Продолжить
-          </AlertDialogAction>
-        </AlertDialogFooter>
+        <div className="bg-zinc-50 -mx-6 p-6 relative min-w-full flex items-center justify-center my-4 text-red-600 gap-2 text-xl font-bold">
+          Итого:{" "}
+          <PriceView
+            tilda={true}
+            className=""
+            label="₽"
+            price={String(total)}
+          />
+          {fuel === "Electricity" && (
+            <TooltipUI title="Для более кореектного расчета свяжитесь с оператором" />
+          )}
+        </div>
       </AlertDialogContent>
     </AlertDialog>
   );

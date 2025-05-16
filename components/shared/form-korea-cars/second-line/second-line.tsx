@@ -20,7 +20,7 @@ export const SecondLine: React.FC<Props<string | null>> = ({
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"fuels"}
               placeholder="Любой тип топлива"
@@ -44,7 +44,7 @@ export const SecondLine: React.FC<Props<string | null>> = ({
       </div>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"privod"}
               placeholder="Любой привод"
@@ -68,7 +68,7 @@ export const SecondLine: React.FC<Props<string | null>> = ({
       </div>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
-          <div className=" w-full text-sm ">
+          <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"transmission"}
               placeholder="Любая трансмиссия"

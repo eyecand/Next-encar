@@ -22,8 +22,14 @@ export async function GET() {
   //   take: 100,
   // });
 
-  const first = await prisma.lib_makes.findMany({
-    select: { make_short_name: true },
+  const first = await prisma.vehicle_details.findMany({
+    distinct: ["engine_displacement_liters"],
+    select: {
+      engine_displacement_liters: true,
+    },
+    orderBy: {
+      engine_displacement_liters: "desc",
+    },
   });
 
   return NextResponse.json(first);

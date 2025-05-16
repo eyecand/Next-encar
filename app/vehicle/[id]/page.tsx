@@ -19,7 +19,6 @@ export default async function CarPage({
   const shareUrl = `https://autofish.ru/vehicle/${id}`;
   const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
-  console.log("id", vehicleId.accident_details);
   return (
     <div className="mx-auto px-5 max-w-[1280px] mt-24">
       <div className=" py-5 flex items-baseline">
@@ -47,6 +46,7 @@ export default async function CarPage({
             accident_details={vehicleId.accident_details}
             diagnostics={vehicleId.diagnostics}
             vehicle_plate_number={vehicleId.vehicle_plate_number}
+            sell_type={vehicleId.lib_sell_types.sell_type}
           />
         </section>
       </Suspense>

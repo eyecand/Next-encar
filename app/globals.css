@@ -103,7 +103,11 @@
 .transmission__control--is-focused,
 .benifit__control--is-focused,
 .city__control--is-focused,
-.sort__control--is-focused {
+.sort__control--is-focused,
+.mileageMin__control--is-focused,
+.mileageMax__control--is-focused,
+.engineMin__control--is-focused,
+.engineMax__control--is-focused {
   box-shadow: 0 0 0 1px #f3a114 !important;
   border-color: #f3a114 !important;
 }

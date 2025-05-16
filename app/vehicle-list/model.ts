@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime/library";
+
 export interface VehicleListProps {
   vehicle: {
     encar: {
@@ -16,10 +18,12 @@ export interface VehicleListProps {
         form_year: number;
         mileage: number;
         engine_displacement: number;
+        engine_displacement_liters: Decimal | number | null;
         fuel: {
           fuel_english: string | null;
         };
       } | null;
+      lib_sell_types: { sell_type: string };
       photos: {
         url: string;
       }[];

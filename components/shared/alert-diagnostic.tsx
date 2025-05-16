@@ -1,9 +1,7 @@
 "use client";
 import {
   AlertDialog,
-  AlertDialogAction,
   AlertDialogContent,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTrigger,
   AlertDialogTitle,
@@ -14,6 +12,7 @@ import DiagnosticFront from "../../public/map_inspect_front.webp";
 import DiagnosticBack from "../../public/map_inspect_back.png";
 import { AlertDiagnosticProps } from "@/app/vehicle/[id]/model";
 import { useEffect, useRef, useState } from "react";
+import { IoIosClose } from "react-icons/io";
 type list = {
   [key: string]: string;
 };
@@ -107,14 +106,16 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent ref={ref}>
-        <AlertDialogHeader>
-          <AlertDialogTitle>
-            <div className="flex items-center justify-between">
-              <h3 className="text-2xl leading-6 font-medium text-zinc-900 pr-6 -pl-1 mb-4">
-                Отчёт инспекции авто
-              </h3>
-            </div>
+        <AlertDialogHeader className="flex-row justify-between items-center ">
+          <AlertDialogTitle className="text-2xl mb-2">
+            Отчёт инспекции авто
           </AlertDialogTitle>
+
+          <IoIosClose
+            onClick={handleConfirm}
+            size={30}
+            className="cursor-pointer mb-1 hover:text-gray-400 transition-colors duration-150 ease-linear"
+          />
         </AlertDialogHeader>
         <div className="w-full">
           <h4 className="font-gilroy text-xl leading-6 font-medium text-zinc-900 pr-6 -pl-1 mb-8">
@@ -172,11 +173,6 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
             ))}
           </div>
         </div>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={handleConfirm}>
-            Продолжить
-          </AlertDialogAction>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

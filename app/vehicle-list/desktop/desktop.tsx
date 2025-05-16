@@ -56,10 +56,9 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         ""
                       ) : (
                         <span className="whitespace-nowrap">
-                          {(
-                            Math.round(item.encar.details.engine_displacement) /
-                            1000
-                          ).toFixed(1)}{" "}
+                          {Number(
+                            item.encar.details.engine_displacement_liters
+                          )}{" "}
                           л,{" "}
                         </span>
                       )}
@@ -79,6 +78,25 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         км
                       </span>
                     </div>
+                    {(item.encar.lib_sell_types.sell_type ===
+                      "RENT_SUCCESSION" ||
+                      item.encar.lib_sell_types.sell_type === "RENT_CAR") && (
+                      <div className="button flex ">
+                        <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                          Рента
+                        </div>
+                      </div>
+                    )}
+                    {(item.encar.lib_sell_types.sell_type ===
+                      "FINANCING_LEASE" ||
+                      item.encar.lib_sell_types.sell_type ===
+                        "OPERATING_LEASE") && (
+                      <div className="button flex ">
+                        <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                          Лизинг
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-shrink-0 flex-grow-0 w-[260px]">
                     <div className="flex-shrink-0 flex-grow-0 basis-full">

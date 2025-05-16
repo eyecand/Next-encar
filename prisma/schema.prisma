@@ -190,6 +190,7 @@ model encar_vehicles {
   notjoined             not_joined_periods[]
   diagnostics           diagnostics?
   advertisements        advertisements?
+  lib_sell_types        lib_sell_types @relation(fields: [sell_type_id], references: [id])
 }
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model insurance_certificates {
@@ -375,6 +376,8 @@ model lib_sell_types {
   sell_type  String   @unique @db.VarChar(55)
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
+  encar      encar_vehicles[]
+ 
 }
 
 model lib_transmissions {
@@ -519,6 +522,7 @@ model vehicle_details {
   origin_price        Int?
   mileage             Int
   engine_displacement Int
+  engine_displacement_liters Decimal
   transmission_id     Int
   fuel_id             Int
   colour_id           Int

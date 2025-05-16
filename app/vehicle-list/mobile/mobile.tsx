@@ -53,7 +53,27 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                         )}{" "}
                         {item.encar.details.model.model_short_name}
                       </span>
+                      {(item.encar.lib_sell_types.sell_type ===
+                        "RENT_SUCCESSION" ||
+                        item.encar.lib_sell_types.sell_type === "RENT_CAR") && (
+                        <div className="button flex ">
+                          <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                            Рента
+                          </div>
+                        </div>
+                      )}
+                      {(item.encar.lib_sell_types.sell_type ===
+                        "FINANCING_LEASE" ||
+                        item.encar.lib_sell_types.sell_type ===
+                          "OPERATING_LEASE") && (
+                        <div className="button flex ">
+                          <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                            Лизинг
+                          </div>
+                        </div>
+                      )}
                     </div>
+
                     <div className="align-middle flex py-3 text-gray-900 text-[12px] lg:text-sm justify-between items-baseline border-b  border-gray-200 relative">
                       <span className="text-gray-500">Год:</span>
                       <div className="flex">
@@ -81,7 +101,10 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                           ""
                         ) : (
                           <span className="text-gray-400 ml-2">
-                            {item.encar.details.engine_displacement} cc
+                            {Number(
+                              item.encar.details.engine_displacement_liters
+                            )}{" "}
+                            л
                           </span>
                         )}
                       </div>

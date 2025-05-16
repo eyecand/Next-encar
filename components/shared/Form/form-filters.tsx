@@ -213,7 +213,7 @@ export const FormFilters = ({ totalTest }: { totalTest: number }) => {
             </div>
           </div>
           <div className=" flex justify-center items-center relative text-sm w-full grow sm:w-1/2 md:w-1/3">
-            <ButtonSubmit />
+            <ButtonSubmit handleRemove={handleRemove} />
           </div>
         </div>
       </form>

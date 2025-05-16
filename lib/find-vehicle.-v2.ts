@@ -1,4 +1,5 @@
 import { prisma } from "@/prisma/prisma-client";
+import { Decimal } from "@prisma/client/runtime/library";
 
 const DEFAULT_MIN_YEARS = 2000;
 const DEFAULT_MAX_YEARS = new Date().getFullYear();
@@ -112,7 +113,27 @@ export const findVehicleV2 = async (
       ],
     };
   }
-
+  let priv = {};
+  if (privod === "2WD") {
+    priv = {
+      OR: [
+        { grade_english: { contains: "2WD" } },
+        {
+          AND: [
+            { grade_english: { not: { contains: "4WD" } } },
+            { grade_english: { not: { contains: "AWD" } } },
+          ],
+        },
+      ],
+    };
+  } else if (privod === "4WD") {
+    priv = {
+      OR: [
+        { grade_english: { contains: "4WD" } },
+        { grade_english: { contains: "AWD" } },
+      ],
+    };
+  }
   const vehiclePromise = prisma.active_lots.findMany({
     where: {
       encar: {
@@ -122,13 +143,13 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
-          grades: { grade_english: { contains: privod } },
+          grades: priv,
           fuel: fuel,
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
           },
-          engine_displacement: {
+          engine_displacement_liters: {
             gte: currentMinEngine,
             lte: currentMaxEngine,
           },
@@ -158,9 +179,11 @@ export const findVehicleV2 = async (
               fuel: { select: { fuel_english: true } },
               form_year: true,
               engine_displacement: true,
+              engine_displacement_liters: true,
               mileage: true,
             },
           },
+          lib_sell_types: { select: { sell_type: true } },
           photos: { select: { url: true } },
         },
       },
@@ -179,13 +202,13 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
-          grades: { grade_english: { contains: privod } },
+          grades: priv,
           fuel: fuel,
           form_year: {
             gte: currentMinYear,
             lte: currentMaxYear,
           },
-          engine_displacement: {
+          engine_displacement_liters: {
             gte: currentMinEngine,
             lte: currentMaxEngine,
           },
@@ -205,7 +228,27 @@ export const findVehicleV2 = async (
     vehiclePromise,
     totalPagePromise,
   ]);
-  return { vehicle, totalPage };
+  return {
+    vehicle: vehicle.map((item) => {
+      if (item.encar && item.encar.details) {
+        return {
+          ...item,
+          encar: {
+            ...item.encar,
+            details: {
+              ...item.encar.details,
+              engine_displacement_liters: item.encar.details
+                .engine_displacement_liters
+                ? Number(item.encar.details.engine_displacement_liters)
+                : null,
+            },
+          },
+        };
+      }
+      return item;
+    }),
+    totalPage,
+  };
 };
 export interface GetSearchParams {
   makes?: string;
@@ -251,10 +294,12 @@ export interface ReturnProps {
         form_year: number;
         mileage: number;
         engine_displacement: number;
+        engine_displacement_liters: number | null | Decimal;
         fuel: {
           fuel_english: string | null;
         };
       } | null;
+      lib_sell_types: { sell_type: string };
       photos: {
         url: string;
       }[];
