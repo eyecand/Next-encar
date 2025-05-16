@@ -123,7 +123,7 @@ export const TherdLine: React.FC<Props<string | null>> = ({
           </div>
           <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
-              classNamePrefix="engineMin"
+              classNamePrefix="engineMax"
               placeholder="Объем до"
               options={optionsEngine}
               value={
