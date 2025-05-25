@@ -17,20 +17,22 @@ export const ButtonSubmit = ({
   }, [pending]);
   return (
     <div className="flex  justify-center flex-row col-span-12 ">
-      <div className=" flex justify-center sm:justify-start items-center relative text-sm w-full grow sm:w-1/2">
-        <Button
-          variant={"default"}
-          type="submit"
-          disabled={pending}
-          className="mt-2 w-[160px] bg-green-700 hover:bg-green-700/70 transition-colors duration-200 easy-in"
-        >
-          {pending ? <Spinner /> : "Показать результат"}
-        </Button>
-      </div>
-      <div className=" flex justify-center sm:justify-end items-center relative text-sm w-full grow sm:w-1/2">
-        <Button onClick={handleRemove} className="mt-2 w-[160px]">
-          Сбросить все
-        </Button>
+      <div className="flex flex-row justify-center col-span-12 ">
+        <div className=" flex justify-center sm:justify-start items-center relative text-sm w-full grow sm:w-1/2">
+          <Button
+            variant={"default"}
+            type="submit"
+            disabled={pending}
+            className="mt-2 w-[160px] bg-green-700 hover:bg-green-700/70 transition-colors duration-200 easy-in"
+          >
+            {pending ? <Spinner /> : "Показать результат"}
+          </Button>
+        </div>
+        <div className=" flex justify-center sm:justify-end items-center relative text-sm w-full grow sm:w-1/2">
+          <Button onClick={handleRemove} className="mt-2 w-[160px]">
+            Сбросить все
+          </Button>
+        </div>
       </div>
     </div>
   );
