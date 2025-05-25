@@ -170,6 +170,7 @@ export const findVehicleV2 = async (
       encar: {
         select: {
           id: true,
+          created_at: true,
           advertisements: { select: { price: true } },
           details: {
             select: {
@@ -280,6 +281,7 @@ export interface ReturnProps {
   vehicle: {
     encar: {
       id: bigint;
+      created_at: Date;
       advertisements: { price: number } | null;
       details: {
         makes: {

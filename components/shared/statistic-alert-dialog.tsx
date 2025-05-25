@@ -110,7 +110,7 @@ export const StatisticAlertDialog = ({
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
-              Дата первой страховке:
+              Дата первой страховки:
               <span className="text-base font-semibold text-black">
                 {accident_details.length > 0 &&
                   accident_details.reverse()[0].date.toLocaleDateString()}

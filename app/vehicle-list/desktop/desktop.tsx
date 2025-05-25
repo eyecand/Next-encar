@@ -8,6 +8,7 @@ import { ImageLoader } from "../../../components/shared/image-loader";
 import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
+import { detectedDate } from "@/lib/detected-date";
 
 export const Desktop = ({ vehicle, className }: InterfaceProps) => {
   return (
@@ -76,6 +77,11 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                           .format(Number(item.encar.details.mileage))
                           .replace(",", ".")}{" "}
                         км
+                      </span>
+                    </div>
+                    <div className="middle mt-1 text-[15px] leading-6">
+                      <span className="whitespace-nowrap">
+                        {detectedDate(item.encar.created_at)}
                       </span>
                     </div>
                     {(item.encar.lib_sell_types.sell_type ===

@@ -63,10 +63,10 @@ export const optionSort: Option[] = [
   },
   {
     value: "dateMax",
-    label: "Дата добавления по возрастанию",
+    label: "Сначала старые",
   },
   {
     value: "dateMin",
-    label: "Дата добавления по убыванию",
+    label: "Сначала новые",
   },
 ];

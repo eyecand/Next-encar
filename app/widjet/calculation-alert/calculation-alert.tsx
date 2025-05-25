@@ -69,12 +69,12 @@ export const CalculationAlert = ({
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild onClick={openDialog}>
         <Button className="px-6 py-6 w-full  bg-gray-400 hover:bg-gray-500 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative mt-8">
-          Подробный рассчет
+          Подробный расчет
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent ref={alertRef}>
         <AlertDialogHeader className="flex flex-row justify-between items-center">
-          <AlertDialogTitle>Подробный рассчет</AlertDialogTitle>
+          <AlertDialogTitle>Подробный расчет</AlertDialogTitle>
           <IoIosClose
             onClick={handleConfirm}
             size={32}

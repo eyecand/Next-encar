@@ -35,7 +35,9 @@ export const Header = () => {
 
   const fetchCBRData = useCallback(async () => {
     try {
-      const response = await axios.get<CBRPRops>("https://www.cbr-xml-daily.ru/daily_json.js");
+      const response = await axios.get<CBRPRops>(
+        "https://www.cbr-xml-daily.ru/daily_json.js"
+      );
       return response.data;
     } catch (error) {
       console.log(error);
@@ -76,13 +78,12 @@ export const Header = () => {
       }
 
       const makesAll = await fetchCBRData();
-      if(makesAll){
-         setCBR(makesAll);
-         updateCBRStore(makesAll);
-         localStorage.setItem(CBR_DATA_KEY, JSON.stringify(makesAll));
-         localStorage.setItem(`${CBR_DATA_KEY}_time`, Date.now().toString());
+      if (makesAll) {
+        setCBR(makesAll);
+        updateCBRStore(makesAll);
+        localStorage.setItem(CBR_DATA_KEY, JSON.stringify(makesAll));
+        localStorage.setItem(`${CBR_DATA_KEY}_time`, Date.now().toString());
       }
-
     } catch (error) {
       console.log(error);
     }
@@ -123,7 +124,7 @@ export const Header = () => {
         <div className="hidden md:flex items-center">
           {/* navitems */}
           <a href="https://t.me/Avademus">
-            <button className="text-white text-[15px] uppercase bg-rose-500/90 px-2 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
+            <button className="text-white text-[15px] uppercase bg-[#e05358] px-2 rounded-lg py-2 hover:bg-[#e05358]/80 transition-colors duration-200 ease-in">
               оставить заявку
             </button>
           </a>

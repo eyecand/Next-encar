@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 
 export const HeaderVehicleId = () => {
-const [KRW, setKRW] = useState<CBRPRops | null>(null)
-useEffect(()=>{
-    const localStoredKRW = localStorage.getItem('cbrData')
-     if (localStoredKRW) setKRW(JSON.parse(localStoredKRW));
-},[])
-   return (
+  const [KRW, setKRW] = useState<CBRPRops | null>(null);
+  useEffect(() => {
+    const localStoredKRW = localStorage.getItem("cbrData");
+    if (localStoredKRW) setKRW(JSON.parse(localStoredKRW));
+  }, []);
+  return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md ">
         <div className="flex items-center gap-10">
@@ -34,13 +34,13 @@ useEffect(()=>{
 
         <div className="hidden md:flex  items-center ">
           <span className="text-white">
-            KRW/RUB: {KRW&&(Number(KRW.Valute.KRW.Value) * 1.05).toFixed(2)}
+            KRW/RUB: {KRW && (Number(KRW.Valute.KRW.Value) * 1.05).toFixed(2)}
           </span>
         </div>
         <div className="hidden md:flex items-center">
           {/* navitems */}
           <a href="https://t.me/Avademus">
-            <button className="text-white text-[15px] uppercase bg-rose-500/90 px-2 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
+            <button className="text-white text-[15px] uppercase bg-[#e05358] px-2 rounded-lg py-2 hover:bg-[#e05358]/80 transition-colors duration-200 ease-in">
               оставить заявку
             </button>
           </a>
