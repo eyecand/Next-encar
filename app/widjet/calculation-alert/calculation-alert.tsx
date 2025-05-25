@@ -90,7 +90,7 @@ export const CalculationAlert = ({
                 <span className="pointer-events-none absolute inset-y-0 left-4 flex items-center pr-3">
                   ₩
                 </span>
-                <span className="border border-b-2 rounded-lg py-2 px-12">
+                <span className="border border-b-2 text-[16px] rounded-lg py-2 px-8">
                   <PriceView
                     tilda={true}
                     price={String(priceEn)}

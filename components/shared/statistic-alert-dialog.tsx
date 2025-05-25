@@ -129,19 +129,19 @@ export const StatisticAlertDialog = ({
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
-              Использование бизнесом (такси, аренды и т.д.):
+              Принадлежала юр.лицу:
               <span className="text-base font-semibold text-black">
                 {accident && accident.business ? "Да" : "Нет"}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
-              Находилось в залоге:
+              Использовалась в аренде/такси:
               <span className="text-base font-semibold text-black">
                 {accident && accident.loan ? "Да" : "Нет"}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
-              Использовался правительством:
+              Принадлежала правительству:
               <span className="text-base font-semibold text-black">
                 {accident && accident.government ? "Да" : "Нет"}
               </span>

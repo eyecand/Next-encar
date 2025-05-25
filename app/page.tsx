@@ -20,9 +20,13 @@ export default async function Home({
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
   const currentPage = parseInt((page as string) || "0");
   const take = parseInt((pageSize as string) || "10");
+  const members = 0
   return (
-    <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-10">
-      <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
+    <>
+    <div className="mx-auto flex flex-col flex-1 w-full max-w-5xl mt-10">
+      {members ?<><h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
+        Ведутся технические работы
+      </h1> <LoadingSpinner /></> :<><h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
         Autofish - Продажа автомобилей
       </h1>
 
@@ -45,7 +49,8 @@ export default async function Home({
           pageSize={take}
           totalCount={totalPage}
         />
-      </div>
-    </div>
+      </div></>}
+      
+    </div></>
   );
 }

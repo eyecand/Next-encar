@@ -1,7 +1,4 @@
 export { Header } from "./header";
-export { FormFilters } from "./Form/form-filters";
-export { BasicSelect } from "./Form/basic-select";
-export { MiddleSelect } from "./Form/middle-select";
 export { PaginationWithLinks } from "./pagination-container";
 export { SliderCarPage } from "./slider-carpage";
 export { BlockItem } from "./block-item";
@@ -10,7 +7,6 @@ export { StatisticCar } from "./statistic-car";
 export { StatisticAlertDialog } from "./statistic-alert-dialog";
 export { AlertDiagnostic } from "./alert-diagnostic";
 export { PriceAll } from "./price-on-mian-windows";
-export { AdvancedSelect } from "./Form/advanced-select";
 export { LoadingSpinner } from "./loading-spinner";
 export { Spinner } from "./spinner";
 export { ButtonSubmit } from "./button-submit";

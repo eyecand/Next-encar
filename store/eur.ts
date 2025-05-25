@@ -6,6 +6,6 @@ interface State {
 }
 
 export const useEURStore = create<State>()((set) => ({
-  eur: 1,
+  eur: 91.3,
   setEURStore: (eur: number) => set({ eur }),
 }));

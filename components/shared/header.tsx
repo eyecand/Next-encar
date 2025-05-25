@@ -26,12 +26,33 @@ interface ValuteData {
   Previous: number;
 }
 const CBR_DATA_KEY = "cbrData";
-const CACHE_EXPIRATION_TIME = 60 * 30 * 1000; // 1 час
-// https://next-encar-git-main-eyecands-projects.vercel.app/
+const CACHE_EXPIRATION_TIME = 60 * 30 * 1000; // 30 минут
+
 export const Header = () => {
   const setCBRAll = useCBRStore((state) => state.setCBRStore);
   const setCurrentEUR = useEURStore((state) => state.setEURStore);
-  const [cbr, setCBR] = useState<CBRPRops>();
+  const [cbr, setCBR] = useState<CBRPRops | null>(null); // Инициализация null
+
+  const fetchCBRData = useCallback(async () => {
+    try {
+      const response = await axios.get<CBRPRops>("https://www.cbr-xml-daily.ru/daily_json.js");
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }, []);
+
+  const updateCBRStore = useCallback(
+    (data: CBRPRops) => {
+      if (data) {
+        setCBRAll(Number((data.Valute.KRW.Value * 1.05).toFixed(2)));
+        setCurrentEUR(data.Valute.EUR.Value);
+      }
+    },
+    [setCBRAll, setCurrentEUR]
+  );
+
   const getCBR = useCallback(async () => {
     try {
       const cachedData = localStorage.getItem(CBR_DATA_KEY);
@@ -42,36 +63,37 @@ export const Header = () => {
         cachedTime &&
         Date.now() - Number(cachedTime) < CACHE_EXPIRATION_TIME
       ) {
-        setCBR(JSON.parse(cachedData) as CBRPRops);
-        return;
+        try {
+          const parsedData = JSON.parse(cachedData) as CBRPRops;
+          setCBR(parsedData);
+          updateCBRStore(parsedData);
+          return;
+        } catch (error) {
+          console.error("Error parsing cached data:", error);
+          localStorage.removeItem(CBR_DATA_KEY); // Удалите поврежденные данные из кэша
+          localStorage.removeItem(`${CBR_DATA_KEY}_time`);
+        }
       }
 
-      const makesAll = (
-        await axios.get<CBRPRops>("https://www.cbr-xml-daily.ru/daily_json.js")
-      ).data;
-      setCBR(makesAll);
+      const makesAll = await fetchCBRData();
+      if(makesAll){
+         setCBR(makesAll);
+         updateCBRStore(makesAll);
+         localStorage.setItem(CBR_DATA_KEY, JSON.stringify(makesAll));
+         localStorage.setItem(`${CBR_DATA_KEY}_time`, Date.now().toString());
+      }
 
-      localStorage.setItem(CBR_DATA_KEY, JSON.stringify(makesAll));
-      localStorage.setItem(`${CBR_DATA_KEY}_time`, Date.now().toString());
     } catch (error) {
       console.log(error);
     }
-  }, []);
+  }, [fetchCBRData, updateCBRStore]);
 
   useEffect(() => {
     getCBR();
   }, [getCBR]);
-
-  useEffect(() => {
-    if (cbr) {
-      setCBRAll(Number((cbr?.Valute.KRW.Value * 1.05).toFixed(2)));
-      setCurrentEUR(cbr?.Valute.EUR.Value);
-    }
-  });
-
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
-      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md ">
+      <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-1 text-md ">
         <div className="flex items-center gap-10">
           <div>
             <a
@@ -98,10 +120,10 @@ export const Header = () => {
             KRW/RUB: {(Number(cbr?.Valute.KRW.Value) * 1.05).toFixed(2)}
           </span>
         </div>
-        <div className="hidden md:flex items-center md:mr-16 lg:mr-32">
+        <div className="hidden md:flex items-center">
           {/* navitems */}
           <a href="https://t.me/Avademus">
-            <button className="text-white text-[15px] uppercase bg-rose-500/90 px-4 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
+            <button className="text-white text-[15px] uppercase bg-rose-500/90 px-2 rounded-lg py-2 hover:bg-rose-500/80 transition-colors duration-200 ease-in">
               оставить заявку
             </button>
           </a>

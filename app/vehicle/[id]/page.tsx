@@ -20,7 +20,7 @@ export default async function CarPage({
   const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
   return (
-    <div className="mx-auto px-5 max-w-[1280px] mt-24">
+    <div className="mx-auto px-5 max-w-7xl mt-24">
       <div className=" py-5 flex items-baseline">
         <h1 className="font-bold text-lg md:text-3xl">
           {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}

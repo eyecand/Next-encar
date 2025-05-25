@@ -1,7 +1,10 @@
 import { axiosInstance } from "./instance";
 import { ApiRoutes } from "./constants";
-import { GradesProps } from "@/components/shared/Form/model";
-
+interface GradesProps {
+  grades: {
+    grade_english: string;
+  };
+}
 export const getGrades = async (
   makes: string | null,
   model: string | null
