@@ -16,7 +16,7 @@ export const ButtonSubmit = ({
     setPending(pending);
   }, [pending]);
   return (
-    <div className="flex flex-col justify-center sm:flex-row col-span-12 ">
+    <div className="flex  justify-center flex-row col-span-12 ">
       <div className=" flex justify-center sm:justify-start items-center relative text-sm w-full grow sm:w-1/2">
         <Button
           variant={"default"}
@@ -29,7 +29,7 @@ export const ButtonSubmit = ({
       </div>
       <div className=" flex justify-center sm:justify-end items-center relative text-sm w-full grow sm:w-1/2">
         <Button onClick={handleRemove} className="mt-2 w-[160px]">
-          Сбросить
+          Сбросить все
         </Button>
       </div>
     </div>

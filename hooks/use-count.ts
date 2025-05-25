@@ -49,18 +49,6 @@ export const useCounts = (): ReturnProps => {
     getCounts();
   }, []);
 
-  // React.useEffect(() => {
-  //   async function getCounts() {
-  //     try {
-  //       const maxCount = await Api.count.getMaxCount();
-  //       setCount(maxCount);
-  //       console.log("maxCount", maxCount);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   }
-  //   getCounts();
-  // }, []);
   const currentCount = count?.count ? count.count : 1;
   for (let i = 1; i <= currentCount; i++) {
     optionCounts.push({ value: String(i), label: String(i) });

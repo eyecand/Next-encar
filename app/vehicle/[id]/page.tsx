@@ -1,6 +1,7 @@
 import { CarInfo, SliderCarPage } from "@/components/shared";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import ShareButton from "@/components/shared/ShareButton";
+import { detectedDate } from "@/lib/detected-date";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -20,7 +21,7 @@ export default async function CarPage({
   const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
   return (
-    <div className="mx-auto px-5 max-w-[1280px] mt-24">
+    <div className="mx-auto px-5 max-w-7xl mt-24">
       <div className=" py-5 flex items-baseline">
         <h1 className="font-bold text-lg md:text-3xl">
           {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}
@@ -31,6 +32,11 @@ export default async function CarPage({
           title={shareTitle}
           description={shareDescription}
         />
+        <div className=" flex flex-1 justify-end">
+          <div className="text-[14px] sm:text-[16px]">
+            Дата: {detectedDate(vehicleId.created_at)}
+          </div>
+        </div>
       </div>
 
       <Suspense fallback={<p>Loading</p>}>

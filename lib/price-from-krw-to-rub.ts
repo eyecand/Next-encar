@@ -31,7 +31,7 @@ export function FromKRWtoRUB(
   } else {
     if (differentYear < 3) {
       if (origin_price * 0.001 * KRW < 8500 * EUR) {
-        if (engine <= 2000) {
+        if (origin_price * 0.001 * KRW * 0.54 >= engine * 2.5 * EUR) {
           result =
             origin_price * 0.001 * KRW +
             origin_price * 0.001 * KRW * 0.54 +
@@ -43,11 +43,15 @@ export function FromKRWtoRUB(
             origin_price * 0.001 * KRW +
             engine * 2.5 * EUR +
             3400 +
+            3400 +
             100000 +
             2100 * KRW;
         }
-      } else {
-        if (engine <= 2000) {
+      } else if (
+        origin_price * 0.001 * KRW > 8500 * EUR &&
+        origin_price * 0.001 * KRW < 16700 * EUR
+      ) {
+        if (origin_price * 0.001 * KRW * 0.48 >= engine * 3.5 * EUR) {
           result =
             origin_price * 0.001 * KRW +
             origin_price * 0.001 * KRW * 0.48 +
@@ -58,6 +62,63 @@ export function FromKRWtoRUB(
           result =
             origin_price * 0.001 * KRW +
             engine * 3.5 * EUR +
+            3400 +
+            100000 +
+            2100 * KRW;
+        }
+      } else if (
+        origin_price * 0.001 * KRW > 16700 * EUR &&
+        origin_price * 0.001 * KRW < 42300 * EUR
+      ) {
+        if (origin_price * 0.001 * KRW * 0.48 >= engine * 5.5 * EUR) {
+          result =
+            origin_price * 0.001 * KRW +
+            origin_price * 0.001 * KRW * 0.48 +
+            3400 +
+            100000 +
+            2100 * KRW;
+        } else {
+          result =
+            origin_price * 0.001 * KRW +
+            engine * 5.5 * EUR +
+            3400 +
+            100000 +
+            2100 * KRW;
+        }
+      } else if (
+        origin_price * 0.001 * KRW > 42300 * EUR &&
+        origin_price * 0.001 * KRW < 84500 * EUR
+      ) {
+        if (origin_price * 0.001 * KRW * 0.48 >= engine * 15 * EUR) {
+          result =
+            origin_price * 0.001 * KRW +
+            origin_price * 0.001 * KRW * 0.48 +
+            3400 +
+            100000 +
+            2100 * KRW;
+        } else {
+          result =
+            origin_price * 0.001 * KRW +
+            engine * 7.5 * EUR +
+            3400 +
+            100000 +
+            2100 * KRW;
+        }
+      } else if (
+        origin_price * 0.001 * KRW > 84500 * EUR &&
+        origin_price * 0.001 * KRW < 169000 * EUR
+      ) {
+        if (origin_price * 0.001 * KRW * 0.48 >= engine * 7.5 * EUR) {
+          result =
+            origin_price * 0.001 * KRW +
+            origin_price * 0.001 * KRW * 0.48 +
+            3400 +
+            100000 +
+            2100 * KRW;
+        } else {
+          result =
+            origin_price * 0.001 * KRW +
+            engine * 15 * EUR +
             3400 +
             100000 +
             2100 * KRW;

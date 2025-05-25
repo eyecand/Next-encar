@@ -7,13 +7,11 @@ import {
 import { IoCopyOutline } from "react-icons/io5";
 import { detectFuels } from "@/lib/detect-fuels";
 import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
-import { useCBRStore } from "@/store/cbr";
-import { useEURStore } from "@/store/eur";
 import { Button } from "../ui/button";
 import { VehicleIdProps } from "@/app/vehicle/[id]/model";
 import { detectTransmission } from "./form-korea-cars/second-line/lib";
 import { detectMake } from "./form-korea-cars/first-line/lib";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoIosCheckmark } from "react-icons/io";
 import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
 export const CarInfo = ({
@@ -41,12 +39,14 @@ export const CarInfo = ({
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);
-  const cbr = useCBRStore((state) => state.cbr);
-  const EUR = useEURStore((state) => state.eur);
+  const [CBR, setCBR] = useState<CBRPRops | null>(null);
+  useEffect(() => {
+    const localStoredKRW = localStorage.getItem("cbrData");
+    if (localStoredKRW) setCBR(JSON.parse(localStoredKRW));
+  }, []);
   const realFuel = details?.fuel.fuel_english
     ? details?.fuel.fuel_english
     : "Gasoline";
-
   return (
     <div className="w-full md:w-1/2">
       <div className="flex">
@@ -192,8 +192,8 @@ export const CarInfo = ({
                   .format(
                     FromKRWtoRUB(
                       Number(advertisements?.price) * 10000,
-                      cbr,
-                      EUR,
+                      Number((Number(CBR?.Valute.KRW.Value) * 1.05).toFixed(2)),
+                      Number(CBR?.Valute.EUR.Value),
                       Number(details?.engine_displacement),
                       realFuel,
                       Number(details?.form_year)
@@ -210,8 +210,8 @@ export const CarInfo = ({
           fuel={realFuel}
           priceEn={Number(advertisements?.price) * 10000}
           year={Number(details?.form_year)}
-          EUR={EUR}
-          KRW={cbr}
+          EUR={Number(CBR?.Valute.EUR.Value)}
+          KRW={Number((Number(CBR?.Valute.KRW.Value) * 1.05).toFixed(2))}
         />
         <p className="text-sm text-zinc-600 mt-6 mb-6">
           Стоимость является ориентировочной, включая все расходы в г.
@@ -219,7 +219,11 @@ export const CarInfo = ({
           оставив заявку, чтобы получить консультацию.
         </p>
         <a
-          href={`https://t.me/Avademus?text=Просматривал данный авто, ${copyLink}`}
+          href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
+            String(details?.makes.make_short_name)
+          )}, ${details?.model.model_short_name}, ${details?.form_year} г., ${
+            details?.engine_displacement
+          } см3, ${copyLink}`}
         >
           <button className="w-full p-4 bg-blue-600 text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-blue-600/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
             оставить заявку
@@ -230,3 +234,22 @@ export const CarInfo = ({
     </div>
   );
 };
+interface CBRPRops {
+  Date: string; // Или Date, если будете парсить строку в Date объект
+  PreviousDate: string; // Или Date
+  PreviousURL: string;
+  Timestamp: string; // Или Date
+  Valute: {
+    [key: string]: ValuteData; // Индексный тип для динамических ключей валют (AUD, AZN, ...)
+  };
+}
+
+interface ValuteData {
+  ID: string;
+  NumCode: string;
+  CharCode: string;
+  Nominal: number;
+  Name: string;
+  Value: number;
+  Previous: number;
+}

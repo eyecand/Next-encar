@@ -82,7 +82,6 @@ export const findVehicle = async (
   const currentMinPrice = Number(priceMin) || DEFAULT_MIN_PRICE;
   const currentMaxPrice = Number(priceMax) || DEFAULT_MAX_PRICE;
   const currentRobber = robber ? robber : 1;
-  console.log("insuare", insuarePrice);
   let benefit = {};
 
   if (insuarePrice === "1" && insuarePrice !== undefined) {
@@ -106,7 +105,6 @@ export const findVehicle = async (
       gt: 3000100,
     };
   }
-  console.log("ben", benefit);
   const vehiclePromise = prisma.active_lots.findMany({
     // where: {
     //   details: {
@@ -344,9 +342,7 @@ export const findVehicle = async (
   const vahicleAll = vehicle.filter(
     (item) => item.encar.accident_details.length > 0
   );
-  // console.log("min", currentMinYear);
-  // console.log("max", currentMaxYear);
-  // console.log("total", totalPage);
+
   return { vahicleAll, totalPage };
 };
 

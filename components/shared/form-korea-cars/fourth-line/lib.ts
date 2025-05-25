@@ -10,8 +10,8 @@ export function detectSort(sort: string) {
     mileageMin: "Пробег по убыванию",
     engineMax: "Объем по возрастанию",
     engineMin: "Объем по убыванию",
-    dateMax: "Дата добавления по возрастанию",
-    dateMin: "Дата добавления по убыванию",
+    dateMax: "Сначала старые",
+    dateMin: "Сначала новые",
   };
   return currentSort[sort];
 }

@@ -4,6 +4,7 @@ export interface VehicleListProps {
   vehicle: {
     encar: {
       id: bigint;
+      created_at: Date;
       advertisements: { price: number } | null;
       details: {
         makes: {
