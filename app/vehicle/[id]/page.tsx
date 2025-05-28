@@ -5,7 +5,6 @@ import { detectedDate } from "@/lib/detected-date";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { DetectedFullYear } from "@/lib/detected-full-year";
 export default async function CarPage({
   params,
 }: {

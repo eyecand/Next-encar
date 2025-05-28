@@ -1,10 +1,10 @@
 export function DetectedFullYear(dateold: string) {
   let diff = 0;
-  let ynew = new Date().getFullYear();
-  let mnew = new Date().getMonth();
-  let oldDate = new Date(dateold);
-  let yold = oldDate.getFullYear();
-  let mold = oldDate.getMonth();
+  const ynew = new Date().getFullYear();
+  const mnew = new Date().getMonth();
+  const oldDate = new Date(dateold);
+  const yold = oldDate.getFullYear();
+  const mold = oldDate.getMonth();
   diff = ynew - yold;
   if (diff < 3) {
     return diff;
