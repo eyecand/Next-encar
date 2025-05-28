@@ -6,7 +6,7 @@ import { useEURStore } from "@/store/eur";
 
 type Props = {
   price_origion: number | null;
-  years: number;
+  years: string;
   fuel: string | null;
   engine: number;
   isMobile: boolean;

@@ -36,6 +36,7 @@ export type VehicleIdProps = {
       model_short_name: string | null;
     };
     makes: { make_short_name: string | null };
+    release_date: Date;
     grades: {
       grade_english: string | null;
     };
@@ -76,6 +77,7 @@ export type StatisticAlertDialogProps = {
     };
     form_year: number;
     mileage: number;
+    release_date: Date;
     engine_displacement: number;
     transmission: { transmission_english: string | null };
   } | null;

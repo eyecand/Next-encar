@@ -5,7 +5,7 @@ export type BlockItemProps = {
 
 export type PriceInfoProps = {
   priceEn: number;
-  year: number;
+  year: string;
   engine: number;
   fuel: string;
   EUR?: number;

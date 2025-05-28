@@ -6,93 +6,89 @@ export function CustomsDuty(
   fuel: string,
   year: number
 ) {
-  const currentYear = new Date().getFullYear();
-  const differentYear = currentYear - year;
   let result = 0;
   if (fuel === "Electricity") {
-    if (differentYear < 3) {
+    if (year < 3) {
       result =
         origin_price * 0.001 * KRW * 0.15 +
-        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2 +
-        3400;
+        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2;
     } else {
       result =
         origin_price * 0.001 * KRW * 0.15 +
-        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2 +
-        5200;
+        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2;
     }
   } else {
-    if (differentYear < 3) {
+    if (year < 3) {
       if (origin_price * 0.001 * KRW < 8500 * EUR) {
         if (origin_price * 0.001 * KRW * 0.54 >= engine * 2.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.54 + 3400;
+          result = origin_price * 0.001 * KRW * 0.54;
         } else {
-          result = engine * 2.5 * EUR + 3400;
+          result = engine * 2.5 * EUR;
         }
       } else if (
         origin_price * 0.001 * KRW > 8500 * EUR &&
         origin_price * 0.001 * KRW < 16700 * EUR
       ) {
         if (origin_price * 0.001 * KRW * 0.48 >= engine * 3.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48 + 3400;
+          result = origin_price * 0.001 * KRW * 0.48;
         } else {
-          result = engine * 3.5 * EUR + 3400;
+          result = engine * 3.5 * EUR;
         }
       } else if (
         origin_price * 0.001 * KRW > 16700 * EUR &&
         origin_price * 0.001 * KRW < 42300 * EUR
       ) {
         if (origin_price * 0.001 * KRW * 0.48 >= engine * 5.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48 + 3400;
+          result = origin_price * 0.001 * KRW * 0.48;
         } else {
-          result = engine * 5.5 * EUR + 3400;
+          result = engine * 5.5 * EUR;
         }
       } else if (
         origin_price * 0.001 * KRW > 42300 * EUR &&
         origin_price * 0.001 * KRW < 84500 * EUR
       ) {
         if (origin_price * 0.001 * KRW * 0.48 >= engine * 7.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48 + 3400;
+          result = origin_price * 0.001 * KRW * 0.48;
         } else {
-          result = engine * 7.5 * EUR + 3400;
+          result = engine * 7.5 * EUR;
         }
       } else if (
         origin_price * 0.001 * KRW > 84500 * EUR &&
         origin_price * 0.001 * KRW < 169000 * EUR
       ) {
         if (origin_price * 0.001 * KRW * 0.48 >= engine * 15 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48 + 3400;
+          result = origin_price * 0.001 * KRW * 0.48;
         } else {
-          result = engine * 15 * EUR + 3400;
+          result = engine * 15 * EUR;
         }
       }
-    } else if (differentYear >= 3 && differentYear <= 5) {
+    } else if (year >= 3 && year <= 5) {
       if (engine <= 1000) {
-        result = engine * 1.5 * EUR + 5200;
+        result = engine * 1.5 * EUR;
       } else if (engine > 1000 && engine <= 1500) {
-        result = engine * 1.7 * EUR + 5200;
+        result = engine * 1.7 * EUR;
       } else if (engine > 1500 && engine <= 1800) {
-        result = engine * 2.5 * EUR + 5200;
+        result = engine * 2.5 * EUR;
       } else if (engine > 1800 && engine <= 2300) {
-        result = engine * 2.7 * EUR + 5200;
+        result = engine * 2.7 * EUR;
       } else if (engine > 2300 && engine <= 3000) {
-        result = engine * 3 * EUR + 5200;
+        result = engine * 3 * EUR;
       } else if (engine > 3000) {
-        result = engine * 3.6 * EUR + 5200;
+        result = engine * 3.6 * EUR;
       }
-    } else if (differentYear > 5) {
+    } else if (year > 5) {
       if (engine <= 1000) {
-        result = engine * 3 * EUR + 5200;
+        result = engine * 3 * EUR;
       } else if (engine > 1000 && engine <= 1500) {
-        result = engine * 3.2 * EUR + 5200;
+        result = engine * 3.2 * EUR;
       } else if (engine > 1500 && engine <= 1800) {
-        result = engine * 3.5 * EUR + 5200;
+        result = engine * 3.5 * EUR;
       } else if (engine > 1800 && engine <= 2300) {
-        result = engine * 4.8 * EUR + 5200;
+        result = engine * 4.8 * EUR;
       } else if (engine > 2300 && engine <= 3000) {
-        result = engine * 5 * EUR + 5200;
+        result = engine * 5 * EUR;
       } else if (engine > 3000) {
-        result = engine * 5.7 * EUR + 5200;
+        result = engine * 5.7 * EUR;
       }
     }
   }

@@ -54,6 +54,7 @@ export const findVehicleId = async (id: string) => {
           form_year: true,
           engine_displacement: true,
           mileage: true,
+          release_date: true,
           fuel: {
             select: {
               fuel_english: true,

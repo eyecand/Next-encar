@@ -14,6 +14,8 @@ import { TooltipUI } from "./lib/tooltip-ui";
 import { CustomsDuty } from "./lib/customs-duty";
 import { PriceInfoProps } from "./model";
 import { useEffect, useRef, useState } from "react";
+import { DetectedFullYear } from "@/lib/detected-full-year";
+import { CalculationUtilSbor } from "@/lib/calculation-util-sbor";
 
 export const CalculationAlert = ({
   priceEn,
@@ -52,6 +54,8 @@ export const CalculationAlert = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, setIsOpen]);
+  const differentYear = DetectedFullYear(year);
+  const util = CalculationUtilSbor(Number(differentYear), engine);
   const customs = 100000; //таможня
   const customsCoast = CustomsDuty(
     priceEn,
@@ -59,11 +63,11 @@ export const CalculationAlert = ({
     Number(EUR),
     engine,
     fuel,
-    year
+    differentYear
   );
   const fraht = 2100000;
   const totalKorea = Math.floor(priceEn + fraht);
-  const totalRussia = customsCoast + customs;
+  const totalRussia = customsCoast + customs + util;
   const total = Math.floor(totalKorea * Number(KRW) * 0.001) + totalRussia;
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -216,6 +220,21 @@ export const CalculationAlert = ({
                 <PriceView
                   tilda={true}
                   price={String(customsCoast)}
+                  label="₽"
+                  className="whitespace-nowrap font-semibold"
+                />
+              </div>
+            </div>
+            <div className="my-6 pt-6 border-t border-zinc-100">
+              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
+                <div className="flex items-center justify-start gap-2">
+                  {" "}
+                  Утил. сбор
+                </div>
+
+                <PriceView
+                  tilda={true}
+                  price={String(util)}
                   label="₽"
                   className="whitespace-nowrap font-semibold"
                 />

@@ -182,6 +182,13 @@ export const findVehicleV2 = async (
               engine_displacement: true,
               engine_displacement_liters: true,
               mileage: true,
+              release_date: true,
+            },
+          },
+          accident: {
+            select: {
+              other_accident_count: true,
+              current_accident_count: true,
             },
           },
           lib_sell_types: { select: { sell_type: true } },
@@ -295,11 +302,16 @@ export interface ReturnProps {
         };
         form_year: number;
         mileage: number;
+        release_date: Date;
         engine_displacement: number;
         engine_displacement_liters: number | null | Decimal;
         fuel: {
           fuel_english: string | null;
         };
+      } | null;
+      accident: {
+        current_accident_count: number;
+        other_accident_count: number;
       } | null;
       lib_sell_types: { sell_type: string };
       photos: {

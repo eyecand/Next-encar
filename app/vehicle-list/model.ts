@@ -18,11 +18,16 @@ export interface VehicleListProps {
         };
         form_year: number;
         mileage: number;
+        release_date: Date;
         engine_displacement: number;
         engine_displacement_liters: Decimal | number | null;
         fuel: {
           fuel_english: string | null;
         };
+      } | null;
+      accident: {
+        current_accident_count: number;
+        other_accident_count: number;
       } | null;
       lib_sell_types: { sell_type: string };
       photos: {

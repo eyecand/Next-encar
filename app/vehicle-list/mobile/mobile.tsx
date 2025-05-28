@@ -73,6 +73,16 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                           </div>
                         </div>
                       )}
+                      {Number(item.encar.accident?.current_accident_count) +
+                      Number(item.encar.accident?.other_accident_count) ? (
+                        <div className="button flex ">
+                          <div className="inline-flex bg-rose-50 border-rose-100 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-rose-600 px-3 py-[10px] rounded-xl mt-1">
+                            Был в аварии
+                          </div>
+                        </div>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <div className="align-middle flex py-3 text-gray-900 text-[12px] lg:text-sm justify-between items-baseline border-b  border-gray-200 relative">
@@ -134,7 +144,7 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                   <div className="flex justify-between items-center text-black text-wrap text-[14px] whitespace-nowrap font-semibold px-2 pb-5">
                     <PriceAll
                       price_origion={Number(item.encar.advertisements?.price)}
-                      years={item.encar.details.form_year}
+                      years={String(item.encar.details.release_date)}
                       fuel={item.encar.details.fuel.fuel_english}
                       engine={item.encar.details.engine_displacement}
                       isMobile={true}

@@ -196,7 +196,7 @@ export const CarInfo = ({
                       Number(CBR?.Valute.EUR.Value),
                       Number(details?.engine_displacement),
                       realFuel,
-                      Number(details?.form_year)
+                      String(details?.release_date)
                     )
                   )
                   .replace(",", ".")}{" "}
@@ -209,7 +209,7 @@ export const CarInfo = ({
           engine={Number(details?.engine_displacement)}
           fuel={realFuel}
           priceEn={Number(advertisements?.price) * 10000}
-          year={Number(details?.form_year)}
+          year={String(details?.release_date)}
           EUR={Number(CBR?.Valute.EUR.Value)}
           KRW={Number((Number(CBR?.Valute.KRW.Value) * 1.05).toFixed(2))}
         />
@@ -223,9 +223,9 @@ export const CarInfo = ({
             String(details?.makes.make_short_name)
           )}, ${details?.model.model_short_name}, ${details?.form_year} г., ${
             details?.engine_displacement
-          } см3, ${copyLink}`}
+          } см3, ${copyLink}. Хочу получить консультацию.`}
         >
-          <button className="w-full p-4 bg-blue-600 text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-blue-600/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
+          <button className="w-full p-4 bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-bg-[#e05358]/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
             оставить заявку
           </button>
         </a>

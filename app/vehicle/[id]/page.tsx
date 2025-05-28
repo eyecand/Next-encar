@@ -5,7 +5,7 @@ import { detectedDate } from "@/lib/detected-date";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-
+import { DetectedFullYear } from "@/lib/detected-full-year";
 export default async function CarPage({
   params,
 }: {
@@ -20,6 +20,7 @@ export default async function CarPage({
   const shareUrl = `https://autofish.ru/vehicle/${id}`;
   const shareTitle = "Добый день! ";
   const shareDescription = "Просматриваю это объявление.";
+
   return (
     <div className="mx-auto px-5 max-w-7xl mt-24">
       <div className=" py-5 flex items-baseline">

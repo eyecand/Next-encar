@@ -20,8 +20,12 @@ export const StatisticAlertDialog = ({
   accident_details,
 }: StatisticAlertDialogProps) => {
   const dialogRef = useRef<HTMLDivElement>(null);
-
   const [isOpen, setIsOpen] = useState(false);
+
+  const manufacturerYear = new Date(
+    String(details?.release_date)
+  ).getFullYear();
+  const manufacturerMonth = new Date(String(details?.release_date)).getMonth();
 
   const openDialog = () => {
     setIsOpen(true);
@@ -94,7 +98,7 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Год производства:
               <span className="text-base font-semibold text-black uppercase">
-                {details?.form_year}
+                {`${manufacturerMonth + 1}.${manufacturerYear}`}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
