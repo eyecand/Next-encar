@@ -1,4 +1,5 @@
 import { HeaderVehicleId } from "@/components/shared/header-vehicle-id";
+import YandexMetrika from "@/components/shared/yandex-metrika";
 
 export default function VehicleIdLayout({
   children,
@@ -8,7 +9,7 @@ export default function VehicleIdLayout({
   return (
     <section>
       <HeaderVehicleId />
-      {children}
+      {children} <YandexMetrika />
     </section>
   );
 }

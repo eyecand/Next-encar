@@ -18,7 +18,7 @@ export const LoadingSpinner = () => {
             fill="currentFill"
           />
         </svg>{" "}
-        <span>Loading...</span>
+        {/* <span>Loading...</span> */}
       </div>
     </div>
   );

@@ -6,6 +6,6 @@ interface State {
 }
 
 export const useCBRStore = create<State>()((set) => ({
-  cbr: 1,
+  cbr: 57.2691,
   setCBRStore: (cbr: number) => set({ cbr }),
 }));
