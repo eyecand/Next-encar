@@ -5,11 +5,12 @@ export function DetectedFullYear(dateold: string) {
   const oldDate = new Date(dateold);
   const yold = oldDate.getFullYear();
   const mold = oldDate.getMonth();
+
   diff = ynew - yold;
   if (diff < 3) {
     return diff;
   } else if (diff === 3) {
-    if (mnew <= mold) {
+    if (mnew >= mold) {
       return diff;
     } else {
       diff = diff - 1;

@@ -59,7 +59,6 @@ export const Header = () => {
     try {
       const cachedData = localStorage.getItem(CBR_DATA_KEY);
       const cachedTime = localStorage.getItem(`${CBR_DATA_KEY}_time`);
-
       if (
         cachedData &&
         cachedTime &&
@@ -92,6 +91,7 @@ export const Header = () => {
   useEffect(() => {
     getCBR();
   }, [getCBR]);
+
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-1 text-md ">

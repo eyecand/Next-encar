@@ -13,7 +13,6 @@ export function FromKRWtoRUB(
   const differentYear = DetectedFullYear(year);
   const util = CalculationUtilSbor(Number(differentYear), engine);
   let result = 0;
-
   if (fuel === "Electricity") {
     if (differentYear < 3) {
       result =
