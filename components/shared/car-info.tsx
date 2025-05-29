@@ -66,6 +66,12 @@ export const CarInfo = ({
               " China Manufacturer",
               ""
             )}{" "}
+            {details?.grades.grade_detail_english
+              ? String(details?.grades.grade_detail_english).replace(
+                  " China Manufacturer",
+                  ""
+                )
+              : ""}{" "}
             {totalAccident ? (
               <span className="bg-rose-50 border-rose-100 text-[13px] text-rose-600 ml-1 lg:ml-4 px-3 py-1 rounded-full">
                 был в аварии

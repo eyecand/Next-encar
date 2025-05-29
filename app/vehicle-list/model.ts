@@ -15,6 +15,7 @@ export interface VehicleListProps {
         };
         grades: {
           grade_english: string | null;
+          grade_detail_english: string | null;
         };
         form_year: number;
         mileage: number;

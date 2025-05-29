@@ -219,7 +219,9 @@ export const findVehicleV2 = async (
             select: {
               makes: { select: { make_short_name: true } },
               model: { select: { model_short_name: true } },
-              grades: { select: { grade_english: true } },
+              grades: {
+                select: { grade_english: true, grade_detail_english: true },
+              },
               fuel: { select: { fuel_english: true } },
               form_year: true,
               engine_displacement: true,
@@ -342,6 +344,7 @@ export interface ReturnProps {
         };
         grades: {
           grade_english: string | null;
+          grade_detail_english: string | null;
         };
         form_year: number;
         mileage: number;

@@ -94,7 +94,12 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                         <span className="whitespace-nowrap">
                           {String(
                             item.encar.details.grades.grade_english
-                          ).replace(" China Manufacturer", "")}
+                          ).replace(" China Manufacturer", "")}{" "}
+                          {item.encar.details.grades.grade_detail_english
+                            ? String(
+                                item.encar.details.grades.grade_detail_english
+                              ).replace(" China Manufacturer", "")
+                            : ""}
                         </span>
                       </div>
                     </div>

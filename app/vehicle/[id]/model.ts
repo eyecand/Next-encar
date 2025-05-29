@@ -39,6 +39,7 @@ export type VehicleIdProps = {
     release_date: Date;
     grades: {
       grade_english: string | null;
+      grade_detail_english: string | null;
     };
     fuel: {
       fuel_english: string | null;
@@ -68,6 +69,7 @@ export type StatisticAlertDialogProps = {
     makes: { make_short_name: string | null };
     grades: {
       grade_english: string | null;
+      grade_detail_english: string | null;
     };
     fuel: {
       fuel_english: string | null;

@@ -92,7 +92,13 @@ export const StatisticAlertDialog = ({
                 {String(details?.grades.grade_english).replace(
                   " China Manufacturer",
                   ""
-                )}
+                )}{" "}
+                {details?.grades.grade_detail_english
+                  ? String(details?.grades.grade_detail_english).replace(
+                      " China Manufacturer",
+                      ""
+                    )
+                  : ""}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
