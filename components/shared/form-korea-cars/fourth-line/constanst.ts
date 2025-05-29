@@ -20,7 +20,15 @@ export const optionBenefit: Option[] = [
   },
   {
     value: "2",
-    label: "Есть",
+    label: "до 1 000 000 W",
+  },
+  {
+    value: "1",
+    label: "от 1 000 000 - 3 000 000 W",
+  },
+  {
+    value: "4",
+    label: "больше 3 000 000 W",
   },
 ];
 

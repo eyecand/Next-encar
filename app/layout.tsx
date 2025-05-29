@@ -33,7 +33,7 @@ export default function RootLayout({
         <main>
           <Header />
           {children}
-          <YandexMetrika />
+          {/* <YandexMetrika /> */}
         </main>
       </body>
     </html>

@@ -117,24 +117,6 @@ export const CalculationAlert = ({
         <div className="mt-5 flex flex-col lg:flex-row gap-4 lg:gap-12">
           <div className="lg:basis-1/2">
             <div>
-              <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
-                Итого в Корее{" "}
-                <span className="whitespace-nowrap font-semibold text-red-600">
-                  <PriceView
-                    tilda={true}
-                    className="text-red-400 font-normal text-sm mr-2"
-                    price={String(totalKorea)}
-                    label="₩"
-                  />
-                  ~{" "}
-                  <PriceViewCalclation
-                    className="text-lg"
-                    label="₽"
-                    valute={Number(KRW)}
-                    price={totalKorea}
-                  />
-                </span>
-              </p>
               <div className="my-6 pl-7 pt-6 border-t border-zinc-100">
                 <p className="text-base flex items-start justify-between gap-4 text-zinc-700">
                   Цена авто{" "}
@@ -183,15 +165,6 @@ export const CalculationAlert = ({
             </div>
           </div>
           <div className="lg:basis-1/2">
-            <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
-              Итого в России
-              <PriceView
-                tilda={true}
-                price={String(totalRussia)}
-                label="₽"
-                className="whitespace-nowrap font-semibold text-red-600"
-              />
-            </p>
             <div className="my-6 pt-6 border-t border-zinc-100">
               <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
                 <div className="flex items-center justify-start gap-2">
@@ -240,6 +213,39 @@ export const CalculationAlert = ({
                 />
               </div>
             </div>
+          </div>
+        </div>
+        <div className="flex flex-col lg:flex-row  -mt-8 lg:-mt-0  ">
+          <div className="lg:basis-1/2 lg:pr-2">
+            <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
+              Итого в Корее{" "}
+              <span className="whitespace-nowrap font-semibold text-red-600">
+                <PriceView
+                  tilda={true}
+                  className="text-red-400 font-normal text-sm mr-2"
+                  price={String(totalKorea)}
+                  label="₩"
+                />
+                ~{" "}
+                <PriceViewCalclation
+                  className="text-lg"
+                  label="₽"
+                  valute={Number(KRW)}
+                  price={totalKorea}
+                />
+              </span>
+            </p>
+          </div>
+          <div className="lg:basis-1/2 lg:pl-6">
+            <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
+              Итого в России
+              <PriceView
+                tilda={true}
+                price={String(totalRussia)}
+                label="₽"
+                className="whitespace-nowrap font-semibold text-red-600"
+              />
+            </p>
           </div>
         </div>
         <div className="bg-zinc-50 -mx-6 p-6 relative min-w-full flex items-center justify-center my-4 text-red-600 gap-2 text-xl font-bold">

@@ -113,13 +113,13 @@ export const StatisticAlertDialog = ({
                 {detectFuels(String(details?.fuel.fuel_english))}
               </span>
             </div>
-            <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
+            {/* <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Дата первой страховки:
               <span className="text-base font-semibold text-black">
                 {accident_details.length > 0 &&
                   accident_details.reverse()[0].date.toLocaleDateString()}
               </span>
-            </div>
+            </div> */}
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Номер авто:
               <span className="text-base font-semibold text-black">

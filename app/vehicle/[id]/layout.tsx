@@ -9,7 +9,8 @@ export default function VehicleIdLayout({
   return (
     <section>
       <HeaderVehicleId />
-      {children} <YandexMetrika />
+      {children}
+      {/* <YandexMetrika /> */}
     </section>
   );
 }

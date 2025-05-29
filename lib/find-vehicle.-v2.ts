@@ -44,9 +44,52 @@ export const findVehicleV2 = async (
   let benefit = {};
   if (insuarePrice === "3") {
     benefit = { every: { insurance_benefit: { equals: 0 } } };
-  }
-  if (insuarePrice === "2") {
-    benefit = { some: { insurance_benefit: { gt: 2 } } };
+  } else if (insuarePrice === "2") {
+    benefit = {
+      some: {
+        AND: [
+          { insurance_benefit: { not: undefined } },
+          { insurance_benefit: { lt: 1000000 } },
+        ],
+      },
+      none: {
+        OR: [
+          { insurance_benefit: undefined },
+          { insurance_benefit: { gte: 1000000 } },
+        ],
+      },
+    };
+  } else if (insuarePrice === "1") {
+    benefit = {
+      some: {
+        AND: [
+          { insurance_benefit: { not: undefined } },
+          { insurance_benefit: { gte: 1000000, lt: 3000000 } },
+        ],
+      },
+      none: {
+        OR: [
+          { insurance_benefit: undefined },
+          { insurance_benefit: { lt: 1000000 } },
+          { insurance_benefit: { gte: 3000000 } },
+        ],
+      },
+    };
+  } else if (insuarePrice === "4") {
+    benefit = {
+      some: {
+        AND: [
+          { insurance_benefit: { not: undefined } },
+          { insurance_benefit: { gte: 3000000 } },
+        ],
+      },
+      none: {
+        OR: [
+          { insurance_benefit: undefined },
+          { insurance_benefit: { lt: 3000000 } },
+        ],
+      },
+    };
   }
 
   let sortLabel = {};
