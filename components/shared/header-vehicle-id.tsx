@@ -34,7 +34,7 @@ export const HeaderVehicleId = () => {
 
         <div className="hidden md:flex  items-center ">
           <span className="text-white">
-            KRW/RUB: {KRW && (Number(KRW.Valute.KRW.Value) * 1.05).toFixed(2)}
+            KRW/RUB: {KRW && (Number(KRW.Valute.KRW.Value) * 1.08).toFixed(2)}
           </span>
         </div>
         <div className="hidden md:flex items-center">

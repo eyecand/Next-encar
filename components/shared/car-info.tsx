@@ -198,7 +198,7 @@ export const CarInfo = ({
                   .format(
                     FromKRWtoRUB(
                       Number(advertisements?.price) * 10000,
-                      Number((Number(CBR?.Valute.KRW.Value) * 1.05).toFixed(2)),
+                      Number((Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)),
                       Number(CBR?.Valute.EUR.Value),
                       Number(details?.engine_displacement),
                       realFuel,
@@ -217,7 +217,7 @@ export const CarInfo = ({
           priceEn={Number(advertisements?.price) * 10000}
           year={String(details?.release_date)}
           EUR={Number(CBR?.Valute.EUR.Value)}
-          KRW={Number((Number(CBR?.Valute.KRW.Value) * 1.05).toFixed(2))}
+          KRW={Number((Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2))}
         />
         <p className="text-sm text-zinc-600 mt-6 mb-6">
           Стоимость является ориентировочной, включая все расходы в г.

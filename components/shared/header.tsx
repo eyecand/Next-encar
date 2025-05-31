@@ -48,7 +48,7 @@ export const Header = () => {
   const updateCBRStore = useCallback(
     (data: CBRPRops) => {
       if (data) {
-        setCBRAll(Number((data.Valute.KRW.Value * 1.05).toFixed(2)));
+        setCBRAll(Number((data.Valute.KRW.Value * 1.08).toFixed(2)));
         setCurrentEUR(data.Valute.EUR.Value);
       }
     },
@@ -118,7 +118,7 @@ export const Header = () => {
 
         <div className="hidden md:flex  items-center ">
           <span className="text-white">
-            KRW/RUB: {(Number(cbr?.Valute.KRW.Value) * 1.05).toFixed(2)}
+            KRW/RUB: {(Number(cbr?.Valute.KRW.Value) * 1.08).toFixed(2)}
           </span>
         </div>
         <div className="hidden md:flex items-center">
