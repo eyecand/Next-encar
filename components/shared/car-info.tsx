@@ -177,7 +177,7 @@ export const CarInfo = ({
       <div className="border-t border-zinc-200 mt-6 pt-6">
         <div className="table price w-full">
           <div className="flex justify-between items-center text-sm text-zinc-500 mb-2">
-            <span>Типо ввоза</span>
+            <span>Тип ввоза</span>
             <span>Итоговая стоимость</span>
           </div>
           <div className="flex flex-col gap-4">
