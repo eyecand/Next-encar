@@ -16,6 +16,7 @@ import { PriceInfoProps } from "./model";
 import { useEffect, useRef, useState } from "react";
 import { DetectedFullYear } from "@/lib/detected-full-year";
 import { CalculationUtilSbor } from "@/lib/calculation-util-sbor";
+import { cn } from "@/lib/utils";
 
 export const CalculationAlert = ({
   priceEn,
@@ -65,10 +66,42 @@ export const CalculationAlert = ({
     fuel,
     differentYear
   );
+  const Poshlina = (year: string) => {
+    let x = false;
+    const ycurrent = new Date().getFullYear();
+    const mcurrent = new Date().getMonth();
+    const dateCar = new Date(year);
+    const yCar = dateCar.getFullYear();
+    const mCar = dateCar.getMonth();
+    if (yCar === ycurrent - 2) {
+      if (mCar <= mcurrent) x = true;
+    } else if (yCar === ycurrent - 3) {
+      if (mCar > mcurrent) x = true;
+    }
+    return x;
+  };
+  let totalPoshlina = 0;
+  const isPoshlina = Poshlina(year);
   const fraht = 2100000;
   const totalKorea = Math.floor(priceEn + fraht);
   const totalRussia = customsCoast + customs + util;
   const total = Math.floor(totalKorea * Number(KRW) * 0.001) + totalRussia;
+  if (isPoshlina) {
+    const newUtil = CalculationUtilSbor(4, engine);
+    const newPoshlina = CustomsDuty(
+      priceEn,
+      Number(KRW),
+      Number(EUR),
+      engine,
+      fuel,
+      4
+    );
+    totalPoshlina =
+      Math.floor(totalKorea * Number(KRW) * 0.001) +
+      customs +
+      newUtil +
+      newPoshlina;
+  }
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild onClick={openDialog}>
@@ -137,7 +170,7 @@ export const CalculationAlert = ({
                 </p>
               </div>
               <div className="my-6 pt-6 border-t border-zinc-100">
-                <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
+                <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
                   <div className="flex items-center justify-start gap-2">
                     <TooltipUI
                       title={
@@ -166,9 +199,9 @@ export const CalculationAlert = ({
           </div>
           <div className="lg:basis-1/2">
             <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
+              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
                 <div className="flex items-center justify-start gap-2">
-                  <span className="whitespace-nowrap font-semibold text-zinc-600">
+                  <span className="whitespace-nowrap  text-zinc-600">
                     Услуги брокера
                   </span>
                 </div>
@@ -181,7 +214,7 @@ export const CalculationAlert = ({
               </div>
             </div>
             <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
+              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
                 <div className="flex items-center justify-start gap-2">
                   {" "}
                   Пошлина
@@ -199,7 +232,7 @@ export const CalculationAlert = ({
               </div>
             </div>
             <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 cursor-pointer group">
+              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
                 <div className="flex items-center justify-start gap-2">
                   {" "}
                   Утил. сбор
@@ -248,14 +281,43 @@ export const CalculationAlert = ({
             </p>
           </div>
         </div>
-        <div className="bg-zinc-50 -mx-6 p-6 relative min-w-full flex items-center justify-center my-4 text-red-600 gap-2 text-xl font-bold">
+        <div
+          className={cn(
+            "bg-zinc-50 -mx-6 p-6 relative min-w-full flex justify-center my-4 text-red-600 gap-2 text-xl font-bold",
+            !isPoshlina && "items-center"
+          )}
+        >
           Итого:{" "}
-          <PriceView
-            tilda={true}
-            className=""
-            label="₽"
-            price={String(total)}
-          />
+          {isPoshlina ? (
+            <div className="flex flex-col">
+              <div>
+                <PriceView
+                  tilda={true}
+                  className=""
+                  label="₽"
+                  price={String(total)}
+                />
+              </div>
+              <div>
+                <PriceView
+                  tilda={true}
+                  className=""
+                  label="₽"
+                  price={String(totalPoshlina)}
+                />{" "}
+                <span className="text-zinc-700 font-normal text-sm md:text-base">
+                  (от 3х до 5 лет)
+                </span>
+              </div>
+            </div>
+          ) : (
+            <PriceView
+              tilda={true}
+              className=""
+              label="₽"
+              price={String(total)}
+            />
+          )}
           {fuel === "Electricity" && (
             <TooltipUI title="Для более кореектного расчета свяжитесь с оператором" />
           )}
