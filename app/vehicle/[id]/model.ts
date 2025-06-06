@@ -18,13 +18,17 @@ type AccidentDetailsProps = {
 };
 type DiagnosticsProps = {
   actual_diagnostic_date: Date;
-  diagnosis: {
-    diagnosis_code_id: number;
-    diagnosis_result_id: number | null;
-    comments: {
-      comment_russian: string | null;
-    } | null;
-  }[];
+  diagnosis:
+    | {
+        diagnosis_code_id: number;
+        diagnosis_result_id: number | null;
+        comments:
+          | {
+              comment_russian: string | null;
+            }
+          | null
+          | undefined;
+      }[];
 };
 
 export type VehicleIdProps = {

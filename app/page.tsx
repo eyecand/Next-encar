@@ -21,7 +21,7 @@ export default async function Home({
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
   const currentPage = parseInt((page as string) || "0");
   const take = parseInt((pageSize as string) || "10");
-  const show = 1;
+  const show = 0;
   return (
     <>
       <div className="mx-auto flex flex-col flex-1 w-full max-w-5xl mt-10">

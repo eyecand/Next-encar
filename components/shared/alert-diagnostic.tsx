@@ -166,9 +166,11 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
             Инспекция авто
           </h4>
           <div className="flex flex-col">
-            {commentList?.map((item) => (
-              <span className="mb-3" key={item.comments?.comment_russian}>
-                - {item.comments?.comment_russian}
+            {commentList?.map((item, index) => (
+              <span className="mb-3" key={index}>
+                {item.comments?.comment_russian
+                  ? `- ${item.comments?.comment_russian}`
+                  : ""}
               </span>
             ))}
           </div>
