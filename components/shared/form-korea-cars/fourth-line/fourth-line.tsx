@@ -29,7 +29,6 @@ export const FourthLine: React.FC<Props<string | null>> = ({
               classNamePrefix={"benifit"}
               placeholder="Выплаты"
               options={optionBenefit}
-              isDisabled={true}
               value={
                 insuarePrice
                   ? optionBenefit.filter(
