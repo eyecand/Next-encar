@@ -2,7 +2,6 @@ import {
   PaginationWithLinks,
   LoadingSpinner,
   FormKoreaCars,
-  Spinner,
 } from "@/components/shared";
 
 import React, { Suspense } from "react";

@@ -91,8 +91,10 @@ export const findVehicleV2 = async (
       },
     };
   }
-
   let sortLabel = {};
+  if (sort === undefined) sortLabel = { details: { created_at: "desc" } };
+  console.log("sort", sort);
+
   if (sort === "all") {
     sortLabel = {};
   } else if (sort === "priceMin") {
