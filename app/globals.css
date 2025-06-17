@@ -93,6 +93,9 @@
 .yearMax__indicator-separator {
   display: none !important;
 }
+.sort__indicators .sort__indicator-separator {
+  display: none !important;
+}
 
 .yearMin__control--is-focused,
 .yearMax__control--is-focused,

@@ -143,7 +143,7 @@ export const CarInfo = ({
           href={`https://fem.encar.com/cars/detail/${String(auctionId)}`}
         >
           {" "}
-          <Button className=" px-6 py-6 w-full   bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
+          <Button className=" px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
             Перейти к объявлению
           </Button>
         </a>

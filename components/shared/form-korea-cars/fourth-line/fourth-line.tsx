@@ -11,10 +11,8 @@ const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 export const FourthLine: React.FC<Props<string | null>> = ({
   onChangeInsuarePrice,
   onChangeCities,
-  onChangeSort,
   insuarePrice,
   cities,
-  sort,
 }) => {
   const setCityState = useCityState((state) => state.setCityState);
   useEffect(() => {
@@ -64,38 +62,12 @@ export const FourthLine: React.FC<Props<string | null>> = ({
           </div>
         </div>
       </div>
-      <div className="col-span-12 md:col-span-4 lg:col-span-4">
-        <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
-          <div className=" w-full text-[16px] md:text-sm ">
-            <NoSSR
-              classNamePrefix={"sort"}
-              placeholder="Сортировка"
-              options={optionSort}
-              value={
-                sort
-                  ? [
-                      {
-                        value: sort,
-                        label: detectSort(sort),
-                      },
-                    ]
-                  : []
-              }
-              onChange={(option) => {
-                onChangeSort((option as iOption).value);
-              }}
-            />
-          </div>
-        </div>
-      </div>
     </>
   );
 };
 interface Props<T> {
   onChangeInsuarePrice: (value: T) => void;
   onChangeCities: (value: T) => void;
-  onChangeSort: (value: T) => void;
   insuarePrice: string | null;
   cities: string | null;
-  sort: string | null;
 }

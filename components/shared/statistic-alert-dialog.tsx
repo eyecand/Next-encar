@@ -104,7 +104,11 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Год производства:
               <span className="text-base font-semibold text-black uppercase">
-                {`${manufacturerMonth + 1}.${manufacturerYear}`}
+                {`${
+                  manufacturerMonth < 9
+                    ? `0${manufacturerMonth + 1}`
+                    : manufacturerMonth + 1
+                }.${manufacturerYear}`}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">

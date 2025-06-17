@@ -38,16 +38,10 @@ export default async function Home({
             <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
               Autofish - Продажа автомобилей
             </h1>
-            <FormKoreaCars />
+            <FormKoreaCars total={totalPage.toLocaleString()} />
             {/* <FormFilters totalTest={totalPage} /> */}
             {/* Список товаров */}
-            <div className="max-w-5xl p-5">
-              <div className=" border-b-2 py-5">
-                <h2 className="inline-block font-bold text-xl relative subtitle-page">
-                  {totalPage.toLocaleString()} объявления
-                </h2>
-              </div>
-            </div>
+
             <Suspense fallback={<LoadingSpinner />}>
               <VehicleList vehicle={vehicle} />
             </Suspense>

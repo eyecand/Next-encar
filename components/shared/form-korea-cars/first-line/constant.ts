@@ -33,72 +33,32 @@ export const optionMakes: Option[] = [
     label: "Other manufacturers",
   },
   {
+    value: "Acura",
+    label: "Acura",
+  },
+  {
+    value: "Alfa Romeo",
+    label: "Alfa Romeo",
+  },
+  {
+    value: "Astonmartin",
+    label: "Astonmartin",
+  },
+  {
     value: "Audi",
     label: "Audi",
   },
   {
-    value: "BMW",
-    label: "BMW",
-  },
-  {
-    value: "Mercedes-Benz",
-    label: "Mercedes-Benz",
-  },
-  {
-    value: "Porsche",
-    label: "Porsche",
-  },
-  {
-    value: "Volvo",
-    label: "Volvo",
-  },
-  {
-    value: "Land Rover",
-    label: "Land Rover",
-  },
-  {
-    value: "Lincoln",
-    label: "Lincoln",
-  },
-  {
-    value: "Tesla",
-    label: "Tesla",
-  },
-  {
-    value: "Jeep",
-    label: "Jeep",
-  },
-  {
-    value: "Maserati",
-    label: "Maserati",
-  },
-  {
-    value: "Jaguar",
-    label: "Jaguar",
-  },
-  {
-    value: "Infiniti",
-    label: "Infiniti",
-  },
-  {
-    value: "Toyota",
-    label: "Toyota",
+    value: "Baic Yinxiang",
+    label: "Baic Yinxiang",
   },
   {
     value: "Bentley",
     label: "Bentley",
   },
   {
-    value: "Ford",
-    label: "Ford",
-  },
-  {
-    value: "Peugeot",
-    label: "Peugeot",
-  },
-  {
-    value: "Lexus",
-    label: "Lexus",
+    value: "BMW",
+    label: "BMW",
   },
   {
     value: "Cadillac",
@@ -109,131 +69,171 @@ export const optionMakes: Option[] = [
     label: "Chrysler",
   },
   {
-    value: "Mini",
-    label: "Mini",
-  },
-  {
-    value: "Honda",
-    label: "Honda",
-  },
-  {
-    value: "Volkswagen",
-    label: "Volkswagen",
-  },
-  {
-    value: "Nissan",
-    label: "Nissan",
-  },
-  {
-    value: "Astonmartin",
-    label: "Astonmartin",
-  },
-  {
-    value: "Ferrari",
-    label: "Ferrari",
-  },
-  {
-    value: "Rolls-Royce",
-    label: "Rolls-Royce",
-  },
-  {
     value: "Citroen-DS",
     label: "Citroen-DS",
-  },
-  {
-    value: "Hummer",
-    label: "Hummer",
-  },
-  {
-    value: "Lamborghini",
-    label: "Lamborghini",
-  },
-  {
-    value: "Polestar",
-    label: "Polestar",
-  },
-  {
-    value: "Mclaren",
-    label: "Mclaren",
-  },
-  {
-    value: "Dodge",
-    label: "Dodge",
-  },
-  {
-    value: "Fiat",
-    label: "Fiat",
-  },
-  {
-    value: "Lotus",
-    label: "Lotus",
-  },
-  {
-    value: "Saab",
-    label: "Saab",
-  },
-  {
-    value: "GMC",
-    label: "GMC",
-  },
-  {
-    value: "DFSK",
-    label: "DFSK",
   },
   {
     value: "Daihatsu",
     label: "Daihatsu",
   },
   {
-    value: "Smart",
-    label: "Smart",
+    value: "DFSK",
+    label: "DFSK",
   },
   {
-    value: "Suzuki",
-    label: "Suzuki",
+    value: "Dodge",
+    label: "Dodge",
   },
   {
-    value: "Mitsuoka",
-    label: "Mitsuoka",
+    value: "Ferrari",
+    label: "Ferrari",
   },
   {
-    value: "Baic Yinxiang",
-    label: "Baic Yinxiang",
+    value: "Fiat",
+    label: "Fiat",
   },
   {
-    value: "Mazda",
-    label: "Mazda",
+    value: "Ford",
+    label: "Ford",
+  },
+  {
+    value: "GMC",
+    label: "GMC",
+  },
+  {
+    value: "Honda",
+    label: "Honda",
+  },
+  {
+    value: "Hummer",
+    label: "Hummer",
+  },
+  {
+    value: "Infiniti",
+    label: "Infiniti",
+  },
+  {
+    value: "Jaguar",
+    label: "Jaguar",
+  },
+  {
+    value: "Jeep",
+    label: "Jeep",
+  },
+  {
+    value: "Lamborghini",
+    label: "Lamborghini",
+  },
+  {
+    value: "Land Rover",
+    label: "Land Rover",
+  },
+  {
+    value: "Lexus",
+    label: "Lexus",
+  },
+  {
+    value: "Lincoln",
+    label: "Lincoln",
+  },
+  {
+    value: "Lotus",
+    label: "Lotus",
+  },
+  {
+    value: "Maserati",
+    label: "Maserati",
   },
   {
     value: "Maybach",
     label: "Maybach",
   },
   {
-    value: "Subaru",
-    label: "Subaru",
+    value: "Mazda",
+    label: "Mazda",
   },
   {
-    value: "Acura",
-    label: "Acura",
+    value: "Mclaren",
+    label: "Mclaren",
+  },
+  {
+    value: "Mercedes-Benz",
+    label: "Mercedes-Benz",
+  },
+  {
+    value: "Mercury",
+    label: "Mercury",
+  },
+  {
+    value: "Mini",
+    label: "Mini",
   },
   {
     value: "Mitsubishi",
     label: "Mitsubishi",
   },
   {
+    value: "Mitsuoka",
+    label: "Mitsuoka",
+  },
+  {
+    value: "Nissan",
+    label: "Nissan",
+  },
+  {
     value: "Opel",
     label: "Opel",
   },
   {
-    value: "Alfa Romeo",
-    label: "Alfa Romeo",
+    value: "Peugeot",
+    label: "Peugeot",
+  },
+  {
+    value: "Polestar",
+    label: "Polestar",
+  },
+  {
+    value: "Porsche",
+    label: "Porsche",
   },
   {
     value: "Renault",
     label: "Renault",
   },
   {
-    value: "Mercury",
-    label: "Mercury",
+    value: "Rolls-Royce",
+    label: "Rolls-Royce",
+  },
+  {
+    value: "Saab",
+    label: "Saab",
+  },
+  {
+    value: "Smart",
+    label: "Smart",
+  },
+  {
+    value: "Subaru",
+    label: "Subaru",
+  },
+  {
+    value: "Suzuki",
+    label: "Suzuki",
+  },
+  {
+    value: "Tesla",
+    label: "Tesla",
+  },
+  {
+    value: "Toyota",
+    label: "Toyota",
+  },
+  {
+    value: "Volkswagen",
+    label: "Volkswagen",
+  },
+  {
+    value: "Volvo",
+    label: "Volvo",
   },
 ];

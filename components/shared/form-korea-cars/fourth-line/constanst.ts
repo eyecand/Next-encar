@@ -38,6 +38,15 @@ export const optionSort: Option[] = [
     label: "Сортировка",
   },
   {
+    value: "dateMin",
+    label: "Сначала новые",
+  },
+  {
+    value: "dateMax",
+    label: "Сначала старые",
+  },
+
+  {
     value: "priceMax",
     label: "Цена по возрастанию",
   },
@@ -68,13 +77,5 @@ export const optionSort: Option[] = [
   {
     value: "engineMin",
     label: "Объем по убыванию",
-  },
-  {
-    value: "dateMax",
-    label: "Сначала старые",
-  },
-  {
-    value: "dateMin",
-    label: "Сначала новые",
   },
 ];

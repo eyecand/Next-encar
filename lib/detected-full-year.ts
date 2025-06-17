@@ -10,8 +10,12 @@ export function DetectedFullYear(dateold: string) {
   if (diff < 3) {
     return diff;
   } else if (diff === 3) {
-    diff = 3;
-    return diff;
+    if (mnew >= mold) {
+      return diff;
+    } else {
+      diff = diff - 1;
+      return diff;
+    }
   } else if (diff === 5) {
     if (mnew > mold) {
       diff = diff + 1;

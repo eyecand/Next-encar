@@ -44,12 +44,14 @@ export const FirstLine: React.FC<Props<string | null>> = ({
       label: "Любая модель",
     },
   ];
-  mod.map((item) => {
-    return optionsModels.push({
-      value: item.model_short_name,
-      label: item.model_short_name,
+  mod
+    .sort((a, b) => a.model_short_name.localeCompare(b.model_short_name))
+    .map((item) => {
+      return optionsModels.push({
+        value: item.model_short_name,
+        label: item.model_short_name,
+      });
     });
-  });
   const handleMakesChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) onChangeMakes(selectedOptions?.value);
     onChangeModels(null);
