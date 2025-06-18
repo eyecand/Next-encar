@@ -14,15 +14,11 @@ import { useUrlParams } from "@/hooks/use-url-params";
 interface PaginationComponentProps {
   currentPage: number;
   totalPages: number;
-  totalItems: number;
-  itemsPerPage: number;
 }
 
 export default function PaginationComponent({
   currentPage,
   totalPages,
-  totalItems,
-  itemsPerPage,
 }: PaginationComponentProps) {
   const { updateUrlParams } = useUrlParams();
 
