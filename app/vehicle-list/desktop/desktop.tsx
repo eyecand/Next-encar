@@ -9,6 +9,7 @@ import NotImage from "../../../public/12.png";
 import { InterfaceProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import { detectedDate } from "@/lib/detected-date";
+import { NoProhodCar } from "@/lib/is-no-prohod-car";
 
 export const Desktop = ({ vehicle, className }: InterfaceProps) => {
   return (

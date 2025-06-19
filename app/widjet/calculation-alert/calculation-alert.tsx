@@ -17,6 +17,8 @@ import { useEffect, useRef, useState } from "react";
 import { DetectedFullYear } from "@/lib/detected-full-year";
 import { CalculationUtilSbor } from "@/lib/calculation-util-sbor";
 import { cn } from "@/lib/utils";
+import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
+import { NoProhodCar } from "@/lib/is-no-prohod-car";
 
 export const CalculationAlert = ({
   priceEn,
@@ -66,42 +68,13 @@ export const CalculationAlert = ({
     fuel,
     differentYear
   );
-  const Poshlina = (year: string) => {
-    let x = false;
-    const ycurrent = new Date().getFullYear();
-    const mcurrent = new Date().getMonth();
-    const dateCar = new Date(year);
-    const yCar = dateCar.getFullYear();
-    const mCar = dateCar.getMonth();
-    if (yCar === ycurrent - 2) {
-      if (mCar <= mcurrent) x = true;
-    } else if (yCar === ycurrent - 3) {
-      if (mCar > mcurrent) x = true;
-    }
-    return x;
-  };
-  let totalPoshlina = 0;
-  const isPoshlina = Poshlina(year);
+  const isProhodCar = NoProhodCar(year);
+
   const fraht = 2100000;
   const totalKorea = Math.floor(priceEn + fraht);
   const totalRussia = customsCoast + customs + util;
   const total = Math.floor(totalKorea * Number(KRW) * 0.001) + totalRussia;
-  if (isPoshlina) {
-    const newUtil = CalculationUtilSbor(4, engine);
-    const newPoshlina = CustomsDuty(
-      priceEn,
-      Number(KRW),
-      Number(EUR),
-      engine,
-      fuel,
-      4
-    );
-    totalPoshlina =
-      Math.floor(totalKorea * Number(KRW) * 0.001) +
-      customs +
-      newUtil +
-      newPoshlina;
-  }
+
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogTrigger asChild onClick={openDialog}>
@@ -284,11 +257,11 @@ export const CalculationAlert = ({
         <div
           className={cn(
             "bg-zinc-50 -mx-6 p-6 relative min-w-full flex justify-center my-4 text-red-600 gap-2 text-xl font-bold",
-            !isPoshlina && "items-center"
+            !isProhodCar && "items-center"
           )}
         >
           Итого:{" "}
-          {isPoshlina ? (
+          {isProhodCar ? (
             <div className="flex flex-col">
               <div>
                 <PriceView
@@ -303,7 +276,17 @@ export const CalculationAlert = ({
                   tilda={true}
                   className=""
                   label="₽"
-                  price={String(totalPoshlina)}
+                  price={String(
+                    CalculationPriceForCarNoProhod(
+                      priceEn,
+                      Number(KRW),
+                      Number(EUR),
+                      engine,
+                      fuel,
+                      customs,
+                      totalKorea
+                    )
+                  )}
                 />{" "}
                 <span className="text-zinc-700 font-normal text-sm md:text-base">
                   (от 3х до 5 лет)

@@ -1,4 +1,6 @@
 "use client";
+import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
+import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { useCBRStore } from "@/store/cbr";
 import { useCityState } from "@/store/city-filter";
@@ -23,6 +25,7 @@ export const PriceAll = ({
   const cbr = useCBRStore((state) => state.cbr);
   const EUR = useEURStore((state) => state.eur);
   const stateCity = useCityState((state) => state.cityState);
+  const isProhodCarMainPage = NoProhodCar(years);
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span
@@ -34,11 +37,33 @@ export const PriceAll = ({
       </span>
       <span className={`font-bold ${isMobile ? "text-sm" : "text-lg"}`}>
         ~{" "}
-        {new Intl.NumberFormat("ru-RU")
-          .format(
-            FromKRWtoRUB(priceWon, cbr, EUR, engine, realFuel, years, stateCity)
-          )
-          .replace(",", ".")}{" "}
+        {isProhodCarMainPage
+          ? new Intl.NumberFormat("ru-RU")
+              .format(
+                CalculationPriceForCarNoProhod(
+                  priceWon,
+                  cbr,
+                  EUR,
+                  engine,
+                  realFuel,
+                  100000,
+                  Math.floor(priceWon + 2100000)
+                )
+              )
+              .replace(",", ".")
+          : new Intl.NumberFormat("ru-RU")
+              .format(
+                FromKRWtoRUB(
+                  priceWon,
+                  cbr,
+                  EUR,
+                  engine,
+                  realFuel,
+                  years,
+                  stateCity
+                )
+              )
+              .replace(",", ".")}{" "}
         ₽
       </span>
     </div>

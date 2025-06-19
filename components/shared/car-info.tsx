@@ -14,6 +14,9 @@ import { detectMake } from "./form-korea-cars/first-line/lib";
 import { useEffect, useState } from "react";
 import { IoIosCheckmark } from "react-icons/io";
 import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
+import { NoProhodCar } from "@/lib/is-no-prohod-car";
+import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
+import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
 export const CarInfo = ({
   details,
   accident,
@@ -27,6 +30,7 @@ export const CarInfo = ({
 }: VehicleIdProps) => {
   const copyLink = `https://autofish.ru/vehicle/${id}`;
   const [isCopy, setIsCopy] = useState(false);
+  const isProhodCar = NoProhodCar(String(details?.release_date));
   const copyText = async () => {
     try {
       setIsCopy(true);
@@ -189,20 +193,46 @@ export const CarInfo = ({
             <div className="flex justify-between items-center text-zinc-500">
               <span>Стоимость в России</span>
               <span className="text-lg font-semibold text-zinc-700">
-                ~{" "}
-                {new Intl.NumberFormat("ru-RU")
-                  .format(
-                    FromKRWtoRUB(
-                      Number(advertisements?.price) * 10000,
-                      Number((Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)),
-                      Number(CBR?.Valute.EUR.Value),
-                      Number(details?.engine_displacement),
-                      realFuel,
-                      String(details?.release_date)
-                    )
-                  )
-                  .replace(",", ".")}{" "}
-                ₽
+                {isProhodCar ? (
+                  <PriceView
+                    tilda={true}
+                    className=""
+                    label="₽"
+                    price={String(
+                      CalculationPriceForCarNoProhod(
+                        Number(advertisements?.price) * 10000,
+                        Number(
+                          (Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)
+                        ),
+                        Number(CBR?.Valute.EUR.Value),
+                        Number(details?.engine_displacement),
+                        realFuel,
+                        100000,
+                        Math.floor(
+                          Number(advertisements?.price) * 10000 + 2100000
+                        )
+                      )
+                    )}
+                  />
+                ) : (
+                  <PriceView
+                    tilda={true}
+                    className=""
+                    label="₽"
+                    price={String(
+                      FromKRWtoRUB(
+                        Number(advertisements?.price) * 10000,
+                        Number(
+                          (Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)
+                        ),
+                        Number(CBR?.Valute.EUR.Value),
+                        Number(details?.engine_displacement),
+                        realFuel,
+                        String(details?.release_date)
+                      )
+                    )}
+                  />
+                )}
               </span>
             </div>
           </div>
