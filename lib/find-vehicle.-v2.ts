@@ -189,9 +189,9 @@ export const findVehicleV2 = async (
           model: { model_short_name: model },
           grades: priv,
           fuel: fuel,
-          form_year: {
-            gte: currentMinYear,
-            lte: currentMaxYear,
+          release_date: {
+            gte: new Date(`${currentMinYear}-01-01T00:00:00.000Z`),
+            lte: new Date(`${currentMaxYear}-12-31T23:59:59.999Z`),
           },
           engine_displacement_liters: {
             gte: currentMinEngine,
@@ -258,9 +258,9 @@ export const findVehicleV2 = async (
           model: { model_short_name: model },
           grades: priv,
           fuel: fuel,
-          form_year: {
-            gte: currentMinYear,
-            lte: currentMaxYear,
+          release_date: {
+            gte: new Date(`${currentMinYear}-01-01T00:00:00.000Z`),
+            lte: new Date(`${currentMaxYear}-12-31T23:59:59.999Z`),
           },
           engine_displacement_liters: {
             gte: currentMinEngine,

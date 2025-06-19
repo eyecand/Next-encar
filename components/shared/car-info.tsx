@@ -57,7 +57,8 @@ export const CarInfo = ({
         <div className="w-[90%]">
           <h2 className="font-gilroy font-bold flex text-2xl lg:text-3xl mb-4 text-zinc-800">
             {detectMake(String(details?.makes.make_short_name))}{" "}
-            {details?.model.model_short_name} {details?.form_year}
+            {details?.model.model_short_name}{" "}
+            {new Date(String(details?.release_date)).getFullYear()}
             {realFuel === "Electricity"
               ? " "
               : `, ${(
@@ -118,7 +119,10 @@ export const CarInfo = ({
       </div>
       <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <div className="space-y-4 w-full lg:w-1/2">
-          <BlockItem title="Год" value={details?.form_year} />
+          <BlockItem
+            title="Год"
+            value={new Date(String(details?.release_date)).getFullYear()}
+          />
           <BlockItem
             title="Пробег, км"
             value={new Intl.NumberFormat("ru-RU")
@@ -253,7 +257,9 @@ export const CarInfo = ({
         <a
           href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
             String(details?.makes.make_short_name)
-          )}, ${details?.model.model_short_name}, ${details?.form_year} г., ${
+          )}, ${details?.model.model_short_name}, ${new Date(
+            String(details?.release_date)
+          ).getFullYear()} г., ${
             details?.engine_displacement
           } см3, ${copyLink}. Хочу получить консультацию.`}
         >

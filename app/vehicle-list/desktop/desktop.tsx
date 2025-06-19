@@ -45,7 +45,9 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                             String(item.encar.details.makes.make_short_name)
                           )}{" "}
                           {item.encar.details.model.model_short_name},{" "}
-                          {item.encar.details.form_year}
+                          {new Date(
+                            item.encar.details.release_date
+                          ).getFullYear()}
                         </h3>
                         <div className="text-[13px] leading-[20px] mt-1 text-gray-400">
                           {String(

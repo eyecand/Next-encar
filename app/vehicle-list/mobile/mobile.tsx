@@ -89,7 +89,9 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                       <span className="text-gray-500">Год:</span>
                       <div className="flex">
                         <span className="text-red-700 mx-[2px] md:mx-2">
-                          {item.encar.details.form_year}
+                          {new Date(
+                            item.encar.details.release_date
+                          ).getFullYear()}
                         </span>
                         <span className="whitespace-nowrap">
                           {String(
