@@ -61,32 +61,21 @@ export function CustomsDuty(
         } else {
           result = engine * 15 * EUR;
         }
-      } else if (
-        origin_price * 0.001 * KRW > 16700 * EUR &&
-        origin_price * 0.001 * KRW < 42300 * EUR
-      ) {
-        if (origin_price * 0.001 * KRW * 0.48 >= engine * 5.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48;
+      } else if (origin_price * 0.001 * KRW >= 169000 * EUR) {
+        if (origin_price * 0.001 * KRW * 0.48 >= engine * 20 * EUR) {
+          result =
+            origin_price * 0.001 * KRW +
+            origin_price * 0.001 * KRW * 0.48 +
+            3400 +
+            100000 +
+            2100 * KRW;
         } else {
-          result = engine * 5.5 * EUR;
-        }
-      } else if (
-        origin_price * 0.001 * KRW > 42300 * EUR &&
-        origin_price * 0.001 * KRW < 84500 * EUR
-      ) {
-        if (origin_price * 0.001 * KRW * 0.48 >= engine * 7.5 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48;
-        } else {
-          result = engine * 7.5 * EUR;
-        }
-      } else if (
-        origin_price * 0.001 * KRW > 84500 * EUR &&
-        origin_price * 0.001 * KRW < 169000 * EUR
-      ) {
-        if (origin_price * 0.001 * KRW * 0.48 >= engine * 15 * EUR) {
-          result = origin_price * 0.001 * KRW * 0.48;
-        } else {
-          result = engine * 15 * EUR;
+          result =
+            origin_price * 0.001 * KRW +
+            engine * 20 * EUR +
+            3400 +
+            100000 +
+            2100 * KRW;
         }
       }
     } else if (year >= 3 && year <= 5) {
