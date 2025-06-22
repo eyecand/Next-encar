@@ -31,7 +31,7 @@ export const findVehicleV2 = async (
     mileageMin,
     transmission,
   } = await params;
-  const pagenum = page ?? 0;
+  const pagenum = page ? Number(page) - 1 : 0;
   const takePageSize = pageSize ?? 10;
   const currentMinYear = Number(yearsMin) || DEFAULT_MIN_YEARS;
   const currentMaxYear = Number(yearsMax) || DEFAULT_MAX_YEARS;

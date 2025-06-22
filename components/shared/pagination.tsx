@@ -14,17 +14,19 @@ import { useUrlParams } from "@/hooks/use-url-params";
 interface PaginationComponentProps {
   currentPage: number;
   totalPages: number;
+  total: number;
 }
 
 export default function PaginationComponent({
   currentPage,
   totalPages,
+  total,
 }: PaginationComponentProps) {
   const { updateUrlParams } = useUrlParams();
-
   const handlePageChange = (page: number) => {
     // Обновляем только параметр страницы, сохраняя все остальные параметры
     updateUrlParams({ page: page.toString() });
+    scrollTo(0, 0);
   };
 
   const renderPageNumbers = () => {
@@ -33,7 +35,6 @@ export default function PaginationComponent({
 
     let startPage = Math.max(1, currentPage - Math.floor(showPages / 2));
     const endPage = Math.min(totalPages, startPage + showPages - 1);
-
     if (endPage - startPage + 1 < showPages) {
       startPage = Math.max(1, endPage - showPages + 1);
     }
@@ -55,7 +56,7 @@ export default function PaginationComponent({
     return pages;
   };
 
-  if (totalPages <= 1) return null;
+  if (total <= 10) return null;
 
   return (
     <div className="flex flex-col items-center gap-4 mb-4">
@@ -72,7 +73,7 @@ export default function PaginationComponent({
             />
           </PaginationItem>
 
-          {currentPage > 3 && (
+          {currentPage > 3 && totalPages > 5 && (
             <>
               <PaginationItem>
                 <PaginationLink
@@ -94,19 +95,22 @@ export default function PaginationComponent({
 
           {currentPage < totalPages - 2 && (
             <>
-              {currentPage < totalPages - 3 && (
+              {currentPage < totalPages - 3 && totalPages > 5 && (
                 <PaginationItem>
                   <PaginationEllipsis />
                 </PaginationItem>
               )}
-              <PaginationItem>
-                <PaginationLink
-                  onClick={() => handlePageChange(totalPages)}
-                  className="cursor-pointer"
-                >
-                  {totalPages}
-                </PaginationLink>
-              </PaginationItem>
+
+              {totalPages > 5 && (
+                <PaginationItem>
+                  <PaginationLink
+                    onClick={() => handlePageChange(totalPages)}
+                    className="cursor-pointer"
+                  >
+                    {totalPages}
+                  </PaginationLink>
+                </PaginationItem>
+              )}
             </>
           )}
 

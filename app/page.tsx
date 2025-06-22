@@ -15,7 +15,11 @@ export default async function Home({
   const searchParamsValue = await searchParams;
   const { page } = searchParamsValue;
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
-  const currentPage = parseInt((page as string) || "1");
+  const maxPage = Math.ceil(totalPage / 10);
+  const currentPage = Math.min(
+    maxPage,
+    Math.max(1, parseInt((page as string) || "1"))
+  );
   const show = 0;
   return (
     <>
@@ -44,7 +48,8 @@ export default async function Home({
             <div className="mt-16">
               <PaginationComponent
                 currentPage={currentPage}
-                totalPages={Math.trunc(totalPage / 10)}
+                totalPages={maxPage}
+                total={totalPage}
               />
             </div>
           </>
