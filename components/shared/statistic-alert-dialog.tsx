@@ -114,7 +114,9 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Объем двигателя:
               <span className="text-base font-semibold text-black uppercase">
-                {details?.engine_displacement}
+                {details?.fuel.fuel_english === "Electricity"
+                  ? "0"
+                  : details?.engine_displacement}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">

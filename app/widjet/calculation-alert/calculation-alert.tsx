@@ -19,6 +19,7 @@ import { CalculationUtilSbor } from "@/lib/calculation-util-sbor";
 import { cn } from "@/lib/utils";
 import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
+import { DetectedKPower } from "@/lib/detected-K-power";
 
 export const CalculationAlert = ({
   priceEn,
@@ -31,7 +32,27 @@ export const CalculationAlert = ({
   const alertRef = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [power, setPower] = useState("1");
+  const [poshlina, SetPoshlina] = useState(0);
+  const [utilSbor, SetUtilSbor] = useState(3200);
 
+  useEffect(() => {
+    const differentYear = DetectedFullYear(year);
+    const util = CalculationUtilSbor(Number(differentYear), engine);
+    const K_Power = DetectedKPower(Number(power));
+    const customsCoast = CustomsDuty(
+      priceEn,
+      Number(KRW),
+      Number(EUR),
+      engine,
+      fuel,
+      differentYear,
+      Number(power),
+      K_Power
+    );
+    SetPoshlina(customsCoast);
+    SetUtilSbor(util);
+  }, [power, priceEn, KRW, EUR, engine, fuel, year]);
   const openDialog = () => {
     setIsOpen(true);
   };
@@ -57,22 +78,14 @@ export const CalculationAlert = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, setIsOpen]);
-  const differentYear = DetectedFullYear(year);
-  const util = CalculationUtilSbor(Number(differentYear), engine);
+
   const customs = 100000; //таможня
-  const customsCoast = CustomsDuty(
-    priceEn,
-    Number(KRW),
-    Number(EUR),
-    engine,
-    fuel,
-    differentYear
-  );
+
   const isProhodCar = NoProhodCar(year);
 
   const fraht = 2100000;
   const totalKorea = Math.floor(priceEn + fraht);
-  const totalRussia = customsCoast + customs + util;
+  const totalRussia = poshlina + customs + utilSbor;
   const total = Math.floor(totalKorea * Number(KRW) * 0.001) + totalRussia;
 
   return (
@@ -119,7 +132,17 @@ export const CalculationAlert = ({
             </div>
           </div>
         </div>
-
+        {fuel === "Electricity" && (
+          <div className="gap-4 lg:gap-12 w-full pt-4 flex justify-center md:flex-row flex-col items-center">
+            <span className="text-base text-zinc-700">Введите л.с</span>
+            <input
+              onChange={(e) => setPower(e.target.value)}
+              value={power}
+              className="border border-gray-400 px-3 py-1 rounded-lg text-base"
+              type="number"
+            />
+          </div>
+        )}
         <div className="mt-5 flex flex-col lg:flex-row gap-4 lg:gap-12">
           <div className="lg:basis-1/2">
             <div>
@@ -198,7 +221,7 @@ export const CalculationAlert = ({
 
                 <PriceView
                   tilda={true}
-                  price={String(customsCoast)}
+                  price={String(poshlina)}
                   label="₽"
                   className="whitespace-nowrap font-semibold"
                 />
@@ -213,7 +236,7 @@ export const CalculationAlert = ({
 
                 <PriceView
                   tilda={true}
-                  price={String(util)}
+                  price={String(utilSbor)}
                   label="₽"
                   className="whitespace-nowrap font-semibold"
                 />

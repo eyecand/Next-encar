@@ -4,19 +4,20 @@ export function CustomsDuty(
   EUR: number,
   engine: number,
   fuel: string,
-  year: number
+  year: number,
+  power: number,
+  K: number
 ) {
   let result = 0;
+
   if (fuel === "Electricity") {
-    if (year < 3) {
-      result =
+    result =
+      origin_price * 0.001 * KRW * 0.15 +
+      power * K +
+      (origin_price * 0.001 * KRW +
         origin_price * 0.001 * KRW * 0.15 +
-        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2;
-    } else {
-      result =
-        origin_price * 0.001 * KRW * 0.15 +
-        (origin_price * 0.001 * KRW + origin_price * 0.001 * KRW * 0.15) * 0.2;
-    }
+        power * K) *
+        0.2;
   } else {
     if (year < 3) {
       if (origin_price * 0.001 * KRW < 8500 * EUR) {

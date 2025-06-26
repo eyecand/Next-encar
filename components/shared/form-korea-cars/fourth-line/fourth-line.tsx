@@ -1,9 +1,8 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { optionCities, optionBenefit, optionSort } from "./constanst";
+import { optionCities, optionBenefit } from "./constanst";
 import { iOption } from "./model";
-import { detectSort } from "./lib";
 import { useEffect } from "react";
 import { useCityState } from "@/store/city-filter";
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });

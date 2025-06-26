@@ -17,7 +17,9 @@ export const CalculationPriceForCarNoProhod = (
     Number(EUR),
     engine,
     fuel,
-    4
+    4,
+    1,
+    1
   );
   const totalPoshlina =
     Math.floor(totalKorea * Number(KRW) * 0.001) +
