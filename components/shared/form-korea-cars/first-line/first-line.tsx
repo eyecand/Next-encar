@@ -49,7 +49,10 @@ export const FirstLine: React.FC<Props<string | null>> = ({
     .map((item) => {
       return optionsModels.push({
         value: item.model_short_name,
-        label: item.model_short_name,
+        label:
+          item.model_short_name === "Canival"
+            ? "Carnival"
+            : item.model_short_name,
       });
     });
   const handleMakesChange = (selectedOptions: iOption | null) => {
@@ -97,7 +100,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
                   ? [
                       {
                         value: model,
-                        label: model,
+                        label: model === "Canival" ? "Carnival" : model,
                       },
                     ]
                   : []

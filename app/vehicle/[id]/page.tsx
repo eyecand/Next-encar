@@ -25,7 +25,9 @@ export default async function CarPage({
       <div className=" py-5 flex items-baseline">
         <h1 className="font-bold text-lg md:text-3xl">
           {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}
-          {vehicleId?.details?.model.model_short_name}
+          {vehicleId?.details?.model.model_short_name === "Canival"
+            ? "Carnival"
+            : vehicleId?.details?.model.model_short_name}
         </h1>
         <ShareButton
           url={shareUrl}

@@ -57,7 +57,9 @@ export const CarInfo = ({
         <div className="w-[90%]">
           <h2 className="font-gilroy font-bold flex text-2xl lg:text-3xl mb-4 text-zinc-800">
             {detectMake(String(details?.makes.make_short_name))}{" "}
-            {details?.model.model_short_name}{" "}
+            {details?.model.model_short_name === "Canival"
+              ? "Carnival"
+              : details?.model.model_short_name}{" "}
             {new Date(String(details?.release_date)).getFullYear()}
             {realFuel === "Electricity"
               ? " "
@@ -257,9 +259,11 @@ export const CarInfo = ({
         <a
           href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
             String(details?.makes.make_short_name)
-          )}, ${details?.model.model_short_name}, ${new Date(
-            String(details?.release_date)
-          ).getFullYear()} г., ${
+          )}, ${
+            details?.model.model_short_name === "Canival"
+              ? "Carnival"
+              : details?.model.model_short_name
+          }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
             details?.engine_displacement
           } см3, ${copyLink}. Хочу получить консультацию.`}
         >

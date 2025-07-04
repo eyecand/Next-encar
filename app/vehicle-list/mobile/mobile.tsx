@@ -52,7 +52,9 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                         {detectMake(
                           String(item.encar.details.makes.make_short_name)
                         )}{" "}
-                        {item.encar.details.model.model_short_name}
+                        {item.encar.details.model.model_short_name === "Canival"
+                          ? "Carnival"
+                          : item.encar.details.model.model_short_name}
                       </span>
                       {(item.encar.lib_sell_types.sell_type ===
                         "RENT_SUCCESSION" ||
