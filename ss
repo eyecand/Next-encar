@@ -31,7 +31,6 @@ model accident_and_change_histories {
   loan                   Boolean   @default(false)
   created_at             DateTime  @db.Timestamptz(6)
   updated_at             DateTime  @db.Timestamptz(6)
-  encar                  encar_vehicles@relation(fields: [vehicle_id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -46,7 +45,6 @@ model accident_details {
   painting_cost     Int      @default(0)
   created_at        DateTime @db.Timestamptz(6)
   updated_at        DateTime @db.Timestamptz(6)
-  encar             encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date], map: "accident_details_vehicle_id_date_unique")
 }
@@ -58,8 +56,6 @@ model active_lots {
   is_checked              Boolean  @default(false)
   created_at              DateTime @db.Timestamptz(6)
   updated_at              DateTime @db.Timestamptz(6)
-  encar                   encar_vehicles@relation(fields:[vehicle_id],references:[id])
-
 }
 
 model advertisement_trust_label {
@@ -84,7 +80,6 @@ model advertisements {
   advertisement_status_id    BigInt
   created_at                 DateTime @db.Timestamptz(6)
   updated_at                 DateTime @db.Timestamptz(6)
-   encar                    encar_vehicles@relation(fields: [vehicle_id],references: [id])
 }
 
 model car_info_changes {
@@ -94,7 +89,6 @@ model car_info_changes {
   plate_number String   @db.VarChar(25)
   created_at   DateTime @db.Timestamptz(6)
   updated_at   DateTime @db.Timestamptz(6)
-  encar        encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date, plate_number], map: "car_info_changes_unique")
 }
@@ -120,15 +114,11 @@ model companies {
 model diagnosis_items {
   id                  BigInt   @id @default(autoincrement())
   diagnostic_id       BigInt
-  diagnosis_code_id   Int 
-  diagnosis_result_id Int? 
+  diagnosis_code_id   Int
+  diagnosis_result_id Int?
   comment_id          Int?
   created_at          DateTime @db.Timestamptz(6)
   updated_at          DateTime @db.Timestamptz(6)
-  diagnostics         diagnostics@relation(fields: [diagnostic_id],references: [id])
-  lib_codes           lib_diagnosis_codes @relation(fields: [diagnosis_code_id], references: [id])
-  results             lib_diagnosis_results? @relation(fields: [diagnosis_result_id], references: [id])
-  comments            lib_diagnosis_comments? @relation(fields: [comment_id], references: [id]) 
 
   @@unique([diagnostic_id, diagnosis_code_id], map: "diagnostic_diagnosis_code_unique_index")
 }
@@ -144,9 +134,6 @@ model diagnostic_centers {
   reservation_center_id Int?
   created_at            DateTime @db.Timestamptz(6)
   updated_at            DateTime @db.Timestamptz(6)
-  diagnostics           diagnostics[]
-  lib_reservation       lib_reservation_center?
-  
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -161,37 +148,26 @@ model diagnostics {
   register_id_code         String   @db.VarChar(55)
   created_at               DateTime @db.Timestamptz(6)
   updated_at               DateTime @db.Timestamptz(6)
-  encar                    encar_vehicles@relation(fields: [vehicle_id],references: [id])
-  diagnosis                diagnosis_items[]
-  center                   diagnostic_centers @relation(fields: [diagnostic_center_id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model encar_vehicles {
-  id                    BigInt   @id @default(autoincrement())
-  vehicle_id_on_auction Int      @unique
-  vehicle_plate_number  String?  @db.VarChar(55)
+  id                    BigInt            @id @default(autoincrement())
+  vehicle_id_on_auction Int               @unique
+  vehicle_plate_number  String?           @db.VarChar(55)
   vehicle_type_id       Int
   extend_warranty       Boolean?
   diagnosis_passed      Boolean?
   pre_verified          Boolean?
   sell_type_id          Int
   seller_id             Int?
-  created_at            DateTime @db.Timestamptz(6)
-  updated_at            DateTime @db.Timestamptz(6)
-  details               vehicle_details?
-  photos                vehicle_photos []
-  active                active_lots? 
-  accident_details      accident_details[]
-  owner                 owner_changes[]
-  insurance             insurance_certificates[]
-  accident              accident_and_change_histories?
-  car_info              car_info_changes[]
-  notjoined             not_joined_periods[]
-  diagnostics           diagnostics?
-  advertisements        advertisements?
-  lib_sell_types        lib_sell_types @relation(fields: [sell_type_id], references: [id])
+  created_at            DateTime          @db.Timestamptz(6)
+  updated_at            DateTime          @db.Timestamptz(6)
+  vehicle_vin_number    String?           @db.VarChar(55)
+  inspections           inspections?
+  vehicle_options       vehicle_options[]
 }
+
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model insurance_certificates {
   id                BigInt   @id @default(autoincrement())
@@ -202,7 +178,6 @@ model insurance_certificates {
   use_type          String   @db.VarChar(55)
   created_at        DateTime @db.Timestamptz(6)
   updated_at        DateTime @db.Timestamptz(6)
-  encar             encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, registration_date], map: "insurance_certificates_vehicle_unique")
 }
@@ -214,6 +189,8 @@ model lib_addresses {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
+  geo_point       String?  @db.VarChar(255)
+  error_geo_point Boolean?
 }
 
 model lib_advertisement_statuses {
@@ -240,7 +217,6 @@ model lib_body_types {
   error_translate   Boolean  @default(false)
   created_at        DateTime @db.Timestamptz(6)
   updated_at        DateTime @db.Timestamptz(6)
-  details           vehicle_details[]
 }
 
 model lib_certificate_types {
@@ -257,7 +233,6 @@ model lib_colours {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
-  details         vehicle_details[]
 }
 
 model lib_company_types {
@@ -273,7 +248,6 @@ model lib_diagnosis_codes {
   name       String   @db.VarChar(55)
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  diagnosis  diagnosis_items[]
 }
 
 model lib_diagnosis_comments {
@@ -283,8 +257,7 @@ model lib_diagnosis_comments {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
-  comment_russian String? @db.VarChar(3000)
-  diagnosis       diagnosis_items[]
+  comment_russian String?  @db.VarChar(3000)
 }
 
 model lib_diagnosis_results {
@@ -295,7 +268,6 @@ model lib_diagnosis_results {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
-  diagnosis       diagnosis_items[]
 }
 
 model lib_districts {
@@ -314,19 +286,19 @@ model lib_fuels {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
-  details         vehicle_details[]
 }
 
 model lib_grades {
   id                   Int      @id @default(autoincrement())
-  grade                String   @unique @db.VarChar(100)
+  grade                String   @db.VarChar(100)
   grade_english        String?  @db.VarChar(100)
   error_translate      Boolean  @default(false)
   grade_detail         String?  @db.VarChar(100)
   grade_detail_english String?  @db.VarChar(100)
   created_at           DateTime @db.Timestamptz(6)
   updated_at           DateTime @db.Timestamptz(6)
-  details              vehicle_details[]
+
+  @@unique([grade, grade_detail, grade_detail_english], map: "lib_grades_grade_grade_detail_grade_detail_english_unique")
 }
 
 model lib_makes {
@@ -337,7 +309,6 @@ model lib_makes {
   error_translate Boolean  @default(false)
   created_at      DateTime @db.Timestamptz(6)
   updated_at      DateTime @db.Timestamptz(6)
-  details         vehicle_details[]
 }
 
 model lib_models {
@@ -348,7 +319,6 @@ model lib_models {
   error_translate  Boolean  @default(false)
   created_at       DateTime @db.Timestamptz(6)
   updated_at       DateTime @db.Timestamptz(6)
-  details         vehicle_details[]
 }
 
 model lib_provinces {
@@ -367,7 +337,6 @@ model lib_reservation_center {
   error_translate                 Boolean  @default(false)
   created_at                      DateTime @db.Timestamptz(6)
   updated_at                      DateTime @db.Timestamptz(6)
-  center                          diagnostic_centers @relation(fields: [id],references: [id])
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -376,8 +345,6 @@ model lib_sell_types {
   sell_type  String   @unique @db.VarChar(55)
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  encar      encar_vehicles[]
- 
 }
 
 model lib_transmissions {
@@ -387,7 +354,6 @@ model lib_transmissions {
   error_translate      Boolean  @default(false)
   created_at           DateTime @db.Timestamptz(6)
   updated_at           DateTime @db.Timestamptz(6)
-  details              vehicle_details[]
 }
 
 model lib_trust_labels {
@@ -410,7 +376,6 @@ model lib_vehicle_photo_types {
   type       String   @unique @db.VarChar(55)
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  photos     vehicle_photos[]
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -428,7 +393,6 @@ model not_joined_periods {
   end_date   DateTime @db.Date
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  encar      encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, start_date, end_date], map: "vehicle_not_joined_unique")
 }
@@ -439,7 +403,6 @@ model owner_changes {
   date       DateTime @db.Date
   created_at DateTime @db.Timestamptz(6)
   updated_at DateTime @db.Timestamptz(6)
-  encar      encar_vehicles@relation(fields: [vehicle_id],references: [id])
 
   @@unique([vehicle_id, date], map: "vehicle_owner_changes_unique_index")
 }
@@ -462,7 +425,7 @@ model sellers {
   address_id                      Int?
   user_type_id                    Int?
   user_name                       String?   @db.VarChar(55)
-  user_name_english               String?   @db.VarChar(55)
+  user_name_english               String?   @db.VarChar(255)
   nickname                        String?   @db.VarChar(100)
   nickname_english                String?   @db.VarChar(255)
   error_translate                 Boolean   @default(false)
@@ -494,72 +457,250 @@ model sys_filter_parse_control {
   num_threads Int?
   created_at  DateTime @db.Timestamptz(6)
   updated_at  DateTime @db.Timestamptz(6)
-
-  @@unique([date, filter], map: "sys_filter_parse_control_date_filter")
+  start_year  Int      @default(1980)
+  start_month Int      @default(1)
+  end_year    Int      @default(1980)
+  end_month   Int      @default(1)
+  total_pages Int      @default(0)
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model sys_update_controls {
-  id                BigInt   @id @default(autoincrement())
-  vehicle_id        BigInt   @unique
-  update_status     Boolean  @default(false)
-  translate_status  Boolean  @default(false)
-  data_missing_flag Boolean  @default(false)
-  created_at        DateTime @db.Timestamptz(6)
-  updated_at        DateTime @db.Timestamptz(6)
+  id                                     BigInt   @id @default(autoincrement())
+  vehicle_id                             BigInt   @unique
+  update_status                          Boolean  @default(false)
+  translate_status                       Boolean  @default(false)
+  data_missing_flag                      Boolean  @default(false)
+  created_at                             DateTime @db.Timestamptz(6)
+  updated_at                             DateTime @db.Timestamptz(6)
+  additional_diagnosis_check             Boolean?
+  additional_diagnosis_check_status_code Int?
 
   @@index([update_status, data_missing_flag], map: "sys_update_controls_update_status_data_missing_flag")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model vehicle_details {
-  id                  BigInt   @id @default(autoincrement())
-  vehicle_id          BigInt   @unique
-  make_id             Int
-  model_id            Int
-  grade_id            Int
-  form_year           Int
-  origin_price        Int?
-  mileage             Int
-  engine_displacement Int
-  engine_displacement_liters Decimal
-  transmission_id     Int
-  fuel_id             Int
-  colour_id           Int
-  body_type_id        Int 
-  drive_type_id       Int?
-  release_date        DateTime
-  created_at          DateTime @db.Timestamptz(6)
-  updated_at          DateTime @db.Timestamptz(6)
-  encar               encar_vehicles @relation(fields:[vehicle_id],references:[id]) 
-  drive               lib_drive_types? @relation(fields: [drive_type_id],references: [id])
-  fuel                lib_fuels @relation(fields: [fuel_id],references: [id])
-  colours             lib_colours @relation(fields: [colour_id],references: [id])
-  grades              lib_grades   @relation(fields: [grade_id],references: [id])
-  makes               lib_makes @relation(fields: [make_id],references: [id])
-  model               lib_models @relation(fields: [model_id], references: [id])
-  transmission        lib_transmissions @relation(fields: [transmission_id], references: [id])
-  body                lib_body_types @relation(fields: [body_type_id], references: [id])
-  
+  id                         BigInt    @id @default(autoincrement())
+  vehicle_id                 BigInt    @unique
+  make_id                    Int
+  model_id                   Int
+  grade_id                   Int
+  form_year                  Int
+  origin_price               Int?
+  mileage                    Int
+  engine_displacement        Int
+  transmission_id            Int
+  fuel_id                    Int
+  colour_id                  Int
+  body_type_id               Int
+  created_at                 DateTime  @db.Timestamptz(6)
+  updated_at                 DateTime  @db.Timestamptz(6)
+  release_date               DateTime? @db.Date
+  engine_displacement_liters Decimal?  @db.Decimal(3, 1)
+  drive_type_id              Int?
+  seat_count                 Int?
 }
 
 model vehicle_photos {
-  id                    BigInt   @id @default(autoincrement())
+  id                    BigInt                            @id @default(autoincrement())
   vehicle_id            BigInt
   vehicle_photo_type_id Int
-  url                   String   @db.VarChar(500)
-  created_at            DateTime @db.Timestamptz(6)
-  updated_at            DateTime @db.Timestamptz(6)
-  encar                 encar_vehicles @relation(fields: [vehicle_id], references: [id])
-  photo                 lib_vehicle_photo_types @relation(fields: [vehicle_photo_type_id], references: [id])
+  url                   String                            @db.VarChar(500)
+  created_at            DateTime                          @db.Timestamptz(6)
+  updated_at            DateTime                          @db.Timestamptz(6)
+  upload_status         enum_vehicle_photos_upload_status @default(PENDING)
+  error_message         String?                           @db.VarChar(500)
+  tries                 Int                               @default(0)
+  s3_images             s3_images?
 
   @@index([vehicle_id, url], map: "vehicle_photos_vehicle_id_url")
+  @@index([upload_status, tries])
 }
+
+model component_conditions {
+  id                     BigInt                  @id @default(autoincrement())
+  component_item_id      Int
+  component_subitem_id   Int?
+  condition_id           Int
+  created_at             DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime                @default(now()) @db.Timestamptz(6)
+  lib_component_items    lib_component_items     @relation(fields: [component_item_id], references: [id])
+  lib_component_subitems lib_component_subitems? @relation(fields: [component_subitem_id], references: [id])
+  lib_conditions         lib_conditions          @relation(fields: [condition_id], references: [id])
+
+  @@unique([component_item_id, component_subitem_id, condition_id], map: "component_conditions_unique_idx")
+}
+
+model inspection_details {
+  id                     BigInt                  @id @default(autoincrement())
+  inspection_id          BigInt
+  main_component_id      Int
+  component_item_id      Int
+  component_subitem_id   Int?
+  condition_id           Int?
+  remark                 String?
+  remark_english         String?
+  error_translate        Boolean                 @default(false)
+  created_at             DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime                @default(now()) @db.Timestamptz(6)
+  lib_component_items    lib_component_items     @relation(fields: [component_item_id], references: [id])
+  lib_component_subitems lib_component_subitems? @relation(fields: [component_subitem_id], references: [id])
+  lib_conditions         lib_conditions?         @relation(fields: [condition_id], references: [id])
+  inspections            inspections             @relation(fields: [inspection_id], references: [id], onDelete: Cascade)
+  lib_main_components    lib_main_components     @relation(fields: [main_component_id], references: [id])
+
+  @@unique([inspection_id, main_component_id, component_item_id, component_subitem_id], map: "inspection_details_unique_index")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model inspection_estimates {
+  id                  BigInt              @id @default(autoincrement())
+  inspection_id       BigInt
+  main_component_id   Int
+  estimated_amount    Int?
+  created_at          DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime            @default(now()) @db.Timestamptz(6)
+  inspections         inspections         @relation(fields: [inspection_id], references: [id], onDelete: Cascade)
+  lib_main_components lib_main_components @relation(fields: [main_component_id], references: [id], onDelete: Cascade)
+
+  @@unique([inspection_id, main_component_id], map: "inspection_estimates_inspection_id_main_component_id_unique")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model inspections {
+  id                   BigInt                 @id @default(autoincrement())
+  vehicle_id           BigInt                 @unique
+  engine_type_id       Int
+  registration_date    DateTime               @db.Date
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  inspection_details   inspection_details[]
+  inspection_estimates inspection_estimates[]
+  lib_engine_types     lib_engine_types       @relation(fields: [engine_type_id], references: [id])
+  encar_vehicles       encar_vehicles         @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+}
+
+model lib_component_items {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
+model lib_component_subitems {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
+model lib_conditions {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
 model lib_drive_types {
   id         Int      @id @default(autoincrement())
   drive_type String   @unique @db.VarChar(55)
   created_at DateTime @default(now()) @db.Timestamptz(6)
   updated_at DateTime @default(now()) @db.Timestamptz(6)
-  details         vehicle_details[]
 }
 
+model lib_engine_types {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(55)
+  created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime      @default(now()) @db.Timestamptz(6)
+  inspections inspections[]
+}
+
+model lib_main_components {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  inspection_details   inspection_details[]
+  inspection_estimates inspection_estimates[]
+}
+
+model lib_option_types {
+  id                       Int           @id @default(autoincrement())
+  option_type_key          String        @unique @db.VarChar(255)
+  option_type_name         String        @db.VarChar(255)
+  option_type_name_english String?       @db.VarChar(255)
+  error_translate          Boolean       @default(false)
+  created_at               DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime      @default(now()) @db.Timestamptz(6)
+  lib_options              lib_options[]
+}
+
+model lib_options {
+  id                  Int               @id @default(autoincrement())
+  option_cd           String            @unique @db.VarChar(255)
+  option_type_id      Int
+  option_name         String            @db.VarChar(255)
+  option_name_english String?           @db.VarChar(255)
+  description         String?
+  description_english String?
+  location            String?
+  location_english    String?
+  error_translate     Boolean           @default(false)
+  created_at          DateTime          @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime          @default(now()) @db.Timestamptz(6)
+  lib_option_types    lib_option_types  @relation(fields: [option_type_id], references: [id])
+  vehicle_options     vehicle_options[]
+}
+
+model s3_images {
+  id               BigInt         @id @default(autoincrement())
+  vehicle_photo_id BigInt         @unique
+  s3_key           String
+  url              String         @db.VarChar(500)
+  uploaded_at      DateTime       @default(now()) @db.Timestamptz(6)
+  created_at       DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at       DateTime       @default(now()) @db.Timestamptz(6)
+  vehicle_photos   vehicle_photos @relation(fields: [vehicle_photo_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([vehicle_photo_id, s3_key], map: "s3_images_vehicle_photo_id_s3_key_unique")
+}
+
+model vehicle_options {
+  id             BigInt         @id @default(autoincrement())
+  vehicle_id     BigInt
+  option_id      Int
+  created_at     DateTime       @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime       @default(now()) @db.Timestamptz(6)
+  lib_options    lib_options    @relation(fields: [option_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  encar_vehicles encar_vehicles @relation(fields: [vehicle_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([vehicle_id, option_id], map: "vehicle_options_vehicle_id_option_id_unique")
+}
+
+enum enum_vehicle_photos_upload_status {
+  PENDING
+  UPLOADED
+  FAILED
+  INVALID
+  IN_PROGRESS
+}

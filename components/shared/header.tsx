@@ -91,7 +91,6 @@ export const Header = () => {
   useEffect(() => {
     getCBR();
   }, [getCBR]);
-  console.log("header", Number(cbr?.Valute.KRW.Value).toFixed(2));
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-1 text-md ">

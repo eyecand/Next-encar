@@ -97,9 +97,9 @@ export const findVehicleV2 = async (
   if (sort === "all") {
     sortLabel = {};
   } else if (sort === "priceMin") {
-    sortLabel = { details: { origin_price: "desc" } };
+    sortLabel = { advertisements: { price: "desc" } };
   } else if (sort === "priceMax") {
-    sortLabel = { details: { origin_price: "asc" } };
+    sortLabel = { advertisements: { price: "asc" } };
   } else if (sort === "mileageMin") {
     sortLabel = { details: { mileage: "desc" } };
   } else if (sort === "mileageMax") {
@@ -160,22 +160,11 @@ export const findVehicleV2 = async (
   let priv = {};
   if (privod === "2WD") {
     priv = {
-      OR: [
-        { grade_english: { contains: "2WD" } },
-        {
-          AND: [
-            { grade_english: { not: { contains: "4WD" } } },
-            { grade_english: { not: { contains: "AWD" } } },
-          ],
-        },
-      ],
+      drive_type: { not: { contains: "4WD" } },
     };
   } else if (privod === "4WD") {
     priv = {
-      OR: [
-        { grade_english: { contains: "4WD" } },
-        { grade_english: { contains: "AWD" } },
-      ],
+      drive_type: { contains: "4WD" },
     };
   }
   const vehiclePromise = prisma.active_lots.findMany({
@@ -187,7 +176,7 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
-          grades: priv,
+          drive: priv,
           fuel: fuel,
           release_date: {
             gte: new Date(`${currentMinYear}-01-01T00:00:00.000Z`),
@@ -256,7 +245,7 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
-          grades: priv,
+          drive: priv,
           fuel: fuel,
           release_date: {
             gte: new Date(`${currentMinYear}-01-01T00:00:00.000Z`),
