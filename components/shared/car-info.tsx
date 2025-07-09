@@ -6,17 +6,16 @@ import {
 } from "@/components/shared";
 import { IoCopyOutline } from "react-icons/io5";
 import { detectFuels } from "@/lib/detect-fuels";
-import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
 import { Button } from "../ui/button";
 import { VehicleIdProps } from "@/app/vehicle/[id]/model";
 import { detectTransmission } from "./form-korea-cars/second-line/lib";
 import { detectMake } from "./form-korea-cars/first-line/lib";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IoIosCheckmark } from "react-icons/io";
 import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
-import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
+import { CalculationCar } from "@/lib/calcilation-car";
 export const CarInfo = ({
   details,
   accident,
@@ -27,10 +26,15 @@ export const CarInfo = ({
   id,
   auctionId,
   sell_type,
+  EUR,
+  KRW,
+  fraht,
+  broker,
+  k_krw,
 }: VehicleIdProps) => {
   const copyLink = `https://autofish.ru/vehicle/${id}`;
   const [isCopy, setIsCopy] = useState(false);
-  const isProhodCar = NoProhodCar(String(details?.release_date));
+  const isNoProhodCar = NoProhodCar(String(details?.release_date));
   const copyText = async () => {
     try {
       setIsCopy(true);
@@ -43,11 +47,6 @@ export const CarInfo = ({
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);
-  const [CBR, setCBR] = useState<CBRPRops | null>(null);
-  useEffect(() => {
-    const localStoredKRW = localStorage.getItem("cbrData");
-    if (localStoredKRW) setCBR(JSON.parse(localStoredKRW));
-  }, []);
   const realFuel = details?.fuel.fuel_english
     ? details?.fuel.fuel_english
     : "Gasoline";
@@ -199,24 +198,23 @@ export const CarInfo = ({
             <div className="flex justify-between items-center text-zinc-500">
               <span>Стоимость в России</span>
               <span className="text-lg font-semibold text-zinc-700">
-                {isProhodCar ? (
+                {isNoProhodCar ? (
                   <PriceView
                     tilda={true}
                     className=""
                     label="₽"
                     price={String(
-                      CalculationPriceForCarNoProhod(
+                      CalculationCar(
                         Number(advertisements?.price) * 10000,
-                        Number(
-                          (Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)
-                        ),
-                        Number(CBR?.Valute.EUR.Value),
+                        KRW,
+                        EUR,
                         Number(details?.engine_displacement),
                         realFuel,
-                        100000,
-                        Math.floor(
-                          Number(advertisements?.price) * 10000 + 2100000
-                        )
+                        "4",
+                        broker,
+                        fraht,
+                        k_krw,
+                        0
                       )
                     )}
                   />
@@ -226,15 +224,17 @@ export const CarInfo = ({
                     className=""
                     label="₽"
                     price={String(
-                      FromKRWtoRUB(
+                      CalculationCar(
                         Number(advertisements?.price) * 10000,
-                        Number(
-                          (Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2)
-                        ),
-                        Number(CBR?.Valute.EUR.Value),
+                        KRW,
+                        EUR,
                         Number(details?.engine_displacement),
                         realFuel,
-                        String(details?.release_date)
+                        String(details?.release_date),
+                        broker,
+                        fraht,
+                        k_krw,
+                        0
                       )
                     )}
                   />
@@ -248,8 +248,11 @@ export const CarInfo = ({
           fuel={realFuel}
           priceEn={Number(advertisements?.price) * 10000}
           year={String(details?.release_date)}
-          EUR={Number(CBR?.Valute.EUR.Value)}
-          KRW={Number((Number(CBR?.Valute.KRW.Value) * 1.08).toFixed(2))}
+          EUR={EUR}
+          KRW={KRW}
+          broker={broker}
+          fraht={fraht}
+          k_krw={k_krw}
         />
         <p className="text-sm text-zinc-600 mt-6 mb-6">
           Стоимость является ориентировочной, включая все расходы в г.
@@ -276,22 +279,3 @@ export const CarInfo = ({
     </div>
   );
 };
-interface CBRPRops {
-  Date: string; // Или Date, если будете парсить строку в Date объект
-  PreviousDate: string; // Или Date
-  PreviousURL: string;
-  Timestamp: string; // Или Date
-  Valute: {
-    [key: string]: ValuteData; // Индексный тип для динамических ключей валют (AUD, AZN, ...)
-  };
-}
-
-interface ValuteData {
-  ID: string;
-  NumCode: string;
-  CharCode: string;
-  Nominal: number;
-  Name: string;
-  Value: number;
-  Previous: number;
-}

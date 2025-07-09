@@ -1,6 +1,6 @@
 import { CalculationUtilSbor } from "./calculation-util-sbor";
 import { DetectedFullYear } from "./detected-full-year";
-
+// Расчет стоимости для главной транице дексктоп/мобаил
 export function FromKRWtoRUB(
   origin_price: number,
   KRW: number,

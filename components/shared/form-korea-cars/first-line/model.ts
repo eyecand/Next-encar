@@ -9,6 +9,7 @@ export interface iOption {
 export interface ModelProps {
   model_short_name: string;
 }
+
 export type tpl = {
   [key: string]: string;
 };

@@ -10,7 +10,15 @@ import { InterfaceProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import { detectedDate } from "@/lib/detected-date";
 
-export const Mobile = ({ vehicle, className }: InterfaceProps) => {
+export const Mobile = ({
+  vehicle,
+  className,
+  EUR,
+  KRW,
+  fraht,
+  broker,
+  k_krw,
+}: InterfaceProps) => {
   return (
     <div
       className={cn(
@@ -157,6 +165,11 @@ export const Mobile = ({ vehicle, className }: InterfaceProps) => {
                       fuel={item.encar.details.fuel.fuel_english}
                       engine={item.encar.details.engine_displacement}
                       isMobile={true}
+                      EUR={EUR}
+                      KRW={KRW}
+                      broker={broker}
+                      fraht={fraht}
+                      k_krw={k_krw}
                     />
                     <div className="flex flex-col">
                       <span className="text-gray-400 text-[10px]">

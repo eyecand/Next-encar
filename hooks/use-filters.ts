@@ -4,6 +4,8 @@ interface ReturnPros {
   makesType: string | null;
   modelType: string | null;
   gradesType: string | null;
+  gradeEng: string | null;
+  gradeDetail: string | null;
   fuels: string | null;
   yearsMin: string | null;
   yearsMax: string | null;
@@ -26,6 +28,8 @@ interface ReturnPros {
   setMakesType: (value: string | null) => void;
   setModelType: (value: string | null) => void;
   setGradesType: (value: string | null) => void;
+  setGradesEng: (value: string | null) => void;
+  setGradesDetail: (value: string | null) => void;
   setFuels: (value: string | null) => void;
   setYearsMin: (value: string | null) => void;
   setYearsMax: (value: string | null) => void;
@@ -56,6 +60,12 @@ export const useFilters = (): ReturnPros => {
   );
   const [gradesType, setGradesType] = useState(
     searchParams.has("grades") ? searchParams.get("grades") : null
+  );
+  const [gradeEng, setGradesEng] = useState(
+    searchParams.has("grade_eng") ? searchParams.get("grade_eng") : null
+  );
+  const [gradeDetail, setGradesDetail] = useState(
+    searchParams.has("grade_detail") ? searchParams.get("grade_detail") : null
   );
   const [fuels, setFuels] = useState(
     searchParams.has("fuels") ? searchParams.get("fuels") : null
@@ -119,6 +129,8 @@ export const useFilters = (): ReturnPros => {
       makesType,
       modelType,
       gradesType,
+      gradeEng,
+      gradeDetail,
       fuels,
       yearsMin,
       yearsMax,
@@ -141,6 +153,8 @@ export const useFilters = (): ReturnPros => {
       setMakesType,
       setModelType,
       setGradesType,
+      setGradesEng,
+      setGradesDetail,
       setFuels,
       setYearsMin,
       setYearsMax,
@@ -165,6 +179,8 @@ export const useFilters = (): ReturnPros => {
       makesType,
       modelType,
       gradesType,
+      gradeEng,
+      gradeDetail,
       fuels,
       yearsMin,
       yearsMax,

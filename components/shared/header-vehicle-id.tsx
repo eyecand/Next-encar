@@ -1,13 +1,18 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Image from "next/image";
+import { useCBR } from "@/hooks/use-cbr";
+import { HeaderLoadingMian } from "./header-loading-main";
 
 export const HeaderVehicleId = () => {
-  const [KRW, setKRW] = useState<CBRPRops | null>(null);
-  useEffect(() => {
-    const localStoredKRW = localStorage.getItem("cbrData");
-    if (localStoredKRW) setKRW(JSON.parse(localStoredKRW));
-  }, []);
+  const { cbr } = useCBR();
+
+  const krwRate = cbr?.find((rate) => rate.char_code === "KRW");
+
+  if (!krwRate) {
+    return <HeaderLoadingMian />;
+  }
+  const KRW = krwRate.value;
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md ">
@@ -34,7 +39,7 @@ export const HeaderVehicleId = () => {
 
         <div className="hidden md:flex  items-center ">
           <span className="text-white">
-            KRW/RUB: {KRW && (Number(KRW.Valute.KRW.Value) * 1.08).toFixed(2)}
+            KRW/RUB: {(Number(KRW) * 1.08).toFixed(2)}
           </span>
         </div>
         <div className="hidden md:flex items-center">
@@ -49,23 +54,3 @@ export const HeaderVehicleId = () => {
     </section>
   );
 };
-
-interface CBRPRops {
-  Date: string; // Или Date, если будете парсить строку в Date объект
-  PreviousDate: string; // Или Date
-  PreviousURL: string;
-  Timestamp: string; // Или Date
-  Valute: {
-    [key: string]: ValuteData; // Индексный тип для динамических ключей валют (AUD, AZN, ...)
-  };
-}
-
-interface ValuteData {
-  ID: string;
-  NumCode: string;
-  CharCode: string;
-  Nominal: number;
-  Name: string;
-  Value: number;
-  Previous: number;
-}

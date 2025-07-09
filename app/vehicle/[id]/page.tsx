@@ -2,6 +2,7 @@ import { CarInfo, SliderCarPage } from "@/components/shared";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import ShareButton from "@/components/shared/ShareButton";
 import { detectedDate } from "@/lib/detected-date";
+import { findCBR } from "@/lib/find-cbr";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
@@ -13,6 +14,12 @@ export default async function CarPage({
   const paramsId = await params;
   const { id } = paramsId;
   const vehicleId = await findVehicleId(id);
+  const { cbr } = await findCBR();
+  const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
+  const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
+  const fraht = cbr.find((item) => item.char_code === "fraht")?.value;
+  const broker = cbr.find((item) => item.char_code === "broker")?.value;
+  const k_krw = cbr.find((item) => item.char_code === "K_KRW")?.value;
   if (!vehicleId) {
     return notFound();
   }
@@ -55,6 +62,11 @@ export default async function CarPage({
             diagnostics={vehicleId.diagnostics}
             vehicle_plate_number={vehicleId.vehicle_plate_number}
             sell_type={vehicleId.lib_sell_types.sell_type}
+            EUR={Number(EUR)}
+            KRW={Number(KRW)}
+            broker={Number(broker)}
+            fraht={Number(fraht)}
+            k_krw={Number(k_krw)}
           />
         </section>
       </Suspense>

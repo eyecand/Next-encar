@@ -1,19 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-import { useCBR } from "@/hooks/use-cbr";
-import { HeaderLoadingMian } from "./header-loading-main";
-
-export const Header = () => {
-  const { cbr } = useCBR();
-
-  const krwRate = cbr?.find((rate) => rate.char_code === "KRW");
-
-  if (!krwRate) {
-    return <HeaderLoadingMian />;
-  }
-
-  const KRW = krwRate.value;
+import { LoadingSpinner } from "./loading-spinner";
+export const HeaderLoadingMian = () => {
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
       <header className="mx-auto flex w-full max-w-5xl items-center justify-between px-4 py-1 text-md ">
@@ -39,9 +28,8 @@ export const Header = () => {
         </div>
 
         <div className="hidden md:flex  items-center ">
-          <span className="text-white">
-            KRW/RUB: {(Number(KRW) * 1.08).toFixed(2)}
-          </span>
+          <span className="text-white mr-2">KRW/RUB: </span>
+          <div>{<LoadingSpinner />}</div>
         </div>
         <div className="hidden md:flex items-center">
           {/* navitems */}

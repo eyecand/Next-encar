@@ -563,3 +563,8 @@ model lib_drive_types {
   details         vehicle_details[]
 }
 
+model currency_rates {
+  char_code String   @id
+  name      String?
+  value     Decimal? @db.Decimal
+}

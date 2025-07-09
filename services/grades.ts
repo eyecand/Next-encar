@@ -1,9 +1,8 @@
 import { axiosInstance } from "./instance";
 import { ApiRoutes } from "./constants";
-interface GradesProps {
-  grades: {
-    grade_english: string;
-  };
+export interface GradesProps {
+  grade_english: string;
+  grade_detail_english: string;
 }
 export const getGrades = async (
   makes: string | null,

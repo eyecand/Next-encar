@@ -19,3 +19,5 @@ export function CalculationUtilSbor(year: number, engine: number) {
   }
   return res;
 }
+
+// Расчет утилизационного сбора

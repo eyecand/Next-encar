@@ -58,6 +58,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       makes: filters.makesType,
       model: filters.modelType,
       grades: filters.gradesType,
+      grades_eng: filters.gradeEng,
+      grades_det: filters.gradeDetail,
       fuels: filters.fuels,
       yearsMin: filters.yearsMin,
       yearsMax: filters.yearsMax,
@@ -103,6 +105,9 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     filters.setInsuarePrice(null);
     filters.setCities(null);
     filters.setSort(null);
+    filters.setGradesType(null);
+    filters.setGradesEng(null);
+    filters.setGradesDetail(null);
   };
   return (
     <>
@@ -113,12 +118,12 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
         <FirstLine
           onChangeMakes={filters.setMakesType}
           onChangeModels={filters.setModelType}
-          onChangeYearMin={filters.setYearsMin}
-          onChangeYearMax={filters.setYearsMax}
+          onChangeGrade={filters.setGradesType}
+          onChangeGradeEnglish={filters.setGradesEng}
+          onChangeGradeDetail={filters.setGradesDetail}
           make={filters.makesType}
           model={filters.modelType}
-          yearMin={filters.yearsMin}
-          yearMax={filters.yearsMax}
+          grade={filters.gradesType}
         />
         <SecondLine
           onChangeFuels={filters.setFuels}
@@ -147,6 +152,10 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           cities={filters.cities}
           onChangeInsuarePrice={filters.setInsuarePrice}
           onChangeCities={filters.setCities}
+          onChangeYearMin={filters.setYearsMin}
+          onChangeYearMax={filters.setYearsMax}
+          yearMin={filters.yearsMin}
+          yearMax={filters.yearsMax}
         />
         <ButtonSubmit handleRemove={handleRemove} />
       </form>

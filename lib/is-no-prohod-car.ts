@@ -12,3 +12,5 @@ export function NoProhodCar(year: string) {
   }
   return x;
 }
+
+// Определяет машину младше 3-х лет, которой до прохожной осталось меньше года

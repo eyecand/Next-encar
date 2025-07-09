@@ -36,6 +36,11 @@ export interface VehicleListProps {
       }[];
     };
   }[];
+  EUR: number;
+  KRW: number;
+  fraht: number;
+  broker: number;
+  k_krw: number;
 }
 
 export interface InterfaceProps extends VehicleListProps {

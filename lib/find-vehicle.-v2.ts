@@ -15,6 +15,8 @@ export const findVehicleV2 = async (
   const {
     makes,
     model,
+    grades_eng,
+    grades_det,
     fuels,
     page,
     pageSize,
@@ -41,6 +43,29 @@ export const findVehicleV2 = async (
   const currentMaxEngine = Number(engineMax) || DEFAULT_MAX_ENGINE;
   const currentMinMileage = Number(mileageMin) || DEFAULT_MIN_MILEAGE;
   const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
+  let grade = {};
+  if (
+    grades_eng !== "null" &&
+    grades_eng &&
+    grades_det !== "null" &&
+    grades_det
+  ) {
+    grade = {
+      OR: [
+        {
+          grade_detail_english: grades_eng,
+        },
+        { grade_detail_english: grades_det },
+      ],
+    };
+  } else if (grades_det === "null" && grades_eng !== "null") {
+    grade = { grade_english: grades_eng };
+  } else if (grades_det !== "null" && grades_eng == "null") {
+    grade = { grade_english: grades_det };
+  } else if (grades_det === undefined && grades_eng === undefined) {
+    grade = {};
+  }
+
   let benefit = {};
   if (insuarePrice === "3") {
     benefit = { every: { insurance_benefit: { equals: 0 } } };
@@ -176,6 +201,7 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
+          grades: grade,
           drive: priv,
           fuel: fuel,
           release_date: {
@@ -245,6 +271,7 @@ export const findVehicleV2 = async (
         details: {
           makes: { make_short_name: makes },
           model: { model_short_name: model },
+          grades: grade,
           drive: priv,
           fuel: fuel,
           release_date: {
@@ -297,6 +324,8 @@ export interface GetSearchParams {
   makes?: string;
   model?: string;
   grades?: string;
+  grades_eng?: string;
+  grades_det?: string;
   page?: string;
   pageSize?: string;
   fuels?: string;

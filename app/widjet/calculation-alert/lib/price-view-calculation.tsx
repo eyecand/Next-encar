@@ -5,16 +5,19 @@ export const PriceViewCalclation = ({
   label,
   valute,
   className,
+  k,
 }: {
   price: number;
   label: string;
   valute: number;
   className: string;
+  k?: number;
 }) => {
+  const kef = k ? k : 1;
   return (
     <span className={cn("", className)}>
       {new Intl.NumberFormat("ru-RU")
-        .format(Math.floor(price * valute * 0.001))
+        .format(Math.floor(price * valute * 0.001 * kef))
         .replace(",", ".")}{" "}
       {label}
     </span>

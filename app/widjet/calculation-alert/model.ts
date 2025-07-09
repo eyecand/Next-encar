@@ -8,8 +8,11 @@ export type PriceInfoProps = {
   year: string;
   engine: number;
   fuel: string;
-  EUR?: number;
-  KRW?: number;
+  fraht: number;
+  broker: number;
+  k_krw: number;
+  EUR: number;
+  KRW: number;
 };
 
 export type NameLotProps = {

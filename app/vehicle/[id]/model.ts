@@ -61,6 +61,11 @@ export type VehicleIdProps = {
   accident_details: AccidentDetailsProps[];
   accident: AccidentProps | null;
   diagnostics: DiagnosticsProps | null;
+  EUR: number;
+  KRW: number;
+  fraht: number;
+  broker: number;
+  k_krw: number;
 };
 export type AlertDiagnosticProps = {
   diagnostics: DiagnosticsProps | null;

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import YandexMetrika from "@/components/shared/yandex-metrika";
-import { Header } from "@/components/shared/header";
+import { Header } from "@/components/shared";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

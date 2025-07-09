@@ -1,10 +1,6 @@
 "use client";
-import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
-import { NoProhodCar } from "@/lib/is-no-prohod-car";
-import { FromKRWtoRUB } from "@/lib/price-from-krw-to-rub";
-import { useCBRStore } from "@/store/cbr";
+import { CalculationCar } from "@/lib/calcilation-car";
 import { useCityState } from "@/store/city-filter";
-import { useEURStore } from "@/store/eur";
 
 type Props = {
   price_origion: number | null;
@@ -12,6 +8,11 @@ type Props = {
   fuel: string | null;
   engine: number;
   isMobile: boolean;
+  EUR: number;
+  KRW: number;
+  fraht: number;
+  broker: number;
+  k_krw: number;
 };
 export const PriceAll = ({
   price_origion,
@@ -19,13 +20,16 @@ export const PriceAll = ({
   fuel,
   engine,
   isMobile,
+  EUR,
+  KRW,
+  fraht,
+  broker,
+  k_krw,
 }: Props) => {
-  const priceWon = price_origion ? price_origion * 10000 : 0;
+  const priceWon = price_origion ? price_origion * 10000 : 1;
   const realFuel = fuel ? fuel : "Gasoline";
-  const cbr = useCBRStore((state) => state.cbr);
-  const EUR = useEURStore((state) => state.eur);
   const stateCity = useCityState((state) => state.cityState);
-  const isProhodCarMainPage = NoProhodCar(years);
+
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span
@@ -37,33 +41,22 @@ export const PriceAll = ({
       </span>
       <span className={`font-bold ${isMobile ? "text-sm" : "text-lg"}`}>
         ~{" "}
-        {isProhodCarMainPage
-          ? new Intl.NumberFormat("ru-RU")
-              .format(
-                CalculationPriceForCarNoProhod(
-                  priceWon,
-                  cbr,
-                  EUR,
-                  engine,
-                  realFuel,
-                  100000,
-                  Math.floor(priceWon + 2100000)
-                )
-              )
-              .replace(",", ".")
-          : new Intl.NumberFormat("ru-RU")
-              .format(
-                FromKRWtoRUB(
-                  priceWon,
-                  cbr,
-                  EUR,
-                  engine,
-                  realFuel,
-                  years,
-                  stateCity
-                )
-              )
-              .replace(",", ".")}{" "}
+        {new Intl.NumberFormat("ru-RU")
+          .format(
+            CalculationCar(
+              priceWon,
+              KRW,
+              EUR,
+              engine,
+              realFuel,
+              years,
+              broker,
+              fraht,
+              k_krw,
+              stateCity
+            )
+          )
+          .replace(",", ".")}{" "}
         ₽
       </span>
     </div>

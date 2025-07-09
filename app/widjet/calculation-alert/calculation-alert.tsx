@@ -17,9 +17,12 @@ import { useEffect, useRef, useState } from "react";
 import { DetectedFullYear } from "@/lib/detected-full-year";
 import { CalculationUtilSbor } from "@/lib/calculation-util-sbor";
 import { cn } from "@/lib/utils";
-import { CalculationPriceForCarNoProhod } from "@/lib/calculation-price-for-car-no-prohod";
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { DetectedKPower } from "@/lib/detected-K-power";
+import { DetectedCustomsClearance } from "@/lib/detected-customs-clearance";
+import { PriceInRussian } from "./price-in-russian";
+import { PriceInKorea } from "./price-in-korea";
+import { CalculationCar } from "@/lib/calcilation-car";
 
 export const CalculationAlert = ({
   priceEn,
@@ -28,6 +31,9 @@ export const CalculationAlert = ({
   year,
   EUR,
   KRW,
+  fraht,
+  broker,
+  k_krw,
 }: PriceInfoProps) => {
   const alertRef = useRef<HTMLDivElement>(null);
 
@@ -38,21 +44,26 @@ export const CalculationAlert = ({
 
   useEffect(() => {
     const differentYear = DetectedFullYear(year);
-    const util = CalculationUtilSbor(Number(differentYear), engine);
-    const K_Power = DetectedKPower(Number(power));
+    const util = CalculationUtilSbor(Number(differentYear), engine); // расчет утил. сбора
+    const K_Power = DetectedKPower(Number(power)); // расчет надбавки по л.с. для электро
     const customsCoast = CustomsDuty(
       priceEn,
-      Number(KRW),
-      Number(EUR),
+      KRW,
+      EUR,
       engine,
       fuel,
       differentYear,
       Number(power),
       K_Power
-    );
+    ); // расчет пошлины
+
     SetPoshlina(customsCoast);
     SetUtilSbor(util);
   }, [power, priceEn, KRW, EUR, engine, fuel, year]);
+  const customsOformlenie = DetectedCustomsClearance(
+    priceEn * Number(KRW) * 0.001
+  ); // таможенное офрмление
+
   const openDialog = () => {
     setIsOpen(true);
   };
@@ -79,14 +90,10 @@ export const CalculationAlert = ({
     };
   }, [isOpen, setIsOpen]);
 
-  const customs = 100000; //таможня
-
-  const isProhodCar = NoProhodCar(year);
-
-  const fraht = 2100000;
-  const totalKorea = Math.floor(priceEn + fraht);
-  const totalRussia = poshlina + customs + utilSbor;
-  const total = Math.floor(totalKorea * Number(KRW) * 0.001) + totalRussia;
+  const isNoProhodCar = NoProhodCar(year);
+  const totalKorea = priceEn + fraht;
+  const totalRussia = poshlina + broker + utilSbor + customsOformlenie;
+  const total = Math.floor(totalKorea * KRW * 0.001 * k_krw) + totalRussia;
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -125,9 +132,10 @@ export const CalculationAlert = ({
               ~
               <PriceViewCalclation
                 price={priceEn}
-                valute={Number(KRW)}
+                valute={KRW}
                 label="₽"
                 className="whitespace-nowrap font-semibold text-zinc-600"
+                k={k_krw}
               />
             </div>
           </div>
@@ -144,106 +152,20 @@ export const CalculationAlert = ({
           </div>
         )}
         <div className="mt-5 flex flex-col lg:flex-row gap-4 lg:gap-12">
-          <div className="lg:basis-1/2">
-            <div>
-              <div className="my-6 pl-7 pt-6 border-t border-zinc-100">
-                <p className="text-base flex items-start justify-between gap-4 text-zinc-700">
-                  Цена авто{" "}
-                  <span className="whitespace-nowrap font-semibold text-zinc-600">
-                    <PriceView
-                      tilda={false}
-                      price={String(priceEn)}
-                      label="₩"
-                      className="text-zinc-400 font-normal text-sm mr-2"
-                    />
-                    <PriceViewCalclation
-                      price={priceEn}
-                      valute={Number(KRW)}
-                      label="₽"
-                      className=""
-                    />
-                  </span>
-                </p>
-              </div>
-              <div className="my-6 pt-6 border-t border-zinc-100">
-                <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
-                  <div className="flex items-center justify-start gap-2">
-                    <TooltipUI
-                      title={
-                        "Логистика, снятие с учёта, услуги дилера.Расходы усредненные для предварительных расчетов и могут изменяться"
-                      }
-                    />{" "}
-                    Расходы по Корее
-                  </div>
-                  <span className="whitespace-nowrap font-semibold text-zinc-600">
-                    <PriceView
-                      tilda={false}
-                      price={String(fraht)}
-                      label="₩"
-                      className="text-zinc-400 font-normal text-sm mr-2"
-                    />
-                    <PriceViewCalclation
-                      price={fraht}
-                      valute={Number(KRW)}
-                      label="₽"
-                      className=""
-                    />
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="lg:basis-1/2">
-            <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
-                <div className="flex items-center justify-start gap-2">
-                  <span className="whitespace-nowrap  text-zinc-600">
-                    Услуги брокера
-                  </span>
-                </div>
-                <PriceView
-                  tilda={false}
-                  className="whitespace-nowrap font-semibold text-zinc-600"
-                  label="₽"
-                  price={String(customs)}
-                />
-              </div>
-            </div>
-            <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
-                <div className="flex items-center justify-start gap-2">
-                  {" "}
-                  Пошлина
-                  <span className="ml-2 text-sm text-zinc-500">
-                    (на физ. лицо)
-                  </span>
-                </div>
-
-                <PriceView
-                  tilda={true}
-                  price={String(poshlina)}
-                  label="₽"
-                  className="whitespace-nowrap font-semibold"
-                />
-              </div>
-            </div>
-            <div className="my-6 pt-6 border-t border-zinc-100">
-              <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
-                <div className="flex items-center justify-start gap-2">
-                  {" "}
-                  Утил. сбор
-                </div>
-
-                <PriceView
-                  tilda={true}
-                  price={String(utilSbor)}
-                  label="₽"
-                  className="whitespace-nowrap font-semibold"
-                />
-              </div>
-            </div>
-          </div>
+          <PriceInKorea
+            KRW={KRW}
+            fraht={fraht}
+            priceEn={priceEn}
+            k_krw={k_krw}
+          />
+          <PriceInRussian
+            customs={broker}
+            customsOformlenie={customsOformlenie}
+            poshlina={poshlina}
+            utilSbor={utilSbor}
+          />
         </div>
+        {/* Общая стоимость */}
         <div className="flex flex-col lg:flex-row  -mt-8 lg:-mt-0  ">
           <div className="lg:basis-1/2 lg:pr-2">
             <p className="text-lg font-semibold font-gilroy mt-12 lg:mt-6 flex items-center justify-between gap-4">
@@ -259,8 +181,9 @@ export const CalculationAlert = ({
                 <PriceViewCalclation
                   className="text-lg"
                   label="₽"
-                  valute={Number(KRW)}
+                  valute={KRW}
                   price={totalKorea}
+                  k={k_krw}
                 />
               </span>
             </p>
@@ -280,11 +203,11 @@ export const CalculationAlert = ({
         <div
           className={cn(
             "bg-zinc-50 -mx-6 p-6 relative min-w-full flex justify-center my-4 text-red-600 gap-2 text-xl font-bold",
-            !isProhodCar && "items-center"
+            !isNoProhodCar && "items-center"
           )}
         >
           Итого:{" "}
-          {isProhodCar ? (
+          {isNoProhodCar ? (
             <div className="flex flex-col">
               <div>
                 <PriceView
@@ -300,14 +223,17 @@ export const CalculationAlert = ({
                   className=""
                   label="₽"
                   price={String(
-                    CalculationPriceForCarNoProhod(
+                    CalculationCar(
                       priceEn,
-                      Number(KRW),
-                      Number(EUR),
+                      KRW,
+                      EUR,
                       engine,
                       fuel,
-                      customs,
-                      totalKorea
+                      "4",
+                      broker,
+                      fraht,
+                      k_krw,
+                      1
                     )
                   )}
                 />{" "}

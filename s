@@ -527,10 +527,12 @@ model vehicle_details {
   fuel_id             Int
   colour_id           Int
   body_type_id        Int 
+  drive_type_id       Int?
   release_date        DateTime
   created_at          DateTime @db.Timestamptz(6)
   updated_at          DateTime @db.Timestamptz(6)
   encar               encar_vehicles @relation(fields:[vehicle_id],references:[id]) 
+  drive               lib_drive_types? @relation(fields: [drive_type_id],references: [id])
   fuel                lib_fuels @relation(fields: [fuel_id],references: [id])
   colours             lib_colours @relation(fields: [colour_id],references: [id])
   grades              lib_grades   @relation(fields: [grade_id],references: [id])
@@ -553,4 +555,16 @@ model vehicle_photos {
 
   @@index([vehicle_id, url], map: "vehicle_photos_vehicle_id_url")
 }
+model lib_drive_types {
+  id         Int      @id @default(autoincrement())
+  drive_type String   @unique @db.VarChar(55)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+  details         vehicle_details[]
+}
 
+model currency_rates {
+  char_code String   @id
+  name      String?
+  value     Decimal? @db.Decimal
+}

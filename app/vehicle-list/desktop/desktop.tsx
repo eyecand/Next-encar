@@ -10,7 +10,15 @@ import { InterfaceProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import { detectedDate } from "@/lib/detected-date";
 
-export const Desktop = ({ vehicle, className }: InterfaceProps) => {
+export const Desktop = ({
+  vehicle,
+  className,
+  EUR,
+  KRW,
+  fraht,
+  broker,
+  k_krw,
+}: InterfaceProps) => {
   return (
     <div className={cn(className, "flex-col gap-10  ")}>
       {vehicle.length > 0 &&
@@ -137,6 +145,11 @@ export const Desktop = ({ vehicle, className }: InterfaceProps) => {
                         fuel={item.encar.details.fuel.fuel_english}
                         engine={item.encar.details.engine_displacement}
                         isMobile={false}
+                        EUR={EUR}
+                        KRW={KRW}
+                        broker={broker}
+                        fraht={fraht}
+                        k_krw={k_krw}
                       />
                       <div className="flex flex-col items-end mt-2">
                         <span className="text-gray-400 text-sm">
