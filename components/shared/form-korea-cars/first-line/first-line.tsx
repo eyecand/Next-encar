@@ -16,6 +16,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
   onChangeGrade,
   onChangeGradeEnglish,
   onChangeGradeDetail,
+  onChangeEvolution,
   make,
   model,
   grade,
@@ -104,12 +105,14 @@ export const FirstLine: React.FC<Props<string | null>> = ({
     onChangeGrade(null);
     onChangeGradeEnglish(null);
     onChangeGradeDetail(null);
+    onChangeEvolution(null);
   };
   const handleModelsChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) onChangeModels(selectedOptions?.value);
     onChangeGrade(null);
     onChangeGradeEnglish(null);
     onChangeGradeDetail(null);
+    onChangeEvolution(null);
   };
   const handleGradesChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) {
@@ -215,6 +218,7 @@ interface Props<T> {
   onChangeGrade: (value: T) => void;
   onChangeGradeEnglish: (value: T) => void;
   onChangeGradeDetail: (value: T) => void;
+  onChangeEvolution: (value: T) => void;
   make: string | null;
   model: string | null;
   grade: string | null;

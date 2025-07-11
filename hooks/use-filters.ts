@@ -4,6 +4,7 @@ interface ReturnPros {
   makesType: string | null;
   modelType: string | null;
   gradesType: string | null;
+  evolutonsType: string | null;
   gradeEng: string | null;
   gradeDetail: string | null;
   fuels: string | null;
@@ -25,11 +26,13 @@ interface ReturnPros {
   mileageMin: string | null;
   mileageMax: string | null;
   cities: string | null;
+  check: string | null;
   setMakesType: (value: string | null) => void;
   setModelType: (value: string | null) => void;
   setGradesType: (value: string | null) => void;
   setGradesEng: (value: string | null) => void;
   setGradesDetail: (value: string | null) => void;
+  setEvolutionsType: (value: string | null) => void;
   setFuels: (value: string | null) => void;
   setYearsMin: (value: string | null) => void;
   setYearsMax: (value: string | null) => void;
@@ -49,6 +52,7 @@ interface ReturnPros {
   setMileageMin: (value: string | null) => void;
   setMileageMax: (value: string | null) => void;
   setCities: (value: string | null) => void;
+  setCheck: (value: string | null) => void;
 }
 export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
@@ -60,6 +64,9 @@ export const useFilters = (): ReturnPros => {
   );
   const [gradesType, setGradesType] = useState(
     searchParams.has("grades") ? searchParams.get("grades") : null
+  );
+  const [evolutonsType, setEvolutionsType] = useState(
+    searchParams.has("evolutons") ? searchParams.get("evolutons") : null
   );
   const [gradeEng, setGradesEng] = useState(
     searchParams.has("grade_eng") ? searchParams.get("grade_eng") : null
@@ -124,6 +131,9 @@ export const useFilters = (): ReturnPros => {
   const [cities, setCities] = useState(
     searchParams.has("cities") ? searchParams.get("cities") : null
   );
+  const [check, setCheck] = useState(
+    searchParams.has("check") ? searchParams.get("check") : null
+  );
   return useMemo(
     () => ({
       makesType,
@@ -131,6 +141,7 @@ export const useFilters = (): ReturnPros => {
       gradesType,
       gradeEng,
       gradeDetail,
+      evolutonsType,
       fuels,
       yearsMin,
       yearsMax,
@@ -150,11 +161,13 @@ export const useFilters = (): ReturnPros => {
       mileageMin,
       mileageMax,
       cities,
+      check,
       setMakesType,
       setModelType,
       setGradesType,
       setGradesEng,
       setGradesDetail,
+      setEvolutionsType,
       setFuels,
       setYearsMin,
       setYearsMax,
@@ -174,6 +187,7 @@ export const useFilters = (): ReturnPros => {
       setMileageMin,
       setMileageMax,
       setCities,
+      setCheck,
     }),
     [
       makesType,
@@ -181,6 +195,7 @@ export const useFilters = (): ReturnPros => {
       gradesType,
       gradeEng,
       gradeDetail,
+      evolutonsType,
       fuels,
       yearsMin,
       yearsMax,
@@ -200,6 +215,7 @@ export const useFilters = (): ReturnPros => {
       mileageMin,
       mileageMax,
       cities,
+      check,
     ]
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useEffect } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import qs from "qs";
 import { useFilters } from "@/hooks/use-filters";
 import dynamic from "next/dynamic";
@@ -13,8 +13,10 @@ import { ButtonSubmit } from "../button-submit";
 import { optionSort } from "./fourth-line/constanst";
 import { detectSort } from "./fourth-line/lib";
 import { iOption } from "./fourth-line/model";
+import { FiveLine } from "./five-line";
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 export const FormKoreaCars = ({ total }: { total: string }) => {
+  const [isChecked, setIsChecked] = useState(false);
   const router = useRouter();
   const filters = useFilters();
   useEffect(() => {
@@ -22,6 +24,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       makes: filters.makesType,
       model: filters.modelType,
       grades: filters.gradesType,
+      evolutons: filters.evolutonsType,
       fuels: filters.fuels,
       yearsMin: filters.yearsMin,
       yearsMax: filters.yearsMax,
@@ -41,6 +44,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       mileageMin: filters.mileageMin,
       mileageMax: filters.mileageMax,
       cities: filters.cities,
+      check: filters.check,
     };
     const queryUrl = qs.stringify(url, {
       arrayFormat: "comma",
@@ -60,6 +64,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       grades: filters.gradesType,
       grades_eng: filters.gradeEng,
       grades_det: filters.gradeDetail,
+      evolutons: filters.evolutonsType,
       fuels: filters.fuels,
       yearsMin: filters.yearsMin,
       yearsMax: filters.yearsMax,
@@ -79,6 +84,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       mileageMin: filters.mileageMin,
       mileageMax: filters.mileageMax,
       cities: filters.cities,
+      check: filters.check,
     };
     const query = qs.stringify(params, {
       arrayFormat: "comma",
@@ -108,6 +114,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     filters.setGradesType(null);
     filters.setGradesEng(null);
     filters.setGradesDetail(null);
+    filters.setEvolutionsType(null);
+    setIsChecked(false);
   };
   return (
     <>
@@ -121,6 +129,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           onChangeGrade={filters.setGradesType}
           onChangeGradeEnglish={filters.setGradesEng}
           onChangeGradeDetail={filters.setGradesDetail}
+          onChangeEvolution={filters.setEvolutionsType}
           make={filters.makesType}
           model={filters.modelType}
           grade={filters.gradesType}
@@ -156,6 +165,15 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           onChangeYearMax={filters.setYearsMax}
           yearMin={filters.yearsMin}
           yearMax={filters.yearsMax}
+        />
+        <FiveLine
+          make={filters.makesType}
+          model={filters.modelType}
+          isChecked={isChecked}
+          setIsChecked={setIsChecked}
+          evolution={filters.evolutonsType}
+          onChangeEvolution={filters.setEvolutionsType}
+          onChangeCheck={filters.setCheck}
         />
         <ButtonSubmit handleRemove={handleRemove} />
       </form>

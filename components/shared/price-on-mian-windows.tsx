@@ -1,5 +1,6 @@
 "use client";
 import { CalculationCar } from "@/lib/calcilation-car";
+import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { useCityState } from "@/store/city-filter";
 
 type Props = {
@@ -29,7 +30,7 @@ export const PriceAll = ({
   const priceWon = price_origion ? price_origion * 10000 : 1;
   const realFuel = fuel ? fuel : "Gasoline";
   const stateCity = useCityState((state) => state.cityState);
-
+  const isNoProhodCar = NoProhodCar(years);
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span
@@ -41,22 +42,39 @@ export const PriceAll = ({
       </span>
       <span className={`font-bold ${isMobile ? "text-sm" : "text-lg"}`}>
         ~{" "}
-        {new Intl.NumberFormat("ru-RU")
-          .format(
-            CalculationCar(
-              priceWon,
-              KRW,
-              EUR,
-              engine,
-              realFuel,
-              years,
-              broker,
-              fraht,
-              k_krw,
-              stateCity
-            )
-          )
-          .replace(",", ".")}{" "}
+        {isNoProhodCar
+          ? new Intl.NumberFormat("ru-RU")
+              .format(
+                CalculationCar(
+                  priceWon,
+                  KRW,
+                  EUR,
+                  engine,
+                  realFuel,
+                  "4",
+                  broker,
+                  fraht,
+                  k_krw,
+                  stateCity
+                )
+              )
+              .replace(",", ".")
+          : new Intl.NumberFormat("ru-RU")
+              .format(
+                CalculationCar(
+                  priceWon,
+                  KRW,
+                  EUR,
+                  engine,
+                  realFuel,
+                  years,
+                  broker,
+                  fraht,
+                  k_krw,
+                  stateCity
+                )
+              )
+              .replace(",", ".")}{" "}
         ₽
       </span>
     </div>

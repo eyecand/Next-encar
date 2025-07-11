@@ -17,6 +17,7 @@ export const findVehicleV2 = async (
     model,
     grades_eng,
     grades_det,
+    evolutons,
     fuels,
     page,
     pageSize,
@@ -32,6 +33,7 @@ export const findVehicleV2 = async (
     mileageMax,
     mileageMin,
     transmission,
+    check,
   } = await params;
   const pagenum = page ? Number(page) - 1 : 0;
   const takePageSize = pageSize ?? 10;
@@ -192,6 +194,137 @@ export const findVehicleV2 = async (
       drive_type: { contains: "4WD" },
     };
   }
+
+  if (check === "2") {
+    const yearMin = new Date().getFullYear() - 3;
+    const yearMax = new Date().getFullYear() - 5;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutons },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
+
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                model: { select: { model_short_name: true } },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { url: true } },
+          },
+        },
+      },
+
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutons },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
+
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
   const vehiclePromise = prisma.active_lots.findMany({
     where: {
       encar: {
@@ -200,7 +333,7 @@ export const findVehicleV2 = async (
         },
         details: {
           makes: { make_short_name: makes },
-          model: { model_short_name: model },
+          model: { model_short_name: model, model_english: evolutons },
           grades: grade,
           drive: priv,
           fuel: fuel,
@@ -270,7 +403,7 @@ export const findVehicleV2 = async (
         },
         details: {
           makes: { make_short_name: makes },
-          model: { model_short_name: model },
+          model: { model_short_name: model, model_english: evolutons },
           grades: grade,
           drive: priv,
           fuel: fuel,
@@ -326,6 +459,7 @@ export interface GetSearchParams {
   grades?: string;
   grades_eng?: string;
   grades_det?: string;
+  evolutons?: string;
   page?: string;
   pageSize?: string;
   fuels?: string;
@@ -346,6 +480,7 @@ export interface GetSearchParams {
   mileageMin: string;
   mileageMax: string;
   cities: string;
+  check?: string;
 }
 
 export interface ReturnProps {

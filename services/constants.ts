@@ -7,4 +7,5 @@ export enum ApiRoutes {
   YEARS = "years",
   COUNT_NOMER = "countNomer",
   COUNT_OWNER = "countOwner",
+  EVOLUTION = "evolution",
 }
