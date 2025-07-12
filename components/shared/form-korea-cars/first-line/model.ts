@@ -13,3 +13,6 @@ export interface ModelProps {
 export type tpl = {
   [key: string]: string;
 };
+export interface EvolutionProps {
+  model_english: string;
+}

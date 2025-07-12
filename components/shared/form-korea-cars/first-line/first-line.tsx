@@ -4,27 +4,26 @@ import dynamic from "next/dynamic";
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 
 import { optionMakes } from "./constant";
-import { iOption, ModelProps, Option } from "./model";
+import { iOption, ModelProps, Option, EvolutionProps } from "./model";
 import { detectMake } from "./lib";
 import { useEffect, useState } from "react";
 import { Api } from "@/services/api-client";
-import { GradesProps } from "@/services/grades";
 
 export const FirstLine: React.FC<Props<string | null>> = ({
   onChangeMakes,
   onChangeModels,
+  onChangeEvolution,
   onChangeGrade,
   onChangeGradeEnglish,
   onChangeGradeDetail,
-  onChangeEvolution,
+  evolution,
   make,
   model,
-  grade,
 }) => {
   const [mod, setMod] = useState<ModelProps[]>([]);
   const [isMod, setIsMod] = useState(false);
-  const [grades, setGrades] = useState<GradesProps[]>([]);
-  const [isGrades, setIsGrades] = useState(false);
+  const [evolutions, setEvolutions] = useState<EvolutionProps[]>([]);
+  const [isEvolution, setIsEvolution] = useState(false);
   useEffect(() => {
     async function filterModels(params: string) {
       try {
@@ -37,23 +36,25 @@ export const FirstLine: React.FC<Props<string | null>> = ({
         setIsMod(false);
       }
     }
-    async function filterGrades(makes: string | null, model: string | null) {
+
+    async function filterEvolution(make: string | null, model: string | null) {
       try {
-        setIsGrades(true);
-        const response = await Api.grades.getGrades(makes, model);
-        setGrades(response);
+        setIsEvolution(true);
+        const response = await Api.evolution.getEvolution(make, model);
+        setEvolutions(response);
       } catch (error) {
         console.log(error);
       } finally {
-        setIsGrades(false);
+        setIsEvolution(false);
       }
     }
+
     if (make) {
       filterModels(String(make));
     }
 
     if (Boolean(make) && Boolean(model)) {
-      filterGrades(make, model);
+      filterEvolution(make, model);
     }
   }, [make, model]);
   const optionsModels: Option[] = [
@@ -62,13 +63,21 @@ export const FirstLine: React.FC<Props<string | null>> = ({
       label: "Любая модель",
     },
   ];
-  const optionsGrades: Option[] = [
+
+  const optionsEvolution: Option[] = [
     {
       value: null,
-      label: "Любая комплектация",
+      label: "Все поколения",
     },
   ];
-
+  evolutions
+    .sort((a, b) => a.model_english.localeCompare(b.model_english))
+    .map((item) => {
+      return optionsEvolution.push({
+        value: item.model_english,
+        label: item.model_english,
+      });
+    });
   mod
     .sort((a, b) => a.model_short_name.localeCompare(b.model_short_name))
     .map((item) => {
@@ -78,24 +87,6 @@ export const FirstLine: React.FC<Props<string | null>> = ({
           item.model_short_name === "Canival"
             ? "Carnival"
             : item.model_short_name,
-      });
-    });
-
-  grades
-    .sort((a, b) => a.grade_english.localeCompare(b.grade_english))
-    .map((item) => {
-      const grade_eng = item.grade_english === null ? "" : item.grade_english;
-      const grade_detail =
-        item.grade_detail_english === null
-          ? ""
-          : " " + item.grade_detail_english;
-      return optionsGrades.push({
-        value:
-          grade_eng.replace(" China Manufacturer", "") +
-          grade_detail.replace(" China Manufacturer", ""),
-        label:
-          grade_eng.replace(" China Manufacturer", "") +
-          grade_detail.replace(" China Manufacturer", ""),
       });
     });
 
@@ -114,28 +105,10 @@ export const FirstLine: React.FC<Props<string | null>> = ({
     onChangeGradeDetail(null);
     onChangeEvolution(null);
   };
-  const handleGradesChange = (selectedOptions: iOption | null) => {
-    if (selectedOptions) {
-      const foundItem = grades.find((item) => {
-        const combinedString =
-          item.grade_english +
-          (item.grade_detail_english ? " " + item.grade_detail_english : "");
-        return (
-          combinedString.replace(" China Manufacturer", "") ===
-          selectedOptions.value
-        );
-      });
-      onChangeGrade(selectedOptions.value);
-      if (foundItem) {
-        onChangeGradeEnglish(String(foundItem?.grade_english));
-        onChangeGradeDetail(String(foundItem?.grade_detail_english));
-      } else {
-        onChangeGradeEnglish(null);
-        onChangeGradeDetail(null);
-      }
-    }
-  };
 
+  const handleEvolutionChange = (selectedOptions: iOption | null) => {
+    if (selectedOptions) onChangeEvolution(selectedOptions?.value);
+  };
   return (
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
@@ -160,7 +133,6 @@ export const FirstLine: React.FC<Props<string | null>> = ({
           </div>
         </div>
       </div>
-
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-gray-400  rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
@@ -189,21 +161,21 @@ export const FirstLine: React.FC<Props<string | null>> = ({
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-gray-400  rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
-              classNamePrefix={"grades"}
-              placeholder="Любая комплектация"
-              isLoading={isGrades}
-              options={optionsGrades}
+              classNamePrefix={"evolution"}
+              placeholder="Поколение"
+              options={optionsEvolution}
+              isLoading={isEvolution}
               value={
-                grade
+                evolution
                   ? [
                       {
-                        value: grade,
-                        label: grade,
+                        value: evolution,
+                        label: evolution,
                       },
                     ]
                   : []
               }
-              onChange={(option) => handleGradesChange(option as iOption)}
+              onChange={(option) => handleEvolutionChange(option as iOption)}
               isDisabled={!Boolean(model)}
             />
           </div>
@@ -221,5 +193,5 @@ interface Props<T> {
   onChangeEvolution: (value: T) => void;
   make: string | null;
   model: string | null;
-  grade: string | null;
+  evolution: string | null;
 }

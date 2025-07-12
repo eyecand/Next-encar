@@ -132,15 +132,19 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           onChangeEvolution={filters.setEvolutionsType}
           make={filters.makesType}
           model={filters.modelType}
-          grade={filters.gradesType}
+          evolution={filters.evolutonsType}
         />
         <SecondLine
           onChangeFuels={filters.setFuels}
           onChangePrivod={filters.setPrivod}
-          onChangeTransmission={filters.setTransmission}
+          onChangeGrade={filters.setGradesType}
+          onChangeGradeEnglish={filters.setGradesEng}
+          onChangeGradeDetail={filters.setGradesDetail}
           fuels={filters.fuels}
+          grade={filters.gradesType}
+          make={filters.makesType}
+          model={filters.modelType}
           privod={filters.privod}
-          transmission={filters.transmission}
         />
         <TherdLine
           engineMax={filters.engineMax}
@@ -167,13 +171,11 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           yearMax={filters.yearsMax}
         />
         <FiveLine
-          make={filters.makesType}
-          model={filters.modelType}
+          transmission={filters.transmission}
           isChecked={isChecked}
           setIsChecked={setIsChecked}
-          evolution={filters.evolutonsType}
-          onChangeEvolution={filters.setEvolutionsType}
           onChangeCheck={filters.setCheck}
+          onChangeTransmission={filters.setTransmission}
         />
         <ButtonSubmit handleRemove={handleRemove} />
       </form>
