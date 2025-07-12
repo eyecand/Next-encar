@@ -132,9 +132,9 @@ export const findVehicleV2 = async (
   } else if (sort === "mileageMax") {
     sortLabel = { details: { mileage: "asc" } };
   } else if (sort === "yearMin") {
-    sortLabel = { details: { form_year: "desc" } };
+    sortLabel = { details: { release_date: "desc" } };
   } else if (sort === "yearMax") {
-    sortLabel = { details: { form_year: "asc" } };
+    sortLabel = { details: { release_date: "asc" } };
   } else if (sort === "engineMin") {
     sortLabel = { details: { engine_displacement: "desc" } };
   } else if (sort === "engineMax") {
