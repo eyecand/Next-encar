@@ -271,6 +271,7 @@ export const Header = () => {
             <div className="p-3">
               <nav className=" text-xs">
                 <Link
+                  onClick={toggleMobileMenu}
                   href="/"
                   className="block text-gray-600 hover:text-black hover:bg-blue-50 py-2 px-1 hover:rounded-md"
                 >
@@ -278,6 +279,7 @@ export const Header = () => {
                 </Link>
                 <Link
                   href="/about"
+                  onClick={toggleMobileMenu}
                   className="block text-gray-600 hover:text-black hover:bg-blue-50 py-2 px-1 hover:rounded-md"
                 >
                   О нас
@@ -290,6 +292,7 @@ export const Header = () => {
                   Схема привоза
                 </Link> */}
                 <Link
+                  onClick={toggleMobileMenu}
                   href="/questions"
                   className="block text-gray-600 hover:text-black hover:bg-blue-50 py-2 px-1 hover:rounded-md"
                 >
