@@ -30,7 +30,7 @@ export default async function CarPage({
 
   return (
     <>
-      <div className="mx-auto px-5 max-w-7xl mt-44">
+      <div className="mx-auto px-5 max-w-7xl mt-24 lg:mt-24">
         <div className=" py-5 flex items-baseline">
           <h1 className="font-bold text-lg md:text-3xl">
             {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}

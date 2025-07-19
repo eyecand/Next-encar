@@ -4,7 +4,7 @@ import Image from "next/image";
 export default async function AboutPage() {
   return (
     <>
-      <div className="mx-auto flex flex-col flex-1 w-full  mt-44">
+      <div className="mx-auto flex flex-col flex-1 w-full  mt-28 lg:mt-44">
         {/* Header */}
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row px-12">
           <div className="flex flex-col w-full lg:flex-[50%] xl:flex-[30%]">

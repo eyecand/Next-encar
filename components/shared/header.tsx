@@ -45,7 +45,7 @@ export const Header = () => {
   };
   return (
     <>
-      <section className="w-full fixed px-6 top-0 left-0 z-10 bg-gray-50 border-b border-b-gray-300">
+      <section className="w-full fixed  top-0 left-0 z-10 bg-gray-50 border-b border-b-gray-300">
         <header className="mx-auto max-w-7xl flex flex-col px-4 py-1 pb-4 text-md">
           <div className="flex flex-col lg:flex-row">
             <div className="flex items-center justify-between">
@@ -77,7 +77,7 @@ export const Header = () => {
               </button>
             </div>
 
-            <div className="flex items-center justify-between ml-1 mt-2 lg:ml-0 lg:mt-0">
+            <div className="hidden lg:flex items-center justify-between ml-1 mt-2 lg:ml-0 lg:mt-0">
               <div className="flex gap-2">
                 <div className="flex flex-col ml-0 lg:ml-5">
                   <p className="text-[#212529BF] text-xs">Поддержка</p>

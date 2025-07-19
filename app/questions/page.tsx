@@ -68,7 +68,7 @@ const rightColumnQuestions = [
 export default async function QuestionsPage() {
   return (
     <>
-      <section className="w-full py-12 px-4 mt-32">
+      <section className="w-full py-12 px-4 mt-20 lg:mt-32">
         <div className="container mx-auto max-w-7xl px-6">
           <h2 className="text-3xl font-bold text-gray-900 mb-8">
             Часто задаваемые вопросы
