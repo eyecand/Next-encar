@@ -2,20 +2,16 @@
 import React from "react";
 import Image from "next/image";
 import { useCBR } from "@/hooks/use-cbr";
-import { HeaderLoadingMian } from "./header-loading-main";
 
 export const HeaderVehicleId = () => {
   const { cbr } = useCBR();
 
   const krwRate = cbr?.find((rate) => rate.char_code === "KRW");
 
-  if (!krwRate) {
-    return <HeaderLoadingMian />;
-  }
-  const KRW = krwRate.value;
+  const KRW = krwRate ? krwRate.value : 57.8;
   return (
     <section className="w-full fixed top-0 left-0 z-10 bg-black">
-      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md ">
+      <header className="mx-auto flex w-full max-w-7xl items-center justify-between px-4 py-1 text-md mt-60">
         <div className="flex items-center gap-10">
           <div>
             <a

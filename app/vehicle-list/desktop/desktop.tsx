@@ -29,7 +29,7 @@ export const Desktop = ({
                 key={index}
                 target="_blank"
                 href={`/vehicle/${item.encar.id}`}
-                className=" p-5 max-w-5xl "
+                className=" p-5 max-w-7xl "
               >
                 <div className="flex justify-between relative card-car">
                   <div className="mr-5 relative w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">

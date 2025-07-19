@@ -6,15 +6,14 @@ const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 import { useEffect } from "react";
 import { iOption } from "./model";
 import { Checkbox } from "@/components/ui/checkbox";
-import { optionTramsmission } from "../second-line/constant";
-import { detectTransmission } from "../second-line/lib";
+import { optionBenefit } from "../fourth-line/constanst";
 
 export const FiveLine: React.FC<Props<string | null>> = ({
   isChecked,
-  transmission,
+  insuarePrice,
   setIsChecked,
   onChangeCheck,
-  onChangeTransmission,
+  onChangeInsuarePrice,
 }) => {
   useEffect(() => {
     const valueToSend = isChecked ? "2" : "1";
@@ -27,26 +26,24 @@ export const FiveLine: React.FC<Props<string | null>> = ({
         <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
-              classNamePrefix={"transmission"}
-              placeholder="Любая трансмиссия"
-              options={optionTramsmission}
+              classNamePrefix={"benifit"}
+              placeholder="Выплаты"
+              options={optionBenefit}
               value={
-                transmission
-                  ? [
-                      {
-                        value: transmission,
-                        label: detectTransmission(transmission),
-                      },
-                    ]
+                insuarePrice
+                  ? optionBenefit.filter(
+                      (item) => Number(item.value) === Number(insuarePrice)
+                    )
                   : []
               }
               onChange={(option) => {
-                onChangeTransmission((option as iOption).value);
+                onChangeInsuarePrice((option as iOption).value);
               }}
             />
           </div>
         </div>
       </div>
+
       <div className="col-span-12 md:col-span-8 lg:col-span-8">
         <div className=" p-0.5  flex flex-row lg:justify-end mt-1.5  hover:border-gray-400 focus-within:border-gray-400  rounded-lg ">
           <div className="flex items-center space-x-2">
@@ -70,7 +67,7 @@ export const FiveLine: React.FC<Props<string | null>> = ({
 interface Props<T> {
   onChangeCheck: (value: T) => void;
   setIsChecked: (value: boolean) => void;
-  onChangeTransmission: (value: T) => void;
+  onChangeInsuarePrice: (value: T) => void;
   isChecked: boolean;
-  transmission: string | null;
+  insuarePrice: string | null;
 }

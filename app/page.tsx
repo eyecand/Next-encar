@@ -32,7 +32,7 @@ export default async function Home({
   const show = 0;
   return (
     <>
-      <div className="mx-auto flex flex-col flex-1 w-full max-w-5xl mt-10">
+      <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-28">
         {show ? (
           <div className="flex flex-col justify-center items-center px-5 mt-28 md:mt-20">
             <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold mr-2">
@@ -45,7 +45,7 @@ export default async function Home({
         ) : (
           <>
             <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
-              Autofish - Продажа автомобилей
+              Autofish - Автомобили из Кореи
             </h1>
             <FormKoreaCars total={totalPage.toLocaleString()} />
             {/* Список товаров */}

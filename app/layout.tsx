@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import YandexMetrika from "@/components/shared/yandex-metrika";
 import { Header } from "@/components/shared";
+import { Footer } from "@/components/shared/footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         <main>
           <Header />
           {children}
+          <Footer />
           {/* <YandexMetrika /> */}
         </main>
       </body>

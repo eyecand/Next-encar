@@ -121,7 +121,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     <>
       <form
         onSubmit={handleSubmit}
-        className="sm:mx-0 text-zinc-800 max-w-5xl mt-10 bg-gray-100 grid grid-cols-12 grid-flow-dense rounded-t-xl p-3 sm:p-4 lg:p-5 gap-2 transition-opacity duration-400 ease-in"
+        className="sm:mx-0 text-zinc-800 max-w-7xl mt-10 bg-gray-100 grid grid-cols-12 grid-flow-dense rounded-t-xl p-3 sm:p-4 lg:p-5 gap-2 transition-opacity duration-400 ease-in"
       >
         <FirstLine
           onChangeMakes={filters.setMakesType}
@@ -135,15 +135,11 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           evolution={filters.evolutonsType}
         />
         <SecondLine
+          transmission={filters.transmission}
           onChangeFuels={filters.setFuels}
           onChangePrivod={filters.setPrivod}
-          onChangeGrade={filters.setGradesType}
-          onChangeGradeEnglish={filters.setGradesEng}
-          onChangeGradeDetail={filters.setGradesDetail}
+          onChangeTransmission={filters.setTransmission}
           fuels={filters.fuels}
-          grade={filters.gradesType}
-          make={filters.makesType}
-          model={filters.modelType}
           privod={filters.privod}
         />
         <TherdLine
@@ -161,25 +157,29 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           onChengeMileageMax={filters.setMileageMax}
         />
         <FourthLine
-          insuarePrice={filters.insuarePrice}
+          grade={filters.gradesType}
+          make={filters.makesType}
+          model={filters.modelType}
           cities={filters.cities}
-          onChangeInsuarePrice={filters.setInsuarePrice}
           onChangeCities={filters.setCities}
           onChangeYearMin={filters.setYearsMin}
           onChangeYearMax={filters.setYearsMax}
+          onChangeGrade={filters.setGradesType}
+          onChangeGradeEnglish={filters.setGradesEng}
+          onChangeGradeDetail={filters.setGradesDetail}
           yearMin={filters.yearsMin}
           yearMax={filters.yearsMax}
         />
         <FiveLine
-          transmission={filters.transmission}
+          insuarePrice={filters.insuarePrice}
+          onChangeInsuarePrice={filters.setInsuarePrice}
           isChecked={isChecked}
           setIsChecked={setIsChecked}
           onChangeCheck={filters.setCheck}
-          onChangeTransmission={filters.setTransmission}
         />
         <ButtonSubmit handleRemove={handleRemove} />
       </form>
-      <div className="max-w-5xl p-5">
+      <div className="max-w-7xl p-5">
         <div className=" border-b-2 py-5 flex justify-between items-center">
           <h2 className="inline-block font-bold text-base sm:text-xl relative subtitle-page">
             {total} объявления
