@@ -145,28 +145,28 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
         <TherdLine
           engineMax={filters.engineMax}
           engineMin={filters.engineMin}
-          priceMax={filters.priceMax}
-          priceMin={filters.priceMin}
+          grade={filters.gradesType}
+          make={filters.makesType}
+          model={filters.modelType}
           mileageMin={filters.mileageMin}
           mileageMax={filters.mileageMax}
           onChangeEngineMax={filters.setEngineMax}
           onChangeEngineMin={filters.setEngineMin}
-          onChangePriceMax={filters.setPriceMax}
-          onChangePriceMin={filters.setPriceMin}
+          onChangeGrade={filters.setGradesType}
+          onChangeGradeEnglish={filters.setGradesEng}
+          onChangeGradeDetail={filters.setGradesDetail}
           onChengeMileageMin={filters.setMileageMin}
           onChengeMileageMax={filters.setMileageMax}
         />
         <FourthLine
-          grade={filters.gradesType}
-          make={filters.makesType}
-          model={filters.modelType}
+          priceMax={filters.priceMax}
+          priceMin={filters.priceMin}
           cities={filters.cities}
           onChangeCities={filters.setCities}
           onChangeYearMin={filters.setYearsMin}
           onChangeYearMax={filters.setYearsMax}
-          onChangeGrade={filters.setGradesType}
-          onChangeGradeEnglish={filters.setGradesEng}
-          onChangeGradeDetail={filters.setGradesDetail}
+          onChangePriceMax={filters.setPriceMax}
+          onChangePriceMin={filters.setPriceMin}
           yearMin={filters.yearsMin}
           yearMax={filters.yearsMax}
         />

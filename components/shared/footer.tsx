@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export const Footer = () => {
   return (
-    <section className="w-full px-9 pt-6 pb-4 lg:pb-0 bg-gray-50 ">
+    <section className="w-full px-9 pt-6 pb-4 bg-gray-50 ">
       <footer className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row px-4 py-1 justify-between">
         {/* Nav Items */}
         <nav className="flex flex-col items-start text-sm">
@@ -56,10 +56,10 @@ export const Footer = () => {
               </Link>
             </div>
           </div>
-          <div className="flex flex-col mt-4 text-sm">
+          <div className="flex items-center mt-4 text-sm">
             <p>Подписывайтесь на нас в соцсетях</p>
             <Link
-              className="flex mt-2"
+              className="flex ml-2"
               target="_blank"
               rel="nofollow"
               href="https://t.me/+Kd_gfq0IVGNiMDcy"

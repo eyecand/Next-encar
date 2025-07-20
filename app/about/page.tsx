@@ -30,7 +30,7 @@ export default async function AboutPage() {
           </div>
         </div>
         {/* Information */}
-        <div className="bg-white p-6 rounded-lg shadow-[0_-0.25rem_0.5rem_rgba(0,0,0,0.15)] mt-16 md:mt-36">
+        <div className="bg-white p-6 rounded-lg shadow-[0_-0.25rem_0.5rem_rgba(0,0,0,0.15)] mt-16 md:mt-28">
           <div className="px-2  md:px-6 flex flex-col lg:flex-row gap-4 mt-4 max-w-7xl mx-auto">
             <div className="bg-[#F8F9FA] flex-[100%] lg:flex-[25%] px-4 py-5 rounded-xl">
               <div className="flex justify-between">
@@ -90,7 +90,7 @@ export default async function AboutPage() {
             </div>
           </div>
           {/* Statistics + bg-image */}
-          <div className="py-6 px-2 lg:px-6 mt-4  bg-white max-w-7xl mx-auto">
+          {/* <div className="py-6 px-2 lg:px-6 mt-4  bg-white max-w-7xl mx-auto">
             <div className="about_us px-6 py-6 flex flex-col bg-[url(/about/adv-background-mob.png)] lg:bg-[url(/about/main-statistic-background.png)] bg-no-repeat">
               <h3 className="text-[70px] leading-[64px] font-bold text-white">
                 1000+
@@ -120,7 +120,7 @@ export default async function AboutPage() {
                 </a>
               </div>
             </div>
-          </div>
+          </div> */}
           {/* text */}
           <div className="px-6 py-2 mt-2 font-semibold text-sm max-w-7xl mx-auto">
             Наш принцип прост: прямые продажи без посредников, что обеспечивает

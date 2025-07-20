@@ -32,7 +32,7 @@ export const PriceInRussian = ({
         <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
           <div className="flex items-center justify-start gap-2">
             <span className="whitespace-nowrap  text-zinc-600">
-              Таможенное офрмление
+              Таможенное оформление
             </span>
           </div>
           <PriceView

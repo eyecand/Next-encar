@@ -27,12 +27,12 @@ export async function GET() {
 
   // const first = await prisma.encar_vehicles.findFirst({
   //   where: {
-  //     id: 543657,
+  //     id: 575476,
   //   },
   //   include: {
   //     details: {
   //       include: {
-  //         grades: true,
+  //         drive: true,
   //       },
   //     },
   //   },
