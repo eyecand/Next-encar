@@ -16,6 +16,7 @@ import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-ale
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
 import { CalculationCar } from "@/lib/calcilation-car";
+import ShareButton from "./ShareButton";
 export const CarInfo = ({
   details,
   accident,
@@ -35,6 +36,9 @@ export const CarInfo = ({
   const copyLink = `https://autofish.ru/vehicle/${id}`;
   const [isCopy, setIsCopy] = useState(false);
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
+  // const shareUrl = `https://autofish.ru/vehicle/${id}`;
+  // const shareTitle = "Добый день! ";
+  // const shareDescription = "Просматриваю это объявление.";
   const copyText = async () => {
     try {
       setIsCopy(true);
@@ -54,7 +58,7 @@ export const CarInfo = ({
     <div className="w-full md:w-1/2">
       <div className="flex">
         <div className="w-[90%]">
-          <h2 className="font-gilroy font-bold flex text-2xl lg:text-3xl mb-4 text-zinc-800">
+          <h2 className="font-gilroy font-bold flex text-[30px] mb-2 text-zinc-800">
             {detectMake(String(details?.makes.make_short_name))}{" "}
             {details?.model.model_short_name === "Canival"
               ? "Carnival"
@@ -102,21 +106,26 @@ export const CarInfo = ({
             )}
           </div>
         </div>
-        <button
-          disabled={isCopy}
-          className="ml-2 w-[10%] flex pt-0 mt-[10px] items-start"
-        >
+        <div className="flex mt-[10px] flex-col lg:flex-row">
           {" "}
-          {isCopy ? (
-            <IoIosCheckmark size={25} />
-          ) : (
-            <IoCopyOutline
-              className="cursor-pointer hover:text-gray-500"
-              onClick={copyText}
-              size={20}
-            />
-          )}
-        </button>
+          <button disabled={isCopy} className="ml-2 mt-[10px] flex pt-0  ">
+            {" "}
+            {isCopy ? (
+              <IoIosCheckmark size={25} />
+            ) : (
+              <IoCopyOutline
+                className="cursor-pointer hover:text-gray-500"
+                onClick={copyText}
+                size={20}
+              />
+            )}
+          </button>
+          {/* <ShareButton
+            url={shareUrl}
+            title={shareTitle}
+            description={shareDescription}
+          /> */}
+        </div>
       </div>
       <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
         <div className="space-y-4 w-full lg:w-1/2">

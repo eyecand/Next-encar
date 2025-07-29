@@ -27,7 +27,7 @@ export async function GET() {
 
   // const first = await prisma.encar_vehicles.findFirst({
   //   where: {
-  //     id: 575476,
+  //     id: 575550,
   //   },
   //   include: {
   //     details: {

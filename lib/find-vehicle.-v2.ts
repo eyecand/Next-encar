@@ -187,11 +187,29 @@ export const findVehicleV2 = async (
   let priv = {};
   if (privod === "2WD") {
     priv = {
-      drive_type: { not: { contains: "4WD" } },
+      AND: [
+        { drive_type: { not: { contains: "Quattro" } } },
+        { drive_type: { not: { contains: "4Motion" } } },
+        { drive_type: { not: { contains: "4X4" } } },
+        { drive_type: { not: { contains: "4WD" } } },
+        { drive_type: { not: { contains: "AWD" } } },
+        { drive_type: { not: { contains: "xDrive" } } },
+        { drive_type: { not: { contains: "4MATIC" } } },
+        { drive_type: { not: { contains: "ALL4" } } },
+      ],
     };
   } else if (privod === "4WD") {
     priv = {
-      drive_type: { contains: "4WD" },
+      OR: [
+        { drive_type: { contains: "Quattro" } },
+        { drive_type: { contains: "4Motion" } },
+        { drive_type: { contains: "4X4" } },
+        { drive_type: { contains: "4WD" } },
+        { drive_type: { contains: "AWD" } },
+        { drive_type: { contains: "xDrive" } },
+        { drive_type: { contains: "4MATIC" } },
+        { drive_type: { contains: "ALL4" } },
+      ],
     };
   }
 

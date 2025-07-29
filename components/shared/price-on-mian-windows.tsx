@@ -34,7 +34,9 @@ export const PriceAll = ({
   return (
     <div className={`flex flex-col ${isMobile ? "" : "items-end"} `}>
       <span
-        className={`text-gray-400  ${isMobile ? "text-[10px]" : "text-sm"}`}
+        className={`text-gray-500 leading-5  ${
+          isMobile ? "text-[10px]" : "text-[15px]"
+        }`}
       >
         {" "}
         {(stateCity === 0 || stateCity == 1) && "Цена во Владивостоке"}

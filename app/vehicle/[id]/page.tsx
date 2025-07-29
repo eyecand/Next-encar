@@ -24,14 +24,11 @@ export default async function CarPage({
   if (!vehicleId) {
     return notFound();
   }
-  const shareUrl = `https://autofish.ru/vehicle/${id}`;
-  const shareTitle = "Добый день! ";
-  const shareDescription = "Просматриваю это объявление.";
 
   return (
     <>
-      <div className="mx-auto px-5 max-w-7xl mt-24 lg:mt-40">
-        <div className=" py-5 flex items-baseline">
+      <div className="mx-auto px-5 max-w-7xl mt-32 lg:mt-44">
+        {/* <div className=" py-5 flex items-baseline">
           <h1 className="font-bold text-lg md:text-3xl">
             {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}
             {vehicleId?.details?.model.model_short_name === "Canival"
@@ -48,10 +45,10 @@ export default async function CarPage({
               Дата: {detectedDate(vehicleId.created_at)}
             </div>
           </div>
-        </div>
+        </div> */}
 
         <Suspense fallback={<p>Loading</p>}>
-          <section className="  pt-4 flex md:flex-row flex-col mb-24">
+          <section className=" flex md:flex-row flex-col mb-24">
             <SliderCarPage imgSrc={vehicleId.photos} />
 
             <CarInfo
@@ -73,7 +70,7 @@ export default async function CarPage({
           </section>
         </Suspense>
       </div>
-      {/* <YandexMetrika /> */}
+      <YandexMetrika />
     </>
   );
 }

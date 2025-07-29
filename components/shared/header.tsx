@@ -9,7 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
-import { ChevronDown, HelpCircle, Menu, Phone, X } from "lucide-react";
+import { ChevronDown, HelpCircle, Menu, Phone, Ship, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { detectedCurrentDate } from "@/lib/detected-current-date";
 import {
@@ -160,11 +160,14 @@ export const Header = () => {
                 </HoverCardTrigger>
                 <HoverCardContent className="w-60">
                   <ul className="flex flex-col gap-2 text-sm">
-                    {/* <li>
-                      <Link href="" className="flex items-center gap-2 py-1">
+                    <li>
+                      <Link
+                        href="/schema"
+                        className="flex items-center gap-2 py-1"
+                      >
                         <Ship size={20} /> Схема привоза
                       </Link>
-                    </li> */}
+                    </li>
                     <li>
                       <Link
                         href="/questions"
@@ -178,7 +181,7 @@ export const Header = () => {
                         className="flex items-center gap-2 py-1"
                         target="_blank"
                         rel="nofollow"
-                        href="https://t.me/+Kd_gfq0IVGNiMDcy"
+                        href="/telegram"
                       >
                         <FaTelegram size={20} className="text-blue-500" />
                         <span>Наш Telegram-канал</span>
@@ -285,12 +288,13 @@ export const Header = () => {
                   О нас
                 </Link>
 
-                {/* <Link
-                  href="#"
+                <Link
+                  href="/schema"
+                  onClick={toggleMobileMenu}
                   className="block text-gray-600 hover:text-black hover:bg-blue-50 py-2 px-1 hover:rounded-md"
                 >
                   Схема привоза
-                </Link> */}
+                </Link>
                 <Link
                   onClick={toggleMobileMenu}
                   href="/questions"
@@ -300,7 +304,8 @@ export const Header = () => {
                 </Link>
 
                 <Link
-                  href="https://t.me/+Kd_gfq0IVGNiMDcy"
+                  href="/telegram"
+                  onClick={toggleMobileMenu}
                   className="block text-gray-600 hover:text-black hover:bg-blue-50 py-2 px-1 hover:rounded-md"
                 >
                   Наш телеграм канал
