@@ -139,13 +139,13 @@ export default async function AboutPage() {
               <div className="flex flex-col flex-[100%] lg:flex-[25%] bg-[#F8F9FA] px-4 py-5 rounded-xl gap-3">
                 <div className="flex lg:flex-col mb-4 lg:mb-0">
                   <Image
-                    className="w-[55px] h-[55px] lg:w-[180px] lg:h-[180px]"
+                    className="w-[55px] h-[55px] lg:w-[200px] lg:h-[180px] ml-0 lg:ml-5"
                     alt="wallet-mob.png"
-                    width={55}
-                    height={55}
-                    src={"/about/wallet.png"}
+                    width={200}
+                    height={180}
+                    src={"/about/debit-card-3.webp"}
                   />
-                  <p className="text-base font-medium mt-0 lg:mt-4">
+                  <p className="text-base font-medium">
                     Выгодная цена <br /> (открытая, без скрытых <br /> комиссий
                     и сборов)
                   </p>
@@ -166,7 +166,7 @@ export default async function AboutPage() {
                         <Image
                           className="w-[50px] h-[50px] lg:w-[65px] lg:h-[65px]"
                           alt="about-car.png"
-                          src={"/about/about-car.png"}
+                          src={"/about/advantages_1.png"}
                           width={65}
                           height={65}
                         ></Image>
@@ -222,7 +222,7 @@ export default async function AboutPage() {
                     <Image
                       className="w-[70px] h-[70px] lg:w-[90px] lg:h-[90px] "
                       alt="engine.png"
-                      src={"/about/engine-mob.png"}
+                      src={"/about/engine.png"}
                       width={150}
                       height={150}
                     />
