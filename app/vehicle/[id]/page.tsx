@@ -70,7 +70,7 @@ export default async function CarPage({
           </section>
         </Suspense>
       </div>
-      <YandexMetrika />
+      {/* <YandexMetrika /> */}
     </>
   );
 }
