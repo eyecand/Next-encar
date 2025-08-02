@@ -27,6 +27,8 @@ interface ReturnPros {
   mileageMax: string | null;
   cities: string | null;
   check: string | null;
+  checkNewCar: string | null;
+  checkOldCar: string | null;
   setMakesType: (value: string | null) => void;
   setModelType: (value: string | null) => void;
   setGradesType: (value: string | null) => void;
@@ -53,6 +55,8 @@ interface ReturnPros {
   setMileageMax: (value: string | null) => void;
   setCities: (value: string | null) => void;
   setCheck: (value: string | null) => void;
+  setCheckNewCar: (value: string | null) => void;
+  setCheckOldCar: (value: string | null) => void;
 }
 export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
@@ -134,6 +138,12 @@ export const useFilters = (): ReturnPros => {
   const [check, setCheck] = useState(
     searchParams.has("check") ? searchParams.get("check") : null
   );
+  const [checkNewCar, setCheckNewCar] = useState(
+    searchParams.has("checkNew") ? searchParams.get("checkNew") : null
+  );
+  const [checkOldCar, setCheckOldCar] = useState(
+    searchParams.has("checkOld") ? searchParams.get("checkOld") : null
+  );
   return useMemo(
     () => ({
       makesType,
@@ -162,6 +172,8 @@ export const useFilters = (): ReturnPros => {
       mileageMax,
       cities,
       check,
+      checkNewCar,
+      checkOldCar,
       setMakesType,
       setModelType,
       setGradesType,
@@ -188,6 +200,8 @@ export const useFilters = (): ReturnPros => {
       setMileageMax,
       setCities,
       setCheck,
+      setCheckNewCar,
+      setCheckOldCar,
     }),
     [
       makesType,
@@ -216,6 +230,8 @@ export const useFilters = (): ReturnPros => {
       mileageMax,
       cities,
       check,
+      checkNewCar,
+      checkOldCar,
     ]
   );
 };

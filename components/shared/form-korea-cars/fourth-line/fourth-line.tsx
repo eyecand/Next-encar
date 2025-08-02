@@ -1,11 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { optionCities } from "./constanst";
+import { optionBenefit, optionCities } from "./constanst";
 import { iOption } from "./model";
 import { useEffect } from "react";
 import { useCityState } from "@/store/city-filter";
-import { useYears } from "@/hooks";
 import { Input } from "@/components/ui/input";
 
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
@@ -13,17 +12,13 @@ const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 export const FourthLine: React.FC<Props<string | null>> = ({
   onChangeCities,
   cities,
-  onChangeYearMin,
-  onChangeYearMax,
   onChangePriceMin,
+  onChangeInsuarePrice,
   onChangePriceMax,
   priceMin,
   priceMax,
-  yearMin,
-  yearMax,
+  insuarePrice,
 }) => {
-  const { optionYears, yearsLoading } = useYears();
-
   const setCityState = useCityState((state) => state.setCityState);
   useEffect(() => {
     setCityState(Number(cities));
@@ -32,23 +27,22 @@ export const FourthLine: React.FC<Props<string | null>> = ({
   return (
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
-        <div className=" p-0.5 gap-[0.5px] flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
+        <div className=" p-0.5  flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
-            <Input
-              placeholder="Цена от, тыс. вон"
-              type="number"
-              min={0}
-              value={priceMin ? Number(priceMin) : ""}
-              onChange={(e) => onChangePriceMin(e.target.value)}
-            />
-          </div>
-          <div className=" w-full text-[16px] md:text-sm ">
-            <Input
-              placeholder="до"
-              type="number"
-              min={0}
-              value={priceMax ? Number(priceMax) : ""}
-              onChange={(e) => onChangePriceMax(e.target.value)}
+            <NoSSR
+              classNamePrefix={"benifit"}
+              placeholder="Выплаты"
+              options={optionBenefit}
+              value={
+                insuarePrice
+                  ? optionBenefit.filter(
+                      (item) => Number(item.value) === Number(insuarePrice)
+                    )
+                  : []
+              }
+              onChange={(option) => {
+                onChangeInsuarePrice((option as iOption).value);
+              }}
             />
           </div>
         </div>
@@ -77,47 +71,21 @@ export const FourthLine: React.FC<Props<string | null>> = ({
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
         <div className=" p-0.5 gap-[0.5px] flex flex-row  hover:border-gray-400 focus-within:border-blue-600  rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
-            <NoSSR
-              classNamePrefix="yearMin"
-              placeholder="Год от"
-              options={optionYears}
-              isLoading={yearsLoading}
-              isDisabled={yearsLoading}
-              value={
-                yearMin
-                  ? [
-                      {
-                        value: yearMin,
-                        label: yearMin,
-                      },
-                    ]
-                  : []
-              }
-              onChange={(option) => {
-                onChangeYearMin((option as iOption).value);
-              }}
+            <Input
+              placeholder="Цена от, тыс. вон"
+              type="number"
+              min={0}
+              value={priceMin ? Number(priceMin) : ""}
+              onChange={(e) => onChangePriceMin(e.target.value)}
             />
           </div>
           <div className=" w-full text-[16px] md:text-sm ">
-            <NoSSR
-              classNamePrefix="yearMax"
-              placeholder="Год до"
-              options={optionYears}
-              isLoading={yearsLoading}
-              isDisabled={yearsLoading}
-              value={
-                yearMax
-                  ? [
-                      {
-                        value: yearMax,
-                        label: yearMax,
-                      },
-                    ]
-                  : []
-              }
-              onChange={(option) => {
-                onChangeYearMax((option as iOption).value);
-              }}
+            <Input
+              placeholder="до"
+              type="number"
+              min={0}
+              value={priceMax ? Number(priceMax) : ""}
+              onChange={(e) => onChangePriceMax(e.target.value)}
             />
           </div>
         </div>
@@ -127,13 +95,11 @@ export const FourthLine: React.FC<Props<string | null>> = ({
 };
 interface Props<T> {
   onChangeCities: (value: T) => void;
-  onChangeYearMin: (value: T) => void;
-  onChangeYearMax: (value: T) => void;
   onChangePriceMin: (value: T) => void;
   onChangePriceMax: (value: T) => void;
+  onChangeInsuarePrice: (value: T) => void;
   cities: string | null;
-  yearMin: string | null;
-  yearMax: string | null;
   priceMin: string | null;
   priceMax: string | null;
+  insuarePrice: string | null;
 }

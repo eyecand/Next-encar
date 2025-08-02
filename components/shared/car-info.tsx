@@ -16,7 +16,6 @@ import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-ale
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
 import { CalculationCar } from "@/lib/calcilation-car";
-import ShareButton from "./ShareButton";
 export const CarInfo = ({
   details,
   accident,

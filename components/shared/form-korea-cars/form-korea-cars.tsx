@@ -17,6 +17,8 @@ import { FiveLine } from "./five-line";
 const NoSSR = dynamic(() => import("react-select"), { ssr: false });
 export const FormKoreaCars = ({ total }: { total: string }) => {
   const [isChecked, setIsChecked] = useState(false);
+  const [isCheckedNewCar, setIsCheckedNewCar] = useState(false);
+  const [isCheckedOldCar, setIsCheckedOldCar] = useState(false);
   const router = useRouter();
   const filters = useFilters();
   useEffect(() => {
@@ -45,6 +47,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       mileageMax: filters.mileageMax,
       cities: filters.cities,
       check: filters.check,
+      checkNew: filters.checkNewCar,
+      checkOld: filters.checkOldCar,
     };
     const queryUrl = qs.stringify(url, {
       arrayFormat: "comma",
@@ -85,6 +89,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       mileageMax: filters.mileageMax,
       cities: filters.cities,
       check: filters.check,
+      checkNew: filters.checkNewCar,
+      checkOld: filters.checkOldCar,
     };
     const query = qs.stringify(params, {
       arrayFormat: "comma",
@@ -116,6 +122,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     filters.setGradesDetail(null);
     filters.setEvolutionsType(null);
     setIsChecked(false);
+    setIsCheckedNewCar(false);
+    setIsCheckedOldCar(false);
   };
   return (
     <>
@@ -133,6 +141,21 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           make={filters.makesType}
           model={filters.modelType}
           evolution={filters.evolutonsType}
+          grade={filters.gradesType}
+        />
+        <TherdLine
+          engineMax={filters.engineMax}
+          engineMin={filters.engineMin}
+          mileageMin={filters.mileageMin}
+          mileageMax={filters.mileageMax}
+          onChangeEngineMax={filters.setEngineMax}
+          onChangeEngineMin={filters.setEngineMin}
+          onChengeMileageMin={filters.setMileageMin}
+          onChengeMileageMax={filters.setMileageMax}
+          onChangeYearMin={filters.setYearsMin}
+          onChangeYearMax={filters.setYearsMax}
+          yearMin={filters.yearsMin}
+          yearMax={filters.yearsMax}
         />
         <SecondLine
           transmission={filters.transmission}
@@ -142,40 +165,26 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           fuels={filters.fuels}
           privod={filters.privod}
         />
-        <TherdLine
-          engineMax={filters.engineMax}
-          engineMin={filters.engineMin}
-          grade={filters.gradesType}
-          make={filters.makesType}
-          model={filters.modelType}
-          mileageMin={filters.mileageMin}
-          mileageMax={filters.mileageMax}
-          onChangeEngineMax={filters.setEngineMax}
-          onChangeEngineMin={filters.setEngineMin}
-          onChangeGrade={filters.setGradesType}
-          onChangeGradeEnglish={filters.setGradesEng}
-          onChangeGradeDetail={filters.setGradesDetail}
-          onChengeMileageMin={filters.setMileageMin}
-          onChengeMileageMax={filters.setMileageMax}
-        />
         <FourthLine
           priceMax={filters.priceMax}
           priceMin={filters.priceMin}
           cities={filters.cities}
+          insuarePrice={filters.insuarePrice}
           onChangeCities={filters.setCities}
-          onChangeYearMin={filters.setYearsMin}
-          onChangeYearMax={filters.setYearsMax}
           onChangePriceMax={filters.setPriceMax}
           onChangePriceMin={filters.setPriceMin}
-          yearMin={filters.yearsMin}
-          yearMax={filters.yearsMax}
+          onChangeInsuarePrice={filters.setInsuarePrice}
         />
         <FiveLine
-          insuarePrice={filters.insuarePrice}
-          onChangeInsuarePrice={filters.setInsuarePrice}
           isChecked={isChecked}
+          isCheckedNewCar={isCheckedNewCar}
+          isCheckedOldCar={isCheckedOldCar}
           setIsChecked={setIsChecked}
+          setIsCheckedNewCar={setIsCheckedNewCar}
+          setIsCheckedOldCar={setIsCheckedOldCar}
           onChangeCheck={filters.setCheck}
+          onChangeCheckNew={filters.setCheckNewCar}
+          onChangeCheckOld={filters.setCheckOldCar}
         />
         <ButtonSubmit handleRemove={handleRemove} />
       </form>

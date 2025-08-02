@@ -110,6 +110,8 @@
 .mileageMin__control--is-focused,
 .mileageMax__control--is-focused,
 .engineMin__control--is-focused,
+.evolution__control--is-focused,
+.grades__control--is-focused,
 .engineMax__control--is-focused {
   box-shadow: 0 0 0 1px #f3a114 !important;
   border-color: #f3a114 !important;

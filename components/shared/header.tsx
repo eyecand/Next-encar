@@ -28,6 +28,9 @@ export const Header = () => {
   const krwRate = cbr?.find((rate) => rate.char_code === "KRW");
   const EUR = cbr ? cbr.find((rate) => rate.char_code === "EUR")?.value : 91.07;
   const KRW = krwRate ? krwRate.value : 57.8;
+  const K_KRW = cbr
+    ? cbr?.find((rate) => rate.char_code === "K_KRW")?.value
+    : 1;
   const toggleMobileMenu = () => {
     if (isMobileMenuOpen) {
       // Закрытие меню
@@ -208,7 +211,7 @@ export const Header = () => {
                       />{" "}
                       <span>KRW</span>
                       <span className="text-red-500 font-medium">
-                        {(Number(KRW) * 1.08).toFixed(2)}
+                        {(Number(KRW) * Number(K_KRW)).toFixed(2)}
                       </span>
                       <span className="font-semibold">RUB</span>
                       <span className="text-[10px]  bg-gray-100 px-1 py-[2px] rounded-md">
@@ -330,7 +333,7 @@ export const Header = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-red-500 font-bold">
-                          {(Number(KRW) * 1.08).toFixed(2)}
+                          {(Number(KRW) * Number(K_KRW)).toFixed(2)}
                         </span>
                         <span className="text-black font-semibold">RUB</span>
                       </div>
