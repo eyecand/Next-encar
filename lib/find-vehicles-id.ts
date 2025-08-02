@@ -61,7 +61,7 @@ export const findVehicleId = async (id: string) => {
             },
           },
           makes: { select: { make_short_name: true } },
-          model: { select: { model_short_name: true } },
+          model: { select: { model_english: true } },
           grades: {
             select: { grade_english: true, grade_detail_english: true },
           },

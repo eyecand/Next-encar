@@ -10,12 +10,21 @@ export const Footer = () => {
     <section className="w-full px-9 pt-6 pb-4 bg-gray-50 ">
       <footer className="max-w-7xl mx-auto flex flex-col-reverse lg:flex-row px-4 py-1 justify-between">
         {/* Nav Items */}
-        <nav className="flex flex-col items-start text-sm">
+        <nav className="flex flex-col items-start text-sm gap-2">
           <button className="text-black hover:text-red-500 transition-colors cursor-pointer">
             <Link href="/">Автомобили</Link>
           </button>
           <button className="text-black hover:text-red-500 transition-colors cursor-pointer">
             <Link href="/about"> О нас</Link>
+          </button>
+          <button className="text-black hover:text-red-500 transition-colors cursor-pointer">
+            <Link href="/schema"> Схема привоза</Link>
+          </button>
+          <button className="text-black hover:text-red-500 transition-colors cursor-pointer">
+            <Link href="/questions"> FAQ</Link>
+          </button>
+          <button className="text-black hover:text-red-500 transition-colors cursor-pointer">
+            <Link href="/telegram"> Telegram-канал</Link>
           </button>
         </nav>
         {/* Support */}

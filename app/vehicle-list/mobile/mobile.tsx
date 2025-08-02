@@ -60,9 +60,9 @@ export const Mobile = ({
                         {detectMake(
                           String(item.encar.details.makes.make_short_name)
                         )}{" "}
-                        {item.encar.details.model.model_short_name === "Canival"
+                        {item.encar.details.model.model_english === "Canival"
                           ? "Carnival"
-                          : item.encar.details.model.model_short_name}
+                          : item.encar.details.model.model_english}
                       </span>
                       {(item.encar.lib_sell_types.sell_type ===
                         "RENT_SUCCESSION" ||
@@ -79,7 +79,7 @@ export const Mobile = ({
                           "OPERATING_LEASE") && (
                         <div className="button flex ">
                           <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                            Лизинг
+                            Кредит
                           </div>
                         </div>
                       )}

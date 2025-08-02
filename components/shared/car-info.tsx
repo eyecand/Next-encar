@@ -16,6 +16,8 @@ import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-ale
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
 import { CalculationCar } from "@/lib/calcilation-car";
+import Link from "next/link";
+import { FaTelegram } from "react-icons/fa";
 export const CarInfo = ({
   details,
   accident,
@@ -56,74 +58,86 @@ export const CarInfo = ({
   return (
     <div className="w-full md:w-1/2">
       <div className="flex">
-        <div className="w-[90%]">
-          <h2 className="font-gilroy font-bold flex text-[30px] mb-2 text-zinc-800">
-            {detectMake(String(details?.makes.make_short_name))}{" "}
-            {details?.model.model_short_name === "Canival"
-              ? "Carnival"
-              : details?.model.model_short_name}{" "}
-            {new Date(String(details?.release_date)).getFullYear()}
-            {realFuel === "Electricity"
-              ? " "
-              : `, ${(
-                  Math.round(Number(details?.engine_displacement)) / 1000
-                ).toFixed(1)} л. `}
-            из Кореи
-          </h2>{" "}
-          <div className="flex flex-wrap items-center">
-            {String(details?.grades.grade_english).replace(
-              " China Manufacturer",
-              ""
-            )}{" "}
-            {details?.grades.grade_detail_english
-              ? String(details?.grades.grade_detail_english).replace(
-                  " China Manufacturer",
-                  ""
-                )
-              : ""}{" "}
-            {totalAccident ? (
-              <span className="bg-rose-50 border-rose-100 text-[13px] text-rose-600 ml-1 lg:ml-4 px-3 py-1 rounded-full">
-                был в аварии
-              </span>
-            ) : (
-              ""
-            )}
-            {(sell_type === "RENT_SUCCESSION" || sell_type === "RENT_CAR") && (
-              <div className="button flex ml-0 lg:ml-2">
-                <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                  Рента
-                </div>
-              </div>
-            )}
-            {(sell_type === "FINANCING_LEASE" ||
-              sell_type === "OPERATING_LEASE") && (
-              <div className="button flex ml-0 lg:ml-2">
-                <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                  Лизинг
-                </div>
-              </div>
-            )}
+        <div className="w-full">
+          <div className="flex gap-2">
+            <h2 className="font-gilroy font-bold flex text-[30px] mb-2 text-zinc-800">
+              {detectMake(String(details?.makes.make_short_name))}{" "}
+              {details?.model.model_english === "Canival"
+                ? "Carnival"
+                : details?.model.model_english}{" "}
+              {new Date(String(details?.release_date)).getFullYear()}
+              {realFuel === "Electricity"
+                ? " "
+                : `, ${(
+                    Math.round(Number(details?.engine_displacement)) / 1000
+                  ).toFixed(1)} л. `}
+              из Кореи
+            </h2>{" "}
+            <div className="flex mt-[10px] flex-col lg:flex-row">
+              <button disabled={isCopy} className="ml-2 mt-[10px] flex pt-0  ">
+                {" "}
+                {isCopy ? (
+                  <IoIosCheckmark size={25} />
+                ) : (
+                  <IoCopyOutline
+                    className="cursor-pointer hover:text-gray-500"
+                    onClick={copyText}
+                    size={20}
+                  />
+                )}
+              </button>
+            </div>
           </div>
-        </div>
-        <div className="flex mt-[10px] flex-col lg:flex-row">
-          {" "}
-          <button disabled={isCopy} className="ml-2 mt-[10px] flex pt-0  ">
-            {" "}
-            {isCopy ? (
-              <IoIosCheckmark size={25} />
-            ) : (
-              <IoCopyOutline
-                className="cursor-pointer hover:text-gray-500"
-                onClick={copyText}
-                size={20}
-              />
-            )}
-          </button>
-          {/* <ShareButton
-            url={shareUrl}
-            title={shareTitle}
-            description={shareDescription}
-          /> */}
+
+          <div className="flex  justify-between">
+            <div className="flex flex-wrap items-center gap-2">
+              {String(details?.grades.grade_english).replace(
+                " China Manufacturer",
+                ""
+              )}{" "}
+              {details?.grades.grade_detail_english
+                ? String(details?.grades.grade_detail_english).replace(
+                    " China Manufacturer",
+                    ""
+                  )
+                : ""}{" "}
+              {totalAccident ? (
+                <span className="bg-rose-50 border-rose-100 text-[13px] text-rose-600 ml-1 lg:ml-4 px-3 py-1 rounded-full">
+                  был в аварии
+                </span>
+              ) : (
+                ""
+              )}
+              {(sell_type === "RENT_SUCCESSION" ||
+                sell_type === "RENT_CAR") && (
+                <div className="button flex ml-0 lg:ml-2">
+                  <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                    Рента
+                  </div>
+                </div>
+              )}
+              {(sell_type === "FINANCING_LEASE" ||
+                sell_type === "OPERATING_LEASE") && (
+                <div className="button flex ml-0 lg:ml-2">
+                  <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
+                    Кредит
+                  </div>
+                </div>
+              )}
+            </div>
+            <Link
+              className=" flex justify-center items-center"
+              target="_blank"
+              rel="nofollow"
+              href=" https://t.me/autofish_main_bot"
+            >
+              <button className="flex justify-center items-center h-[40px] w-[200px] bg-blue-400  hover:bg-blue-600  rounded-2xl cursor-pointer transition-colors">
+                <span className="text-white text-sm">
+                  Уведомить о новых авто
+                </span>
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
@@ -271,9 +285,9 @@ export const CarInfo = ({
           href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
             String(details?.makes.make_short_name)
           )}, ${
-            details?.model.model_short_name === "Canival"
+            details?.model.model_english === "Canival"
               ? "Carnival"
-              : details?.model.model_short_name
+              : details?.model.model_english
           }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
             details?.engine_displacement
           } см3, ${copyLink}. Хочу получить консультацию.`}

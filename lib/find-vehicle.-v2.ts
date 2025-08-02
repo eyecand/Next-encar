@@ -37,7 +37,6 @@ export const findVehicleV2 = async (
     checkNew,
     checkOld,
   } = await params;
-  console.log("c", { checkNew, checkOld });
   const pagenum = page ? Number(page) - 1 : 0;
   const takePageSize = pageSize ?? 10;
   const currentMinYear = Number(yearsMin) || DEFAULT_MIN_YEARS;
@@ -261,7 +260,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -391,7 +390,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -521,7 +520,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -673,7 +672,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -821,7 +820,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -951,7 +950,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -1081,7 +1080,7 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_short_name: true } },
+                model: { select: { model_english: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -1208,7 +1207,7 @@ export const findVehicleV2 = async (
           details: {
             select: {
               makes: { select: { make_short_name: true } },
-              model: { select: { model_short_name: true } },
+              model: { select: { model_english: true } },
               grades: {
                 select: { grade_english: true, grade_detail_english: true },
               },
@@ -1337,7 +1336,7 @@ export interface ReturnProps {
           make_short_name: string | null;
         };
         model: {
-          model_short_name: string | null;
+          model_english: string | null;
         };
         grades: {
           grade_english: string | null;

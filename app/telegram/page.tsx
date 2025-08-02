@@ -9,7 +9,7 @@ export default async function SchemaPage() {
         <section className="bg-gradient-to-br from-blue-200 via-purple-200 to-blue-300 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 py-8 lg:py-12">
             <div className="grid lg:grid-cols-2 gap-8 items-center">
-              <div className="space-y-6">
+              <div className="space-y-6 flex flex-col items-center lg:items-start">
                 <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 leading-tight">
                   Телеграм канал авто из Кореи
                 </h1>

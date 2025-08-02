@@ -83,9 +83,9 @@ export const StatisticAlertDialog = ({
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">
               Модель:
               <span className="text-base font-semibold text-black uppercase">
-                {details?.model.model_short_name === "Canival"
+                {details?.model.model_english === "Canival"
                   ? "Carnival"
-                  : details?.model.model_short_name}
+                  : details?.model.model_english}
               </span>
             </div>
             <div className="col-span-2 md:col-span-1 flex justify-between items-center gap-2">

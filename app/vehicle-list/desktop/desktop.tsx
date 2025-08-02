@@ -52,10 +52,9 @@ export const Desktop = ({
                           {detectMake(
                             String(item.encar.details.makes.make_short_name)
                           )}{" "}
-                          {item.encar.details.model.model_short_name ===
-                          "Canival"
+                          {item.encar.details.model.model_english === "Canival"
                             ? "Carnival"
-                            : item.encar.details.model.model_short_name}
+                            : item.encar.details.model.model_english}
                           ,{" "}
                           {new Date(
                             item.encar.details.release_date
@@ -157,7 +156,7 @@ export const Desktop = ({
                             "OPERATING_LEASE") && (
                           <div className="button flex ">
                             <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                              Лизинг
+                              Кредит
                             </div>
                           </div>
                         )}

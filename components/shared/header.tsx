@@ -128,8 +128,21 @@ export const Header = () => {
                   <span className="ml-2">Наш Telegram-канал</span>
                 </button>
               </Link>
+              <Link
+                className=" flex justify-center items-center"
+                target="_blank"
+                rel="nofollow"
+                href=" https://t.me/autofish_main_bot"
+              >
+                <button className="flex justify-center items-center ml-4 h-[40px] w-[300px] bg-blue-500 hover:bg-blue-700 rounded-lg cursor-pointer transition-colors">
+                  <span className="text-white">
+                    Подписаться на новые объявления
+                  </span>
+                </button>
+              </Link>
             </div>
           </div>
+          {/* Menu item */}
           <div className="hidden lg:flex items-center justify-between">
             <nav className=" space-x-6 ml-3">
               <button
@@ -152,47 +165,35 @@ export const Header = () => {
               >
                 <Link href="/about"> О нас</Link>
               </button>
+              <button
+                className={`${
+                  pathname === "/schema"
+                    ? "text-red-500 hover:text-black "
+                    : "text-black hover:text-red-500"
+                }  transition-colors cursor-pointer`}
+              >
+                <Link href="/schema">Схема привоза</Link>
+              </button>
+              <button
+                className={`${
+                  pathname === "/questions"
+                    ? "text-red-500 hover:text-black "
+                    : "text-black hover:text-red-500"
+                }  transition-colors cursor-pointer`}
+              >
+                <Link href="/questions">FAQ</Link>
+              </button>
+              <button
+                className={`${
+                  pathname === "/telegram"
+                    ? "text-red-500 hover:text-black "
+                    : "text-black hover:text-red-500"
+                }  transition-colors cursor-pointer`}
+              >
+                <Link href="/telegram">Telegram-канал</Link>
+              </button>
             </nav>
-            <div className="flex gap-4">
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <button className="flex items-center justify-center bg-gray-100 text-black font-semibold rounded-lg w-[110px] h-[40px]">
-                    <span>Справка</span>{" "}
-                    <ChevronDown className="mt-1" size={20} />
-                  </button>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-60">
-                  <ul className="flex flex-col gap-2 text-sm">
-                    <li>
-                      <Link
-                        href="/schema"
-                        className="flex items-center gap-2 py-1"
-                      >
-                        <Ship size={20} /> Схема привоза
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        href="/questions"
-                        className="flex items-center gap-2 py-1"
-                      >
-                        <HelpCircle size={20} /> FAQ
-                      </Link>
-                    </li>
-                    <li>
-                      <Link
-                        className="flex items-center gap-2 py-1"
-                        target="_blank"
-                        rel="nofollow"
-                        href="/telegram"
-                      >
-                        <FaTelegram size={20} className="text-blue-500" />
-                        <span>Наш Telegram-канал</span>
-                      </Link>
-                    </li>
-                  </ul>
-                </HoverCardContent>
-              </HoverCard>
+            <div className="flex ">
               <HoverCard>
                 <HoverCardTrigger asChild>
                   <button className="flex items-center justify-center bg-gray-100 text-black font-semibold rounded-lg w-[130px] h-[40px]">
@@ -240,7 +241,8 @@ export const Header = () => {
             </div>
           </div>
         </header>
-      </section>{" "}
+      </section>
+      {/* Burger */}
       {isMobileMenuOpen && (
         <div className="fixed inset-0 z-40 lg:hidden ">
           {/* Backdrop */}

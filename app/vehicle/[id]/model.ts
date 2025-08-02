@@ -37,7 +37,7 @@ export type VehicleIdProps = {
   advertisements: { price: number } | null;
   details: {
     model: {
-      model_short_name: string | null;
+      model_english: string | null;
     };
     makes: { make_short_name: string | null };
     release_date: Date;
@@ -73,7 +73,7 @@ export type AlertDiagnosticProps = {
 export type StatisticAlertDialogProps = {
   details: {
     model: {
-      model_short_name: string | null;
+      model_english: string | null;
     };
     makes: { make_short_name: string | null };
     grades: {

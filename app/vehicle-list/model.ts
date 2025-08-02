@@ -11,7 +11,7 @@ export interface VehicleListProps {
           make_short_name: string | null;
         };
         model: {
-          model_short_name: string | null;
+          model_english: string | null;
         };
         grades: {
           grade_english: string | null;
