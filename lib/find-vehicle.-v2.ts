@@ -17,7 +17,7 @@ export const findVehicleV2 = async (
     model,
     grades_eng,
     grades_det,
-    evolutons,
+    evolutions,
     fuels,
     page,
     pageSize,
@@ -226,7 +226,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -260,7 +260,10 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -279,7 +282,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -295,7 +298,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -356,7 +359,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -390,7 +393,10 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -409,7 +415,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -425,7 +431,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -486,7 +492,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -520,7 +526,10 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -539,7 +548,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -555,7 +564,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -618,7 +627,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -672,7 +681,10 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -691,7 +703,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -707,7 +719,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -786,7 +798,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -820,7 +832,10 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                drive: { select: { drive_type: true } },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
@@ -839,7 +854,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -855,7 +870,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -916,7 +931,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -950,10 +965,13 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
+                drive: { select: { drive_type: true } },
                 fuel: { select: { fuel_english: true } },
                 form_year: true,
                 engine_displacement: true,
@@ -969,7 +987,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -985,7 +1003,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -1046,7 +1064,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -1080,10 +1098,13 @@ export const findVehicleV2 = async (
             details: {
               select: {
                 makes: { select: { make_short_name: true } },
-                model: { select: { model_english: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
                 grades: {
                   select: { grade_english: true, grade_detail_english: true },
                 },
+                drive: { select: { drive_type: true } },
                 fuel: { select: { fuel_english: true } },
                 form_year: true,
                 engine_displacement: true,
@@ -1099,7 +1120,7 @@ export const findVehicleV2 = async (
               },
             },
             lib_sell_types: { select: { sell_type: true } },
-            photos: { select: { url: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
           },
         },
       },
@@ -1115,7 +1136,7 @@ export const findVehicleV2 = async (
           },
           details: {
             makes: { make_short_name: makes },
-            model: { model_short_name: model, model_english: evolutons },
+            model: { model_short_name: model, model_english: evolutions },
             grades: grade,
             drive: priv,
             fuel: fuel,
@@ -1173,7 +1194,7 @@ export const findVehicleV2 = async (
         },
         details: {
           makes: { make_short_name: makes },
-          model: { model_short_name: model, model_english: evolutons },
+          model: { model_short_name: model, model_english: evolutions },
           grades: grade,
           drive: priv,
           fuel: fuel,
@@ -1207,11 +1228,14 @@ export const findVehicleV2 = async (
           details: {
             select: {
               makes: { select: { make_short_name: true } },
-              model: { select: { model_english: true } },
+              model: {
+                select: { model_english: true, model_short_name: true },
+              },
               grades: {
                 select: { grade_english: true, grade_detail_english: true },
               },
               fuel: { select: { fuel_english: true } },
+              drive: { select: { drive_type: true } },
               form_year: true,
               engine_displacement: true,
               engine_displacement_liters: true,
@@ -1226,7 +1250,7 @@ export const findVehicleV2 = async (
             },
           },
           lib_sell_types: { select: { sell_type: true } },
-          photos: { select: { url: true } },
+          photos: { select: { s3_images: { select: { url: true } } } },
         },
       },
     },
@@ -1243,7 +1267,7 @@ export const findVehicleV2 = async (
         },
         details: {
           makes: { make_short_name: makes },
-          model: { model_short_name: model, model_english: evolutons },
+          model: { model_short_name: model, model_english: evolutions },
           grades: grade,
           drive: priv,
           fuel: fuel,
@@ -1299,7 +1323,7 @@ export interface GetSearchParams {
   grades?: string;
   grades_eng?: string;
   grades_det?: string;
-  evolutons?: string;
+  evolutions?: string;
   page?: string;
   pageSize?: string;
   fuels?: string;
@@ -1335,8 +1359,12 @@ export interface ReturnProps {
         makes: {
           make_short_name: string | null;
         };
+        drive: {
+          drive_type: string;
+        } | null;
         model: {
           model_english: string | null;
+          model_short_name: string | null;
         };
         grades: {
           grade_english: string | null;
@@ -1357,7 +1385,9 @@ export interface ReturnProps {
       } | null;
       lib_sell_types: { sell_type: string };
       photos: {
-        url: string;
+        s3_images: {
+          url: string;
+        } | null;
       }[];
     };
   }[];

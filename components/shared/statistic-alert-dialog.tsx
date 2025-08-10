@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { detectFuels } from "@/lib/detect-fuels";
-import { StatisticAlertDialogProps } from "@/app/vehicle/[id]/model";
+import { StatisticAlertDialogProps } from "@/app/[makes]/[model]/[evolutions]/[id]/model";
 import { detectMake } from "./form-korea-cars/first-line/lib";
 import { useEffect, useRef, useState } from "react";
 import { IoIosClose } from "react-icons/io";

@@ -1,20 +1,49 @@
 import { CarInfo, SliderCarPage } from "@/components/shared";
-import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
-import ShareButton from "@/components/shared/ShareButton";
-import YandexMetrika from "@/components/shared/yandex-metrika";
-import { detectedDate } from "@/lib/detected-date";
+import Breadcrumb from "@/components/shared/breadcrumb";
+import SimilarCars from "@/components/shared/similar-car/similar-car";
+import { Options } from "@/components/shared/vehicle-id-page/options";
 import { findCBR } from "@/lib/find-cbr";
+import { findVehicleSimilar } from "@/lib/find-vehicle-similar";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+interface ProductPageProps {
+  makes: string;
+  model: string;
+  evolutions: string;
+  id: string;
+}
 export default async function CarPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: Promise<ProductPageProps>;
 }) {
-  const paramsId = await params;
-  const { id } = paramsId;
-  const vehicleId = await findVehicleId(id);
+  const { id, evolutions, makes, model } = await params;
+
+  let carId = "";
+  if (id.startsWith("uid-")) {
+    carId = id.replace("uid-", "");
+  }
+  const breadcrumbItems = [
+    {
+      label: makes,
+      href: `/?makes=${makes}`,
+    },
+    {
+      label: model,
+      href: `/?makes=${makes}&model=${model}`,
+    },
+    {
+      label: decodeURIComponent(evolutions),
+      href: `/?makes=${makes}&model=${model}&evolutions=${evolutions}`,
+    },
+  ];
+  const vehicleId = await findVehicleId(carId);
+  const vehicleSimilar = await findVehicleSimilar({
+    makes: String(vehicleId?.details?.makes.make_short_name),
+    model: String(vehicleId?.details?.model.model_short_name),
+    date: String(vehicleId?.details?.release_date),
+  });
   const { cbr } = await findCBR();
   const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
   const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
@@ -24,7 +53,6 @@ export default async function CarPage({
   if (!vehicleId) {
     return notFound();
   }
-
   return (
     <>
       <div className="mx-auto px-5 max-w-7xl mt-32 lg:mt-44">
@@ -46,13 +74,13 @@ export default async function CarPage({
             </div>
           </div>
         </div> */}
-
+        <Breadcrumb items={breadcrumbItems} />
         <Suspense fallback={<p>Loading</p>}>
-          <section className=" flex md:flex-row flex-col mb-24">
+          <section className=" flex md:flex-row flex-col mb-12 md:mb-24">
             <SliderCarPage imgSrc={vehicleId.photos} />
 
             <CarInfo
-              id={id}
+              id={carId}
               auctionId={vehicleId.vehicle_id_on_auction}
               advertisements={vehicleId.advertisements}
               details={vehicleId.details}
@@ -68,9 +96,17 @@ export default async function CarPage({
               k_krw={Number(k_krw)}
             />
           </section>
+          {/* Options */}
+          <Options options={vehicleId.vehicle_options} />
+          <SimilarCars
+            vehicleSimilar={vehicleSimilar}
+            year={new Date(
+              String(vehicleId?.details?.release_date)
+            ).getFullYear()}
+          />
         </Suspense>
       </div>
-      <YandexMetrika />
+      {/* <YandexMetrika /> */}
     </>
   );
 }

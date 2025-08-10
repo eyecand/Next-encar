@@ -51,6 +51,7 @@ export const findVehicleId = async (id: string) => {
       details: {
         select: {
           colours: { select: { color_english: true } },
+          drive: { select: { drive_type: true } },
           form_year: true,
           engine_displacement: true,
           mileage: true,
@@ -61,7 +62,7 @@ export const findVehicleId = async (id: string) => {
             },
           },
           makes: { select: { make_short_name: true } },
-          model: { select: { model_english: true } },
+          model: { select: { model_english: true, model_short_name: true } },
           grades: {
             select: { grade_english: true, grade_detail_english: true },
           },
@@ -69,9 +70,26 @@ export const findVehicleId = async (id: string) => {
         },
       },
       lib_sell_types: { select: { sell_type: true } },
-      photos: {
+      photos: { select: { s3_images: { select: { url: true } } } },
+      vehicle_options: {
         select: {
-          url: true,
+          lib_options: {
+            select: {
+              description_russian: true,
+              option_name_russian: true,
+              option_images: {
+                select: {
+                  base_64: true,
+                  s3_url: true,
+                },
+              },
+              lib_option_types: {
+                select: {
+                  option_type_key: true,
+                },
+              },
+            },
+          },
         },
       },
     },

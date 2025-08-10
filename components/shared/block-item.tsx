@@ -5,7 +5,7 @@ type BlockItemProps = {
 export function BlockItem({ title, value }: BlockItemProps) {
   return (
     <div className="flex items-center">
-      <span className="mr-2 text-gray-400 text-base md:text-lg w-1/2">
+      <span className="mr-2 text-gray-400 text-base  w-1/2">
         {title === "Двигатель" ? (
           <>
             {title}, см<sup>3</sup>
@@ -14,7 +14,7 @@ export function BlockItem({ title, value }: BlockItemProps) {
           title
         )}
       </span>
-      <span className="font-semibold text-base md:text-lg">
+      <span className="font-semibold text-base ">
         {title === "Двигатель"
           ? value
             ? Number(value) < 500

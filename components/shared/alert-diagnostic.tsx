@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import DiagnosticFront from "../../public/map_inspect_front.webp";
 import DiagnosticBack from "../../public/map_inspect_back.png";
-import { AlertDiagnosticProps } from "@/app/vehicle/[id]/model";
+import { AlertDiagnosticProps } from "@/app/[makes]/[model]/[evolutions]/[id]/model";
 import { useEffect, useRef, useState } from "react";
 import { IoIosClose } from "react-icons/io";
 type list = {

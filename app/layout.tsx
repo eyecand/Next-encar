@@ -38,7 +38,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
-          <YandexMetrika />
+          {/* <YandexMetrika /> */}
         </main>
       </body>
     </html>

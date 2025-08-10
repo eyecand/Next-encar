@@ -70,7 +70,7 @@ export const useFilters = (): ReturnPros => {
     searchParams.has("grades") ? searchParams.get("grades") : null
   );
   const [evolutonsType, setEvolutionsType] = useState(
-    searchParams.has("evolutons") ? searchParams.get("evolutons") : null
+    searchParams.has("evolutions") ? searchParams.get("evolutions") : null
   );
   const [gradeEng, setGradesEng] = useState(
     searchParams.has("grade_eng") ? searchParams.get("grade_eng") : null

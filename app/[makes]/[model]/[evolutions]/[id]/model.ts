@@ -38,7 +38,9 @@ export type VehicleIdProps = {
   details: {
     model: {
       model_english: string | null;
+      model_short_name: string | null;
     };
+    drive: { drive_type: string } | null;
     makes: { make_short_name: string | null };
     release_date: Date;
     grades: {

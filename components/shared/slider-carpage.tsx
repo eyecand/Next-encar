@@ -17,10 +17,11 @@ import "yet-another-react-lightbox/plugins/counter.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import Image from "next/image";
 import NotImage from "../../public/12.png";
-import Logo from "../../public/Logo_jpeg.jpg";
 type SliderProps = {
   imgSrc: {
-    url: string;
+    s3_images: {
+      url: string;
+    } | null;
   }[];
 };
 export const SliderCarPage = ({ imgSrc }: SliderProps) => {
@@ -28,7 +29,7 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
   const [index, setIndex] = useState(0);
 
   const allImg = imgSrc.map((item) => {
-    return { src: item.url };
+    return { src: String(item.s3_images?.url) };
   });
 
   const handleLightBox = (i: number) => {
@@ -37,7 +38,6 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
   };
   return (
     <div className="custom-swiper md:w-1/2 pr-0 pb-6 md:pr-6 md:pb-0">
-      {/* <Image src="/Logo_jpeg.jpg" width={200} height={100} alt="#" /> */}
       {imgSrc.length > 0 ? (
         <>
           {" "}
@@ -55,21 +55,22 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
               for (let i = 0; i < swiper.pagination.bullets.length; i++) {
                 swiper.pagination.bullets[
                   i
-                ].style.backgroundImage = `url(${imgSrc[i].url})`;
+                ].style.backgroundImage = `url(${imgSrc[i].s3_images?.url})`;
               }
             }}
-            className="relative w-full md:w-full max-h-[275px] sm:max-h-[325px]  md:max-h-[350px] lg:max-h-[400px]"
+            style={{ aspectRatio: "4/3" }}
           >
-            {imgSrc.map((element: { url: string }, i: number) => {
+            {imgSrc.map((element, i: number) => {
               return (
-                <SwiperSlide
-                  className="relative"
-                  key={i}
-                  onClick={() => handleLightBox(i)}
-                >
-                  <img loading="lazy" src={element.url} />
-                  <div className="absolute w-[38%] h-[20%] bottom-[5%] right-0 rounded-b-lg rounded-s-lg">
-                    <Image className="w-[35%]" src={Logo} alt="#" sizes="20" />
+                <SwiperSlide key={i} onClick={() => handleLightBox(i)}>
+                  <div className="relative w-full h-full">
+                    <Image
+                      loading="lazy"
+                      src={String(element.s3_images?.url)}
+                      alt="swiper"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                 </SwiperSlide>
               );

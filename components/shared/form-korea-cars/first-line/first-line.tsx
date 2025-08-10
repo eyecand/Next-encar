@@ -76,7 +76,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
   const optionsGrades: Option[] = [
     {
       value: null,
-      label: "Любая комплектация",
+      label: "Комплектация",
     },
   ];
   const optionsModels: Option[] = [
@@ -242,7 +242,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
           <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"grades"}
-              placeholder="Любая комплектация"
+              placeholder="Комплектация"
               isLoading={isGrades}
               options={optionsGrades}
               value={

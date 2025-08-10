@@ -12,6 +12,7 @@ export interface VehicleListProps {
         };
         model: {
           model_english: string | null;
+          model_short_name: string | null;
         };
         grades: {
           grade_english: string | null;
@@ -32,7 +33,9 @@ export interface VehicleListProps {
       } | null;
       lib_sell_types: { sell_type: string };
       photos: {
-        url: string;
+        s3_images: {
+          url: string;
+        } | null;
       }[];
     };
   }[];

@@ -28,7 +28,7 @@ export const Desktop = ({
               <Link
                 key={index}
                 target="_blank"
-                href={`/vehicle/${item.encar.id}`}
+                href={`/${item.encar.details.makes.make_short_name}/${item.encar.details.model.model_short_name}/${item.encar.details.model.model_english}/uid-${item.encar.id}`}
                 className=" p-5 max-w-7xl "
               >
                 <div className="flex justify-between relative card-car">
@@ -42,7 +42,9 @@ export const Desktop = ({
                         height={240}
                       />
                     ) : (
-                      <ImageLoader imageUrl={item.encar.photos[0].url} />
+                      <ImageLoader
+                        imageUrl={item.encar.photos[0].s3_images?.url}
+                      />
                     )}
                   </div>
                   <div className="flex flex-col basis-[400px] min-w-[232px] mr-5">

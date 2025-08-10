@@ -3,7 +3,6 @@ import withPlaiceholder from "@plaiceholder/next";
 const nextConfig = {
   /* config options here */
   images: {
-    // domains: ["ci.encar.com"],
     remotePatterns: [
       {
         protocol: "https",
@@ -12,7 +11,15 @@ const nextConfig = {
         pathname: "/**",
         search: "",
       },
+      {
+        protocol: "https",
+        hostname: "storage.yandexcloud.net",
+        port: "",
+        pathname: "/encar-foto-site/**",
+        search: "",
+      },
     ],
+    unoptimized: true,
   },
 };
 // module.exports = {

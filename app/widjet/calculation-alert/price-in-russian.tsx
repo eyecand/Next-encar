@@ -5,16 +5,27 @@ export const PriceInRussian = ({
   poshlina,
   utilSbor,
   customsOformlenie,
+  totalRussia,
 }: {
   customs: number;
   poshlina: number;
   utilSbor: number;
   customsOformlenie: number;
+  totalRussia: number;
 }) => {
   return (
-    <div className="lg:basis-1/2">
-      <div className="my-6 pt-6 border-t border-zinc-100">
-        <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
+    <div className="mt-4">
+      <div className="flex items-center gap-2 font-semibold text-sm  md:text-lg">
+        <img
+          src="/flag-russian.webp"
+          alt="flag-russian"
+          width={40}
+          height={40}
+        />{" "}
+        <span>Расходы в России</span>
+      </div>
+      <div className="my-6 ">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group">
           <div className="flex items-center justify-start gap-2">
             <span className="whitespace-nowrap  text-zinc-600">
               Услуги брокера
@@ -28,8 +39,8 @@ export const PriceInRussian = ({
           />
         </div>
       </div>
-      <div className="my-6 pt-6 border-t border-zinc-100">
-        <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
+      <div className="my-6 ">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group">
           <div className="flex items-center justify-start gap-2">
             <span className="whitespace-nowrap  text-zinc-600">
               Таможенное оформление
@@ -43,8 +54,8 @@ export const PriceInRussian = ({
           />
         </div>
       </div>
-      <div className="my-6 pt-6 border-t border-zinc-100">
-        <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
+      <div className="my-6 ">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group">
           <div className="flex items-center justify-start gap-2">
             {" "}
             Пошлина
@@ -59,8 +70,8 @@ export const PriceInRussian = ({
           />
         </div>
       </div>
-      <div className="my-6 pt-6 border-t border-zinc-100">
-        <div className="text-base flex items-start justify-between gap-4 text-zinc-700 group">
+      <div className="my-6 ">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group">
           <div className="flex items-center justify-start gap-2">
             {" "}
             Утил. сбор
@@ -71,6 +82,20 @@ export const PriceInRussian = ({
             price={String(utilSbor)}
             label="₽"
             className="whitespace-nowrap font-semibold"
+          />
+        </div>
+      </div>
+      <div className="mt-6 mb-3 pt-6 border-t-2 border-zinc-200">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group font-bold">
+          <div className="flex items-center justify-start gap-2">
+            Итого в России
+          </div>
+
+          <PriceView
+            tilda={true}
+            price={String(totalRussia)}
+            label="₽"
+            className="whitespace-nowrap "
           />
         </div>
       </div>

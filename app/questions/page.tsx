@@ -117,7 +117,7 @@ export default async function QuestionsPage() {
           </div>
         </div>
       </section>
-      <YandexMetrika />
+      {/* <YandexMetrika /> */}
     </>
   );
 }

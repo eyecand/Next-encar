@@ -291,7 +291,7 @@ export default async function SchemaPage() {
           </div>
         </section>
       </section>
-      <YandexMetrika />
+      {/* <YandexMetrika /> */}
     </>
   );
 }

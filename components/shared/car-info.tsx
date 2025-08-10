@@ -4,20 +4,21 @@ import {
   BlockItem,
   StatisticAlertDialog,
 } from "@/components/shared";
-import { IoCopyOutline } from "react-icons/io5";
 import { detectFuels } from "@/lib/detect-fuels";
 import { Button } from "../ui/button";
-import { VehicleIdProps } from "@/app/vehicle/[id]/model";
+import { VehicleIdProps } from "@/app/[makes]/[model]/[evolutions]/[id]/model";
 import { detectTransmission } from "./form-korea-cars/second-line/lib";
 import { detectMake } from "./form-korea-cars/first-line/lib";
-import { useState } from "react";
-import { IoIosCheckmark } from "react-icons/io";
 import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
 import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
 import { CalculationCar } from "@/lib/calcilation-car";
 import Link from "next/link";
-import { FaTelegram } from "react-icons/fa";
+import { CarInfoHeader } from "./vehicle-id-page/car-info/car-info-header";
+import { ButtonCopy } from "./vehicle-id-page/car-info/button-copy";
+import { CarInfoWarnings } from "./vehicle-id-page/car-info/car-info-warnings";
+import { FaTelegram, FaWhatsapp } from "react-icons/fa";
+import { detectedMontYear } from "@/lib/month-year";
 export const CarInfo = ({
   details,
   accident,
@@ -34,21 +35,11 @@ export const CarInfo = ({
   broker,
   k_krw,
 }: VehicleIdProps) => {
-  const copyLink = `https://autofish.ru/vehicle/${id}`;
-  const [isCopy, setIsCopy] = useState(false);
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
   // const shareUrl = `https://autofish.ru/vehicle/${id}`;
   // const shareTitle = "Добый день! ";
   // const shareDescription = "Просматриваю это объявление.";
-  const copyText = async () => {
-    try {
-      setIsCopy(true);
-      await navigator.clipboard.writeText(copyLink);
-      setTimeout(() => setIsCopy(false), 2000);
-    } catch (error) {
-      console.error(`Failed to copy: ${error}`);
-    }
-  };
+  const copyLink = `https://autofish.ru/vehicle/${id}`;
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);
@@ -58,128 +49,210 @@ export const CarInfo = ({
   return (
     <div className="w-full md:w-1/2">
       <div className="flex">
+        {/* Header */}
         <div className="w-full">
           <div className="flex gap-2">
-            <h2 className="font-gilroy font-bold flex text-[30px] mb-2 text-zinc-800">
-              {detectMake(String(details?.makes.make_short_name))}{" "}
-              {details?.model.model_english === "Canival"
-                ? "Carnival"
-                : details?.model.model_english}{" "}
-              {new Date(String(details?.release_date)).getFullYear()}
-              {realFuel === "Electricity"
-                ? " "
-                : `, ${(
-                    Math.round(Number(details?.engine_displacement)) / 1000
-                  ).toFixed(1)} л. `}
-              из Кореи
-            </h2>{" "}
-            <div className="flex mt-[10px] flex-col lg:flex-row">
-              <button disabled={isCopy} className="ml-2 mt-[10px] flex pt-0  ">
-                {" "}
-                {isCopy ? (
-                  <IoIosCheckmark size={25} />
-                ) : (
-                  <IoCopyOutline
-                    className="cursor-pointer hover:text-gray-500"
-                    onClick={copyText}
-                    size={20}
-                  />
-                )}
-              </button>
-            </div>
+            <CarInfoHeader
+              make={detectMake(String(details?.makes.make_short_name))}
+              model={String(details?.model.model_english)}
+              engine={Number(details?.engine_displacement)}
+              fuel={realFuel}
+              year={new Date(String(details?.release_date)).getFullYear()}
+            />
+            <ButtonCopy copyLink={copyLink} />
           </div>
 
           <div className="flex  justify-between">
-            <div className="flex flex-wrap items-center gap-2">
-              {String(details?.grades.grade_english).replace(
-                " China Manufacturer",
-                ""
-              )}{" "}
-              {details?.grades.grade_detail_english
-                ? String(details?.grades.grade_detail_english).replace(
-                    " China Manufacturer",
-                    ""
-                  )
-                : ""}{" "}
-              {totalAccident ? (
-                <span className="bg-rose-50 border-rose-100 text-[13px] text-rose-600 ml-1 lg:ml-4 px-3 py-1 rounded-full">
-                  был в аварии
-                </span>
-              ) : (
-                ""
-              )}
-              {(sell_type === "RENT_SUCCESSION" ||
-                sell_type === "RENT_CAR") && (
-                <div className="button flex ml-0 lg:ml-2">
-                  <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                    Рента
-                  </div>
-                </div>
-              )}
-              {(sell_type === "FINANCING_LEASE" ||
-                sell_type === "OPERATING_LEASE") && (
-                <div className="button flex ml-0 lg:ml-2">
-                  <div className="inline-flex bg-rose-500/80 items-center whitespace-nowrap h-[26px] text-[13px] leading-tight text-black px-3 py-[10px] rounded-xl mt-1">
-                    Кредит
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Был в аварии, Кредит */}
+            <CarInfoWarnings
+              grade={
+                details?.grades.grade_english
+                  ? details?.grades.grade_english
+                  : ""
+              }
+              grade_detail={
+                details?.grades.grade_detail_english
+                  ? details?.grades.grade_detail_english
+                  : ""
+              }
+              totalAccident={totalAccident}
+              sell_type={sell_type}
+            />
             <Link
               className=" flex justify-center items-center"
               target="_blank"
               rel="nofollow"
               href=" https://t.me/autofish_main_bot"
             >
-              <button className="flex justify-center items-center h-[40px] w-[200px] bg-blue-400  hover:bg-blue-600  rounded-2xl cursor-pointer transition-colors">
-                <span className="text-white text-sm">
-                  Уведомить о новых авто
-                </span>
+              <Button className="text-blue-500" variant={"link"}>
+                Уведомить о новых авто
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </div>
+      {/* Что-то */}
+      <div className="flex flex-col md:flex-row justify-between border-solid border-t border-gray-200 mt-2">
+        {/* Стоимость */}
+
+        <div className="flex flex-col gap-4 w-full md:w-[60%] mt-4">
+          <div className="flex justify-between items-center text-zinc-500">
+            <span>Стоимость в Корее</span>
+            <span className="text-lg font-semibold text-zinc-700">
+              {new Intl.NumberFormat("ru-RU")
+                .format(Number(advertisements?.price) * 10000)
+                .replace(",", ".")}{" "}
+              ₩
+            </span>
+          </div>
+          <div
+            className="flex justify-between items-center 
+            text-zinc-500"
+          >
+            <span>Стоимость в России</span>
+            <span className="text-xl font-semibold text-zinc-700">
+              {isNoProhodCar ? (
+                <PriceView
+                  tilda={true}
+                  className=""
+                  label="₽"
+                  price={String(
+                    CalculationCar(
+                      Number(advertisements?.price) * 10000,
+                      KRW,
+                      EUR,
+                      Number(details?.engine_displacement),
+                      realFuel,
+                      "4",
+                      broker,
+                      fraht,
+                      k_krw,
+                      0
+                    )
+                  )}
+                />
+              ) : (
+                <PriceView
+                  tilda={true}
+                  className=""
+                  label="₽"
+                  price={String(
+                    CalculationCar(
+                      Number(advertisements?.price) * 10000,
+                      KRW,
+                      EUR,
+                      Number(details?.engine_displacement),
+                      realFuel,
+                      String(details?.release_date),
+                      broker,
+                      fraht,
+                      k_krw,
+                      0
+                    )
+                  )}
+                />
+              )}
+            </span>
+          </div>
+          {/* Подробный расчет */}
+          <CalculationAlert
+            engine={Number(details?.engine_displacement)}
+            fuel={realFuel}
+            priceEn={Number(advertisements?.price) * 10000}
+            year={String(details?.release_date)}
+            EUR={EUR}
+            KRW={KRW}
+            broker={broker}
+            fraht={fraht}
+            k_krw={k_krw}
+            copyLink={copyLink}
+            make={detectMake(String(details?.makes.make_short_name))}
+            model={
+              details?.model.model_english === "Canival"
+                ? "Carnival"
+                : String(details?.model.model_english)
+            }
+          />
+        </div>
+        <div className="flex flex-col w-full md:w-[36%] mt-2 md:mt-4">
+          <a
+            href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
+              String(details?.makes.make_short_name)
+            )}, ${
+              details?.model.model_english === "Canival"
+                ? "Carnival"
+                : details?.model.model_english
+            }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
+              details?.engine_displacement
+            } см3, ${copyLink}. Хочу получить консультацию.`}
+            className="w-full  py-4 text-sm bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl  flex items-center justify-center hover:bg-[#ac3f42] duration-300"
+          >
+            Заказать
+          </a>
+          <span className="w-full text-center mt-2">или напишите нам</span>
+          <div className="flex items-center justify-between gap-4 mt-2 ">
+            <Link
+              className="block w-[50%]"
+              target="_blank"
+              rel="nofollow"
+              href="https://t.me/Avademus"
+            >
+              <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
+                <FaTelegram size={25} className="text-blue-500" />
+              </button>
+            </Link>
+            <Link
+              className="block w-[50%]"
+              target="_blank"
+              rel="nofollow"
+              href="https://wa.me/79265850382"
+            >
+              <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
+                <FaWhatsapp size={25} className="text-green-500" />
               </button>
             </Link>
           </div>
         </div>
       </div>
-      <div className="border-solid border-t border-gray-200 mt-2 pt-6 flex flex-col items-center lg:items-start lg:flex-row gap-4">
-        <div className="space-y-4 w-full lg:w-1/2">
-          <BlockItem
-            title="Год"
-            value={new Date(String(details?.release_date)).getFullYear()}
-          />
-          <BlockItem
-            title="Пробег, км"
-            value={new Intl.NumberFormat("ru-RU")
-              .format(Number(details?.mileage))
-              .replace(",", ".")}
-          />
-          <BlockItem
-            title="Трансмиссия"
-            value={detectTransmission(
-              String(details?.transmission.transmission_english)
-            )}
-          />
-        </div>
-        <div className="space-y-4 w-full lg:w-1/2">
-          <BlockItem title="Двигатель" value={details?.engine_displacement} />
-          <BlockItem
-            title="Топливо"
-            value={detectFuels(String(details?.fuel.fuel_english))}
-          />
+      {/* Основные характеристики авто */}
+      <div className="border-solid border-t border-gray-200 mt-2 pt-4 flex flex-col  lg:items-start  gap-4">
+        <h3 className="text-lg md:text-xl font-semibold">Характеристики</h3>
+        <div className="w-full flex flex-col md:flex-row ">
+          <div className="space-y-4 w-full lg:w-1/2 mr-12">
+            <BlockItem
+              title="Дата выпуска"
+              value={detectedMontYear(String(details?.release_date))}
+            />
+            <BlockItem
+              title="Пробег, км"
+              value={new Intl.NumberFormat("ru-RU")
+                .format(Number(details?.mileage))
+                .replace(",", ".")}
+            />
+            <BlockItem
+              title="Трансмиссия"
+              value={detectTransmission(
+                String(details?.transmission.transmission_english)
+              )}
+            />
+          </div>
+          <div className="space-y-4 w-full mt-4 md:mt-0 lg:w-1/2">
+            <BlockItem title="Двигатель" value={details?.engine_displacement} />
+            <BlockItem
+              title="Топливо"
+              value={detectFuels(String(details?.fuel.fuel_english))}
+            />
+            <BlockItem
+              title="Привод"
+              value={
+                details?.drive?.drive_type ? details?.drive?.drive_type : "2WD"
+              }
+            />
+          </div>
         </div>
       </div>
-      {/* Ссылка на оригинальное обьявление */}
-      <div className="group relative w-full grow mt-7">
-        <a
-          target="_blank"
-          href={`https://fem.encar.com/cars/detail/${String(auctionId)}`}
-        >
-          {" "}
-          <Button className=" px-6 py-6 w-full  bg-blue-400 hover:bg-blue-600 uppercase font-gilroy font-semibold rounded-xl transition-color flex items-center justify-center relative grow">
-            Перейти к объявлению
-          </Button>
-        </a>
-      </div>
-      <div className="flex flex-col lg:flex-row gap-4 mt-7">
+
+      <div className="flex flex-col gap-4 mt-7">
         <StatisticAlertDialog
           plate_number={vehicle_plate_number}
           accident_details={accident_details}
@@ -204,98 +277,23 @@ export const CarInfo = ({
         )}
       </div>
 
-      {/* Total Price */}
-      <div className="border-t border-zinc-200 mt-6 pt-6">
-        <div className="table price w-full">
-          <div className="flex flex-col gap-4">
-            <div className="flex justify-between items-center text-zinc-500">
-              <span>Стоимость в Корее</span>
-              <span className="text-lg font-semibold text-zinc-700">
-                {new Intl.NumberFormat("ru-RU")
-                  .format(Number(advertisements?.price) * 10000)
-                  .replace(",", ".")}{" "}
-                ₩
-              </span>
-            </div>
-            <div className="flex justify-between items-center text-zinc-500">
-              <span>Стоимость в России</span>
-              <span className="text-lg font-semibold text-zinc-700">
-                {isNoProhodCar ? (
-                  <PriceView
-                    tilda={true}
-                    className=""
-                    label="₽"
-                    price={String(
-                      CalculationCar(
-                        Number(advertisements?.price) * 10000,
-                        KRW,
-                        EUR,
-                        Number(details?.engine_displacement),
-                        realFuel,
-                        "4",
-                        broker,
-                        fraht,
-                        k_krw,
-                        0
-                      )
-                    )}
-                  />
-                ) : (
-                  <PriceView
-                    tilda={true}
-                    className=""
-                    label="₽"
-                    price={String(
-                      CalculationCar(
-                        Number(advertisements?.price) * 10000,
-                        KRW,
-                        EUR,
-                        Number(details?.engine_displacement),
-                        realFuel,
-                        String(details?.release_date),
-                        broker,
-                        fraht,
-                        k_krw,
-                        0
-                      )
-                    )}
-                  />
-                )}
-              </span>
-            </div>
-          </div>
+      <div className=" mt-6 ">
+        {/* Ссылка на оригинальное обьявление */}
+        <div className="group relative w-full grow mt-4 flex justify-center">
+          <a
+            target="_blank"
+            href={`https://fem.encar.com/cars/detail/${String(auctionId)}`}
+          >
+            <Button className="text-blue-500" variant={"link"}>
+              Объявление на ENCAR
+            </Button>
+          </a>
         </div>
-        <CalculationAlert
-          engine={Number(details?.engine_displacement)}
-          fuel={realFuel}
-          priceEn={Number(advertisements?.price) * 10000}
-          year={String(details?.release_date)}
-          EUR={EUR}
-          KRW={KRW}
-          broker={broker}
-          fraht={fraht}
-          k_krw={k_krw}
-        />
-        <p className="text-sm text-zinc-600 mt-6 mb-6">
+        <p className="text-sm text-zinc-600 mt-2 ">
           Стоимость является ориентировочной, включая все расходы в г.
           Владивосток. <br /> Обратитесь к нам, оставив заявку, чтобы получить
           консультацию.
         </p>
-        <a
-          href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
-            String(details?.makes.make_short_name)
-          )}, ${
-            details?.model.model_english === "Canival"
-              ? "Carnival"
-              : details?.model.model_english
-          }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
-            details?.engine_displacement
-          } см3, ${copyLink}. Хочу получить консультацию.`}
-        >
-          <button className="w-full p-4 bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl shadow-lg hover:shadow-none shadow-bg-[#e05358]/40 hover:translate-y-2 transition-all transform-gpu flex items-center justify-center relative">
-            оставить заявку
-          </button>
-        </a>
       </div>
       {/* <PriceInfo priceEn={data.average_cost_japan} priceRub={data.full_duty} /> */}
     </div>

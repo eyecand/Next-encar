@@ -13,6 +13,9 @@ export type PriceInfoProps = {
   k_krw: number;
   EUR: number;
   KRW: number;
+  copyLink: string;
+  make: string;
+  model: string;
 };
 
 export type NameLotProps = {

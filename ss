@@ -7,9 +7,9 @@ datasource db {
   url      = env("POSTGRES_URL")
 }
 
-model SequelizeMeta {
-  name String @id @db.VarChar(255)
-}
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model SequelizeMeta {
+// }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model accident_and_change_histories {
@@ -448,36 +448,14 @@ model sellers {
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_filter_parse_control {
-  id          BigInt   @id @default(autoincrement())
-  filter      String   @db.VarChar(255)
-  date        DateTime @db.Date
-  pages       Json     @default("false") @db.Json
-  is_finished Boolean  @default(false)
-  num_threads Int?
-  created_at  DateTime @db.Timestamptz(6)
-  updated_at  DateTime @db.Timestamptz(6)
-  start_year  Int      @default(1980)
-  start_month Int      @default(1)
-  end_year    Int      @default(1980)
-  end_month   Int      @default(1)
-  total_pages Int      @default(0)
-}
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model sys_filter_parse_control {
+// }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
-model sys_update_controls {
-  id                                     BigInt   @id @default(autoincrement())
-  vehicle_id                             BigInt   @unique
-  update_status                          Boolean  @default(false)
-  translate_status                       Boolean  @default(false)
-  data_missing_flag                      Boolean  @default(false)
-  created_at                             DateTime @db.Timestamptz(6)
-  updated_at                             DateTime @db.Timestamptz(6)
-  additional_diagnosis_check             Boolean?
-  additional_diagnosis_check_status_code Int?
-
-  @@index([update_status, data_missing_flag], map: "sys_update_controls_update_status_data_missing_flag")
-}
+/// We could not retrieve columns for the underlying table. Either it has none or you are missing rights to see them. Please check your privileges.
+// model sys_update_controls {
+// }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model vehicle_details {
@@ -516,6 +494,19 @@ model vehicle_photos {
 
   @@index([vehicle_id, url], map: "vehicle_photos_vehicle_id_url")
   @@index([upload_status, tries])
+}
+
+model lib_drive_types {
+  id         Int      @id @default(autoincrement())
+  drive_type String   @unique @db.VarChar(55)
+  created_at DateTime @default(now()) @db.Timestamptz(6)
+  updated_at DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model currency_rates {
+  char_code String  @id
+  name      String
+  value     Decimal @db.Decimal
 }
 
 model component_conditions {
@@ -569,16 +560,17 @@ model inspection_estimates {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model inspections {
-  id                   BigInt                 @id @default(autoincrement())
-  vehicle_id           BigInt                 @unique
-  engine_type_id       Int
-  registration_date    DateTime               @db.Date
-  created_at           DateTime               @default(now()) @db.Timestamptz(6)
-  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
-  inspection_details   inspection_details[]
-  inspection_estimates inspection_estimates[]
-  lib_engine_types     lib_engine_types       @relation(fields: [engine_type_id], references: [id])
-  encar_vehicles       encar_vehicles         @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+  id                       BigInt                     @id @default(autoincrement())
+  vehicle_id               BigInt                     @unique
+  engine_type_id           Int
+  registration_date        DateTime                   @db.Date
+  created_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  inspection_details       inspection_details[]
+  inspection_estimates     inspection_estimates[]
+  lib_engine_types         lib_engine_types           @relation(fields: [engine_type_id], references: [id])
+  encar_vehicles           encar_vehicles             @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+  outer_inspection_details outer_inspection_details[]
 }
 
 model lib_component_items {
@@ -615,13 +607,6 @@ model lib_conditions {
   updated_at           DateTime               @default(now()) @db.Timestamptz(6)
   component_conditions component_conditions[]
   inspection_details   inspection_details[]
-}
-
-model lib_drive_types {
-  id         Int      @id @default(autoincrement())
-  drive_type String   @unique @db.VarChar(55)
-  created_at DateTime @default(now()) @db.Timestamptz(6)
-  updated_at DateTime @default(now()) @db.Timestamptz(6)
 }
 
 model lib_engine_types {
@@ -668,8 +653,97 @@ model lib_options {
   error_translate     Boolean           @default(false)
   created_at          DateTime          @default(now()) @db.Timestamptz(6)
   updated_at          DateTime          @default(now()) @db.Timestamptz(6)
+  description_russian String?
+  location_russian    String?
+  option_name_russian String?           @db.VarChar(255)
   lib_option_types    lib_option_types  @relation(fields: [option_type_id], references: [id])
+  option_images       option_images?
   vehicle_options     vehicle_options[]
+}
+
+model lib_outer_item_conditions {
+  id                                 Int                                  @id @default(autoincrement())
+  code                               String                               @unique @db.VarChar(255)
+  name                               String                               @db.VarChar(255)
+  name_english                       String?                              @db.VarChar(255)
+  error_translate                    Boolean                              @default(false)
+  created_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_conditions outer_inspection_detail_conditions[]
+}
+
+model lib_outer_items {
+  id                       Int                        @id @default(autoincrement())
+  code                     String                     @unique @db.VarChar(255)
+  name                     String                     @db.VarChar(255)
+  name_english             String?                    @db.VarChar(255)
+  error_translate          Boolean                    @default(false)
+  created_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  outer_inspection_details outer_inspection_details[]
+}
+
+model lib_ranks {
+  id                            Int                             @id @default(autoincrement())
+  name                          String                          @unique @db.VarChar(255)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_ranks outer_inspection_detail_ranks[]
+}
+
+model option_images {
+  id            Int                              @id @default(autoincrement())
+  option_id     Int                              @unique
+  original_url  String                           @db.VarChar(500)
+  s3_url        String?                          @db.VarChar(500)
+  base_64       String?
+  upload_status enum_option_images_upload_status @default(PENDING)
+  error_message String?                          @db.VarChar(500)
+  tries         Int                              @default(0)
+  created_at    DateTime                         @default(now()) @db.Timestamptz(6)
+  updated_at    DateTime                         @default(now()) @db.Timestamptz(6)
+  lib_options   lib_options                      @relation(fields: [option_id], references: [id])
+
+  @@unique([option_id, original_url], map: "option_images_option_id_original_url_unique")
+  @@index([upload_status, tries], map: "option_images_upload_status_tries_index")
+}
+
+model outer_inspection_detail_conditions {
+  id                         BigInt                    @id @default(autoincrement())
+  outer_inspection_detail_id BigInt
+  outer_item_condition_id    Int
+  created_at                 DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime                  @default(now()) @db.Timestamptz(6)
+  outer_inspection_details   outer_inspection_details  @relation(fields: [outer_inspection_detail_id], references: [id], onDelete: Cascade, map: "outer_inspection_detail_conditi_outer_inspection_detail_id_fkey")
+  lib_outer_item_conditions  lib_outer_item_conditions @relation(fields: [outer_item_condition_id], references: [id], onDelete: Cascade)
+
+  @@unique([outer_inspection_detail_id, outer_item_condition_id], map: "outer_inspection_detail_conditions_unique_idx")
+}
+
+model outer_inspection_detail_ranks {
+  id                         BigInt                   @id @default(autoincrement())
+  outer_inspection_detail_id BigInt
+  rank_id                    Int
+  created_at                 DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime                 @default(now()) @db.Timestamptz(6)
+  outer_inspection_details   outer_inspection_details @relation(fields: [outer_inspection_detail_id], references: [id], onDelete: Cascade)
+  lib_ranks                  lib_ranks                @relation(fields: [rank_id], references: [id], onDelete: Cascade)
+
+  @@unique([outer_inspection_detail_id, rank_id], map: "outer_inspection_detail_ranks_unique_idx")
+}
+
+model outer_inspection_details {
+  id                                 BigInt                               @id @default(autoincrement())
+  inspection_id                      BigInt
+  outer_item_id                      Int
+  created_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_conditions outer_inspection_detail_conditions[]
+  outer_inspection_detail_ranks      outer_inspection_detail_ranks[]
+  inspections                        inspections                          @relation(fields: [inspection_id], references: [id])
+  lib_outer_items                    lib_outer_items                      @relation(fields: [outer_item_id], references: [id])
+
+  @@unique([inspection_id, outer_item_id], map: "outer_inspection_details_unique_idx")
 }
 
 model s3_images {
@@ -695,6 +769,14 @@ model vehicle_options {
   encar_vehicles encar_vehicles @relation(fields: [vehicle_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([vehicle_id, option_id], map: "vehicle_options_vehicle_id_option_id_unique")
+}
+
+enum enum_option_images_upload_status {
+  PENDING
+  UPLOADED
+  FAILED
+  INVALID
+  IN_PROGRESS
 }
 
 enum enum_vehicle_photos_upload_status {
