@@ -10,7 +10,9 @@ export default function SimilarCars({
 }) {
   return (
     <div className="container mx-auto py-8">
-      <h1 className="mb-6 text:xl md:text-2xl font-bold">Похожие автомобили</h1>
+      <h1 className="mb-6 text:xl md:text-2xl font-bold border-y py-3">
+        Похожие автомобили
+      </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {vehicleSimilar.result.map((car, index) => (
           <CarCard

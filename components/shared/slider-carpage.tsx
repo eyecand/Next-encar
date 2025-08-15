@@ -63,13 +63,13 @@ export const SliderCarPage = ({ imgSrc }: SliderProps) => {
             {imgSrc.map((element, i: number) => {
               return (
                 <SwiperSlide key={i} onClick={() => handleLightBox(i)}>
-                  <div className="relative w-full h-full">
+                  <div className=" w-full h-full ">
                     <Image
                       loading="lazy"
                       src={String(element.s3_images?.url)}
                       alt="swiper"
                       fill
-                      className="object-cover"
+                      className=" object-cover "
                     />
                   </div>
                 </SwiperSlide>

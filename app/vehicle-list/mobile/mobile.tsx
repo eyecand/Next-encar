@@ -33,7 +33,7 @@ export const Mobile = ({
               <Link
                 key={item.encar.id}
                 target="_blank"
-                href={`/${item.encar.details.makes.make_short_name}/${item.encar.details.model.model_short_name}/uid-${item.encar.id}`}
+                href={`/${item.encar.details.makes.make_short_name}/${item.encar.details.model.model_short_name}/${item.encar.details.model.model_english}/uid-${item.encar.id}`}
                 className={"w-[320px] sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5 p-3"}
               >
                 <div
@@ -43,11 +43,10 @@ export const Mobile = ({
                   <div className="w-full flex relative">
                     {item.encar.photos.length === 0 ? (
                       <Image
-                        className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
+                        className="object-cover rounded-md w-full max-h-[240px]  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
                         alt="not found"
                         src={NotImage}
-                        width={350}
-                        height={276}
+                        fill
                       />
                     ) : (
                       <ImageLoader

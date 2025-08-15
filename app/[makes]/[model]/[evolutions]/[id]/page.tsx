@@ -76,7 +76,7 @@ export default async function CarPage({
         </div> */}
         <Breadcrumb items={breadcrumbItems} />
         <Suspense fallback={<p>Loading</p>}>
-          <section className=" flex md:flex-row flex-col mb-12 md:mb-24">
+          <section className=" flex md:flex-row flex-col mb-12">
             <SliderCarPage imgSrc={vehicleId.photos} />
 
             <CarInfo

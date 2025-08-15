@@ -1,20 +1,16 @@
 "use client";
 import { useEffect, useState } from "react";
 import Image from "next/image";
-type ImageErrorEvent = React.SyntheticEvent<HTMLImageElement, Event>;
 import { Spinner } from "./spinner";
 
 export const ImageLoader = ({ imageUrl }: { imageUrl: string | undefined }) => {
   const [isLoading, setIsLoading] = useState(true);
-  const onImageError = (e: ImageErrorEvent) => {
-    const target = e.target as HTMLImageElement;
-    target.src = "../../public/12.png";
-  };
+
   useEffect(() => {
     const img = new window.Image();
     img.onload = () => setIsLoading(false);
     img.onerror = () => setIsLoading(false);
-    img.src = imageUrl ?? "../../public/12.png";
+    img.src = imageUrl ?? "./12.png";
   }, [imageUrl]);
 
   return (
@@ -27,8 +23,7 @@ export const ImageLoader = ({ imageUrl }: { imageUrl: string | undefined }) => {
         <>
           <Image
             className="object-cover rounded-md w-full h-full  md:max-w-[320px] md:max-h-[220px] lg:max-h-[240px]"
-            src={imageUrl ?? "../../public/12.png"}
-            onError={onImageError}
+            src={imageUrl ?? "./12.png"}
             alt="#"
             width={320}
             height={240}

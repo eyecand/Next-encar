@@ -45,7 +45,7 @@ export const findVehicleSimilar = async ({
         },
       },
     },
-    take: 4,
+    take: 12,
   });
 
   return { result };
