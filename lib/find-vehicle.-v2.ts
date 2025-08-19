@@ -10,14 +10,15 @@ const DEFAULT_MAX_ENGINE = 10000;
 const DEFAULT_MIN_MILEAGE = 0;
 const DEFAULT_MAX_MILEAGE = 1000000;
 export const findVehicleV2 = async (
-  params: GetSearchParams
+  params: GetSearchParams,
+  makes?: string,
+  model?: string,
+  evolutions?: string
 ): Promise<ReturnProps> => {
   const {
-    makes,
-    model,
     grades_eng,
     grades_det,
-    evolutions,
+    grades,
     fuels,
     page,
     pageSize,
@@ -47,29 +48,21 @@ export const findVehicleV2 = async (
   const currentMaxEngine = Number(engineMax) || DEFAULT_MAX_ENGINE;
   const currentMinMileage = Number(mileageMin) || DEFAULT_MIN_MILEAGE;
   const currentMaxMileage = Number(mileageMax) || DEFAULT_MAX_MILEAGE;
+  const ingredientsIdArr = params.grades?.split(",").map(String);
+  const grades_engArr = grades_eng?.split(",").map(String);
+  const grades_detArr = grades_det?.split(",").map(String);
+
   let grade = {};
-  if (
-    grades_eng !== "null" &&
-    grades_eng &&
-    grades_det !== "null" &&
-    grades_det
-  ) {
+  if (Boolean(grades_eng) || Boolean(grades_det)) {
     grade = {
       OR: [
-        {
-          grade_detail_english: grades_eng,
-        },
-        { grade_detail_english: grades_det },
+        grades_engArr?.length ? { grade_english: { in: grades_engArr } } : {},
+        grades_detArr?.length
+          ? { grade_detail_english: { in: grades_detArr } }
+          : {},
       ],
     };
-  } else if (grades_det === "null" && grades_eng !== "null") {
-    grade = { grade_english: grades_eng };
-  } else if (grades_det !== "null" && grades_eng == "null") {
-    grade = { grade_english: grades_det };
-  } else if (grades_det === undefined && grades_eng === undefined) {
-    grade = {};
   }
-
   let benefit = {};
   if (insuarePrice === "3") {
     benefit = {
@@ -222,977 +215,977 @@ export const findVehicleV2 = async (
       ],
     };
   }
-  // if (check === "2" && checkNew === "3" && checkOld === "4") {
-  //   const yearMin = new Date().getFullYear();
-  //   const yearMax = new Date().getFullYear() - 7;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+  if (check === "2" && checkNew === "3" && checkOld === "4") {
+    const yearMin = new Date().getFullYear();
+    const yearMax = new Date().getFullYear() - 7;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               drive: { select: { drive_type: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (check === "2" && checkNew === "3") {
-  //   const yearMin = new Date().getFullYear();
-  //   const yearMax = new Date().getFullYear() - 5;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (check === "2" && checkNew === "3") {
+    const yearMin = new Date().getFullYear();
+    const yearMax = new Date().getFullYear() - 5;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               drive: { select: { drive_type: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (check === "2" && checkOld === "4") {
-  //   const yearMin = new Date().getFullYear() - 3;
-  //   const yearMax = new Date().getFullYear() - 7;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (check === "2" && checkOld === "4") {
+    const yearMin = new Date().getFullYear() - 3;
+    const yearMax = new Date().getFullYear() - 7;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               drive: { select: { drive_type: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (checkNew === "3" && checkOld === "4") {
-  //   const yearMinFirst = new Date().getFullYear();
-  //   const yearMaxFirst = new Date().getFullYear() - 3;
-  //   const yearMinSecond = new Date().getFullYear() - 5;
-  //   const yearMaxSecond = new Date().getFullYear() - 7;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (checkNew === "3" && checkOld === "4") {
+    const yearMinFirst = new Date().getFullYear();
+    const yearMaxFirst = new Date().getFullYear() - 3;
+    const yearMinSecond = new Date().getFullYear() - 5;
+    const yearMaxSecond = new Date().getFullYear() - 7;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
 
-  //           OR: [
-  //             {
-  //               release_date: {
-  //                 gte: new Date(
-  //                   `${yearMaxFirst}-${currentMonth}-01T00:00:00.000Z`
-  //                 ),
-  //                 lte: new Date(
-  //                   `${yearMinFirst}-${currentMonth}-31T23:59:59.999Z`
-  //                 ),
-  //               },
-  //             },
-  //             {
-  //               release_date: {
-  //                 gte: new Date(
-  //                   `${yearMaxSecond}-${currentMonth}-01T00:00:00.000Z`
-  //                 ),
-  //                 lte: new Date(
-  //                   `${yearMinSecond}-${currentMonth}-31T23:59:59.999Z`
-  //                 ),
-  //               },
-  //             },
-  //           ],
+            OR: [
+              {
+                release_date: {
+                  gte: new Date(
+                    `${yearMaxFirst}-${currentMonth}-01T00:00:00.000Z`
+                  ),
+                  lte: new Date(
+                    `${yearMinFirst}-${currentMonth}-31T23:59:59.999Z`
+                  ),
+                },
+              },
+              {
+                release_date: {
+                  gte: new Date(
+                    `${yearMaxSecond}-${currentMonth}-01T00:00:00.000Z`
+                  ),
+                  lte: new Date(
+                    `${yearMinSecond}-${currentMonth}-31T23:59:59.999Z`
+                  ),
+                },
+              },
+            ],
 
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               drive: { select: { drive_type: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                drive: { select: { drive_type: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           OR: [
-  //             {
-  //               release_date: {
-  //                 gte: new Date(
-  //                   `${yearMaxFirst}-${currentMonth}-01T00:00:00.000Z`
-  //                 ),
-  //                 lte: new Date(
-  //                   `${yearMinFirst}-${currentMonth}-31T23:59:59.999Z`
-  //                 ),
-  //               },
-  //             },
-  //             {
-  //               release_date: {
-  //                 gte: new Date(
-  //                   `${yearMaxSecond}-${currentMonth}-01T00:00:00.000Z`
-  //                 ),
-  //                 lte: new Date(
-  //                   `${yearMinSecond}-${currentMonth}-31T23:59:59.999Z`
-  //                 ),
-  //               },
-  //             },
-  //           ],
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            OR: [
+              {
+                release_date: {
+                  gte: new Date(
+                    `${yearMaxFirst}-${currentMonth}-01T00:00:00.000Z`
+                  ),
+                  lte: new Date(
+                    `${yearMinFirst}-${currentMonth}-31T23:59:59.999Z`
+                  ),
+                },
+              },
+              {
+                release_date: {
+                  gte: new Date(
+                    `${yearMaxSecond}-${currentMonth}-01T00:00:00.000Z`
+                  ),
+                  lte: new Date(
+                    `${yearMinSecond}-${currentMonth}-31T23:59:59.999Z`
+                  ),
+                },
+              },
+            ],
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (check === "2") {
-  //   const yearMin = new Date().getFullYear() - 3;
-  //   const yearMax = new Date().getFullYear() - 5;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (check === "2") {
+    const yearMin = new Date().getFullYear() - 3;
+    const yearMax = new Date().getFullYear() - 5;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               drive: { select: { drive_type: true } },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                drive: { select: { drive_type: true } },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (checkNew === "3") {
-  //   const yearMin = new Date().getFullYear();
-  //   const yearMax = new Date().getFullYear() - 3;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (checkNew === "3") {
+    const yearMin = new Date().getFullYear();
+    const yearMax = new Date().getFullYear() - 3;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               drive: { select: { drive_type: true } },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                drive: { select: { drive_type: true } },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
-  // if (checkOld === "4") {
-  //   const yearMin = new Date().getFullYear() - 5;
-  //   const yearMax = new Date().getFullYear() - 7;
-  //   const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
-  //   const vehicleProhodPromise = prisma.active_lots.findMany({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
+  if (checkOld === "4") {
+    const yearMin = new Date().getFullYear() - 5;
+    const yearMax = new Date().getFullYear() - 7;
+    const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+    const vehicleProhodPromise = prisma.active_lots.findMany({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //     orderBy: {
-  //       encar: sortLabel,
-  //     },
-  //     select: {
-  //       encar: {
-  //         select: {
-  //           id: true,
-  //           created_at: true,
-  //           advertisements: { select: { price: true } },
-  //           details: {
-  //             select: {
-  //               makes: { select: { make_short_name: true } },
-  //               model: {
-  //                 select: { model_english: true, model_short_name: true },
-  //               },
-  //               grades: {
-  //                 select: { grade_english: true, grade_detail_english: true },
-  //               },
-  //               drive: { select: { drive_type: true } },
-  //               fuel: { select: { fuel_english: true } },
-  //               form_year: true,
-  //               engine_displacement: true,
-  //               engine_displacement_liters: true,
-  //               mileage: true,
-  //               release_date: true,
-  //             },
-  //           },
-  //           accident: {
-  //             select: {
-  //               other_accident_count: true,
-  //               current_accident_count: true,
-  //             },
-  //           },
-  //           lib_sell_types: { select: { sell_type: true } },
-  //           photos: { select: { s3_images: { select: { url: true } } } },
-  //         },
-  //       },
-  //     },
+          accident_details: benefit,
+        },
+      },
+      orderBy: {
+        encar: sortLabel,
+      },
+      select: {
+        encar: {
+          select: {
+            id: true,
+            created_at: true,
+            advertisements: { select: { price: true } },
+            details: {
+              select: {
+                makes: { select: { make_short_name: true } },
+                model: {
+                  select: { model_english: true, model_short_name: true },
+                },
+                grades: {
+                  select: { grade_english: true, grade_detail_english: true },
+                },
+                drive: { select: { drive_type: true } },
+                fuel: { select: { fuel_english: true } },
+                form_year: true,
+                engine_displacement: true,
+                engine_displacement_liters: true,
+                mileage: true,
+                release_date: true,
+              },
+            },
+            accident: {
+              select: {
+                other_accident_count: true,
+                current_accident_count: true,
+              },
+            },
+            lib_sell_types: { select: { sell_type: true } },
+            photos: { select: { s3_images: { select: { url: true } } } },
+          },
+        },
+      },
 
-  //     skip: +pagenum * +takePageSize,
-  //     take: +takePageSize,
-  //   });
-  //   const totalPageProhodPromise = prisma.active_lots.count({
-  //     where: {
-  //       encar: {
-  //         advertisements: {
-  //           price: { gte: currentMinPrice, lte: currentMaxPrice },
-  //         },
-  //         details: {
-  //           makes: { make_short_name: makes },
-  //           model: { model_short_name: model, model_english: evolutions },
-  //           grades: grade,
-  //           drive: priv,
-  //           fuel: fuel,
-  //           release_date: {
-  //             gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
-  //             lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
-  //           },
-  //           engine_displacement_liters: {
-  //             gte: currentMinEngine,
-  //             lte: currentMaxEngine,
-  //           },
-  //           mileage: {
-  //             gte: currentMinMileage,
-  //             lte: currentMaxMileage,
-  //           },
-  //           transmission: tr,
-  //         },
+      skip: +pagenum * +takePageSize,
+      take: +takePageSize,
+    });
+    const totalPageProhodPromise = prisma.active_lots.count({
+      where: {
+        encar: {
+          advertisements: {
+            price: { gte: currentMinPrice, lte: currentMaxPrice },
+          },
+          details: {
+            makes: { make_short_name: makes },
+            model: { model_short_name: model, model_english: evolutions },
+            grades: grade,
+            drive: priv,
+            fuel: fuel,
+            release_date: {
+              gte: new Date(`${yearMax}-${currentMonth}-01T00:00:00.000Z`),
+              lte: new Date(`${yearMin}-${currentMonth}-31T23:59:59.999Z`),
+            },
+            engine_displacement_liters: {
+              gte: currentMinEngine,
+              lte: currentMaxEngine,
+            },
+            mileage: {
+              gte: currentMinMileage,
+              lte: currentMaxMileage,
+            },
+            transmission: tr,
+          },
 
-  //         accident_details: benefit,
-  //       },
-  //     },
-  //   });
-  //   const [vehicle, totalPage] = await Promise.all([
-  //     vehicleProhodPromise,
-  //     totalPageProhodPromise,
-  //   ]);
-  //   return {
-  //     vehicle: vehicle.map((item) => {
-  //       if (item.encar && item.encar.details) {
-  //         return {
-  //           ...item,
-  //           encar: {
-  //             ...item.encar,
-  //             details: {
-  //               ...item.encar.details,
-  //               engine_displacement_liters: item.encar.details
-  //                 .engine_displacement_liters
-  //                 ? Number(item.encar.details.engine_displacement_liters)
-  //                 : null,
-  //             },
-  //           },
-  //         };
-  //       }
-  //       return item;
-  //     }),
-  //     totalPage,
-  //   };
-  // }
+          accident_details: benefit,
+        },
+      },
+    });
+    const [vehicle, totalPage] = await Promise.all([
+      vehicleProhodPromise,
+      totalPageProhodPromise,
+    ]);
+    return {
+      vehicle: vehicle.map((item) => {
+        if (item.encar && item.encar.details) {
+          return {
+            ...item,
+            encar: {
+              ...item.encar,
+              details: {
+                ...item.encar.details,
+                engine_displacement_liters: item.encar.details
+                  .engine_displacement_liters
+                  ? Number(item.encar.details.engine_displacement_liters)
+                  : null,
+              },
+            },
+          };
+        }
+        return item;
+      }),
+      totalPage,
+    };
+  }
 
   const vehiclePromise = prisma.active_lots.findMany({
     where: {

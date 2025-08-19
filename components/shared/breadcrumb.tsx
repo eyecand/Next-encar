@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
-export default function Breadcrumb({ items }: BreadcrumbProps) {
+import { cn } from "@/lib/utils";
+export default function Breadcrumb({ items, classname }: BreadcrumbProps) {
   return (
-    <nav aria-label="Breadcrumb" className="mb-6">
+    <nav aria-label="Breadcrumb" className={cn("mb-6", classname)}>
       <ol className="flex flex-wrap items-center space-x-2 text-sm text-muted-foreground">
         <li>
           <Link
@@ -45,4 +46,5 @@ interface BreadcrumbItem {
 
 interface BreadcrumbProps {
   items: BreadcrumbItem[];
+  classname?: string;
 }

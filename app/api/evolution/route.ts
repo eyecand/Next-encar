@@ -1,6 +1,7 @@
 import { prisma } from "@/prisma/prisma-client";
 import { NextRequest, NextResponse } from "next/server";
-
+const DEFAULT_MIN_YEARS = 2000;
+const DEFAULT_MAX_YEARS = new Date().getFullYear();
 export async function GET(request: NextRequest) {
   const makes = request.nextUrl.searchParams.get("makes") || "";
   const model = request.nextUrl.searchParams.get("model") || "";
@@ -23,6 +24,10 @@ export async function GET(request: NextRequest) {
             model_short_name: model,
           }
         : undefined,
+      release_date: {
+        gte: new Date(`${DEFAULT_MIN_YEARS}-01-01T00:00:00.000Z`),
+        lte: new Date(`${DEFAULT_MAX_YEARS}-12-31T23:59:59.999Z`),
+      },
     },
   });
 

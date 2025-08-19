@@ -9,7 +9,12 @@ import { detectMake } from "./lib";
 import { useEffect, useState } from "react";
 import { Api } from "@/services/api-client";
 import { GradesProps } from "@/services/grades";
-
+import { MultiSelect } from "../../multi-select";
+import { Multiselect } from "../../s/multi-s";
+export type SelectOption = {
+  label: string;
+  value: string;
+};
 export const FirstLine: React.FC<Props<string | null>> = ({
   onChangeMakes,
   onChangeModels,
@@ -28,6 +33,11 @@ export const FirstLine: React.FC<Props<string | null>> = ({
   const [isEvolution, setIsEvolution] = useState(false);
   const [grades, setGrades] = useState<GradesProps[]>([]);
   const [isGrades, setIsGrades] = useState(false);
+
+  const handleClearAll = () => {
+    console.log("Все значения очищены!");
+  };
+
   useEffect(() => {
     async function filterModels(params: string) {
       try {
@@ -73,12 +83,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
       filterGrades(make, model);
     }
   }, [make, model]);
-  const optionsGrades: Option[] = [
-    {
-      value: null,
-      label: "Комплектация",
-    },
-  ];
+  const optionsGrades: OptionGrades[] = [];
   const optionsModels: Option[] = [
     {
       value: null,
@@ -101,9 +106,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
           ? ""
           : " " + item.grade_detail_english;
       return optionsGrades.push({
-        value:
-          grade_eng.replace(" China Manufacturer", "") +
-          grade_detail.replace(" China Manufacturer", ""),
+        value: grade_eng + grade_detail,
         label:
           grade_eng.replace(" China Manufacturer", "") +
           grade_detail.replace(" China Manufacturer", ""),
@@ -128,47 +131,26 @@ export const FirstLine: React.FC<Props<string | null>> = ({
             : item.model_short_name,
       });
     });
-
   const handleMakesChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) onChangeMakes(selectedOptions?.value);
     onChangeModels(null);
-    onChangeGrade(null);
-    onChangeGradeEnglish(null);
-    onChangeGradeDetail(null);
+    onChangeGrade([]);
+    onChangeGradeEnglish([]);
+    onChangeGradeDetail([]);
     onChangeEvolution(null);
   };
   const handleModelsChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) onChangeModels(selectedOptions?.value);
-    onChangeGrade(null);
-    onChangeGradeEnglish(null);
-    onChangeGradeDetail(null);
+    onChangeGrade([]);
+    onChangeGradeEnglish([]);
+    onChangeGradeDetail([]);
     onChangeEvolution(null);
   };
 
   const handleEvolutionChange = (selectedOptions: iOption | null) => {
     if (selectedOptions) onChangeEvolution(selectedOptions?.value);
   };
-  const handleGradesChange = (selectedOptions: iOption | null) => {
-    if (selectedOptions) {
-      const foundItem = grades.find((item) => {
-        const combinedString =
-          item.grade_english +
-          (item.grade_detail_english ? " " + item.grade_detail_english : "");
-        return (
-          combinedString.replace(" China Manufacturer", "") ===
-          selectedOptions.value
-        );
-      });
-      onChangeGrade(selectedOptions.value);
-      if (foundItem) {
-        onChangeGradeEnglish(String(foundItem?.grade_english));
-        onChangeGradeDetail(String(foundItem?.grade_detail_english));
-      } else {
-        onChangeGradeEnglish(null);
-        onChangeGradeDetail(null);
-      }
-    }
-  };
+
   return (
     <>
       <div className="col-span-12 md:col-span-4 lg:col-span-4">
@@ -215,10 +197,6 @@ export const FirstLine: React.FC<Props<string | null>> = ({
               isDisabled={!Boolean(make)}
             />
           </div>
-        </div>
-      </div>
-      <div className="col-span-12 md:col-span-4 lg:col-span-4">
-        <div className=" p-0.5 gap-3 md:gap-[0.5px] flex flex-col md:flex-row  hover:border-gray-400   rounded-lg ">
           <div className=" w-full text-[16px] md:text-sm ">
             <NoSSR
               classNamePrefix={"evolution"}
@@ -239,26 +217,22 @@ export const FirstLine: React.FC<Props<string | null>> = ({
               isDisabled={!Boolean(model)}
             />
           </div>
-          <div className=" w-full text-[16px] md:text-sm ">
-            <NoSSR
-              classNamePrefix={"grades"}
-              placeholder="Комплектация"
-              isLoading={isGrades}
-              options={optionsGrades}
-              value={
-                grade
-                  ? [
-                      {
-                        value: grade,
-                        label: grade,
-                      },
-                    ]
-                  : []
-              }
-              onChange={(option) => handleGradesChange(option as iOption)}
-              isDisabled={!Boolean(model)}
-            />
-          </div>
+        </div>
+      </div>
+      <div className="col-span-12 md:col-span-4 lg:col-span-4">
+        <div className=" p-0.5 gap-3 md:gap-[0.5px] flex flex-col md:flex-row  hover:border-gray-400   rounded-lg ">
+          <Multiselect
+            options={optionsGrades}
+            value={grade}
+            arr={grades}
+            onChange={onChangeGrade}
+            onChangeEng={onChangeGradeEnglish}
+            onChangeDet={onChangeGradeDetail}
+            placeholder="Комплектация"
+            onClearAll={handleClearAll}
+            className="w-full text-[16px] md:text-sm"
+            model={model}
+          />
         </div>
       </div>
     </>
@@ -267,12 +241,20 @@ export const FirstLine: React.FC<Props<string | null>> = ({
 interface Props<T> {
   onChangeMakes: (value: T) => void;
   onChangeModels: (value: T) => void;
-  onChangeGrade: (value: T) => void;
-  onChangeGradeEnglish: (value: T) => void;
-  onChangeGradeDetail: (value: T) => void;
+  onChangeGrade: (value: string[]) => void;
+  onChangeGradeEnglish: (
+    value: string[] | ((prev: string[]) => string[])
+  ) => void;
+  onChangeGradeDetail: (
+    value: string[] | ((prev: string[]) => string[])
+  ) => void;
   onChangeEvolution: (value: T) => void;
   make: string | null;
   model: string | null;
   evolution: string | null;
-  grade: string | null;
+  grade: string[];
+}
+interface OptionGrades {
+  value: string;
+  label: string;
 }

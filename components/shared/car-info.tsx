@@ -39,7 +39,7 @@ export const CarInfo = ({
   // const shareUrl = `https://autofish.ru/vehicle/${id}`;
   // const shareTitle = "Добый день! ";
   // const shareDescription = "Просматриваю это объявление.";
-  const copyLink = `https://autofish.ru/vehicle/${id}`;
+  const copyLink = `https://autofish.ru/${details?.makes.make_short_name}/${details?.model.model_short_name}/${details?.model.model_english}/uid-${id}`;
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);

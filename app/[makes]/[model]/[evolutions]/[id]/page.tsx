@@ -2,6 +2,7 @@ import { CarInfo, SliderCarPage } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import SimilarCars from "@/components/shared/similar-car/similar-car";
 import { Options } from "@/components/shared/vehicle-id-page/options";
+import { detectedDate } from "@/lib/detected-date";
 import { findCBR } from "@/lib/find-cbr";
 import { findVehicleSimilar } from "@/lib/find-vehicle-similar";
 import { findVehicleId } from "@/lib/find-vehicles-id";
@@ -27,15 +28,15 @@ export default async function CarPage({
   const breadcrumbItems = [
     {
       label: makes,
-      href: `/?makes=${makes}`,
+      href: `/${makes}/`,
     },
     {
-      label: model,
-      href: `/?makes=${makes}&model=${model}`,
+      label: decodeURIComponent(model),
+      href: `/${makes}/${model}`,
     },
     {
       label: decodeURIComponent(evolutions),
-      href: `/?makes=${makes}&model=${model}&evolutions=${evolutions}`,
+      href: `/${makes}/${model}/${evolutions}`,
     },
   ];
   const vehicleId = await findVehicleId(carId);
@@ -74,7 +75,13 @@ export default async function CarPage({
             </div>
           </div>
         </div> */}
-        <Breadcrumb items={breadcrumbItems} />
+        <div className="flex flex-col md:flex-row md:justify-between">
+          <Breadcrumb items={breadcrumbItems} />
+          <span className="text-sm text-muted-foreground">
+            {detectedDate(vehicleId.created_at)}
+          </span>
+        </div>
+
         <Suspense fallback={<p>Loading</p>}>
           <section className=" flex md:flex-row flex-col mb-12">
             <SliderCarPage imgSrc={vehicleId.photos} />

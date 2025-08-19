@@ -60,18 +60,12 @@ interface ReturnPros {
 }
 export const useFilters = (): ReturnPros => {
   const searchParams = useSearchParams();
-  const [makesType, setMakesType] = useState(
-    searchParams.has("makes") ? searchParams.get("makes") : null
-  );
-  const [modelType, setModelType] = useState(
-    searchParams.has("model") ? searchParams.get("model") : null
-  );
+  const [makesType, setMakesType] = useState<string | null>(null);
+  const [modelType, setModelType] = useState<string | null>(null);
   const [gradesType, setGradesType] = useState(
     searchParams.has("grades") ? searchParams.get("grades") : null
   );
-  const [evolutonsType, setEvolutionsType] = useState(
-    searchParams.has("evolutions") ? searchParams.get("evolutions") : null
-  );
+  const [evolutonsType, setEvolutionsType] = useState<string | null>(null);
   const [gradeEng, setGradesEng] = useState(
     searchParams.has("grade_eng") ? searchParams.get("grade_eng") : null
   );

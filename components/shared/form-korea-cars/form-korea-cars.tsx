@@ -1,10 +1,11 @@
 "use client";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import type React from "react";
+import { type FormEvent, useCallback, useEffect, useState } from "react";
 import qs from "qs";
 import { useFilters } from "@/hooks/use-filters";
 import dynamic from "next/dynamic";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { FirstLine } from "./first-line/first-line";
 import { SecondLine } from "./second-line/second-line";
 import { TherdLine } from "./third-line";
@@ -12,63 +13,126 @@ import { FourthLine } from "./fourth-line/fourth-line";
 import { ButtonSubmit } from "../button-submit";
 import { optionSort } from "./fourth-line/constanst";
 import { detectSort } from "./fourth-line/lib";
-import { iOption } from "./fourth-line/model";
+import type { iOption } from "./fourth-line/model";
 import { FiveLine } from "./five-line";
-const NoSSR = dynamic(() => import("react-select"), { ssr: false });
+
+export interface Option {
+  value: string | null;
+  label: string | null;
+}
+
+const NoSSR = dynamic(() => import("react-select"), {
+  ssr: false,
+}) as React.ComponentType<{
+  classNamePrefix?: string;
+  placeholder?: string;
+  options: Option[];
+  value: Option[];
+  onChange: (newValue: iOption | null) => void;
+}>;
+
 export const FormKoreaCars = ({ total }: { total: string }) => {
+  const searchParams = useSearchParams();
   const [isChecked, setIsChecked] = useState(false);
   const [isCheckedNewCar, setIsCheckedNewCar] = useState(false);
   const [isCheckedOldCar, setIsCheckedOldCar] = useState(false);
+  const [selectedValues, setSelectedValues] = useState<string[]>(
+    searchParams.get("grades")
+      ? searchParams.get("grades")?.split(",") || []
+      : []
+  );
+  const [selectedGrageEng, setSelectedGrageEng] = useState<string[]>(
+    searchParams.get("grade_eng")
+      ? searchParams.get("grade_eng")?.split(",") || []
+      : []
+  );
+  const [selectedGrageDet, setSelectedGrageDet] = useState<string[]>(
+    searchParams.get("grade_detail")
+      ? searchParams.get("grade_detail")?.split(",") || []
+      : []
+  );
+
   const router = useRouter();
   const filters = useFilters();
+  const { makes, model, evolutions } = useParams();
+
   useEffect(() => {
-    const url = {
-      makes: filters.makesType,
-      model: filters.modelType,
-      grades: filters.gradesType,
-      evolutions: filters.evolutonsType,
-      fuels: filters.fuels,
-      yearsMin: filters.yearsMin,
-      yearsMax: filters.yearsMax,
-      priceMin: filters.priceMin,
-      priceMax: filters.priceMax,
-      engineMin: filters.engineMin,
-      engineMax: filters.engineMax,
-      buisness: filters.buisness,
-      robber: filters.robber,
-      changeNumber: filters.changeNumber,
-      changeOwner: filters.changeOwner,
-      insuare: filters.insuare,
-      insuarePrice: filters.insuarePrice,
-      sort: filters.sort,
-      privod: filters.privod,
-      transmission: filters.transmission,
-      mileageMin: filters.mileageMin,
-      mileageMax: filters.mileageMax,
-      cities: filters.cities,
-      check: filters.check,
-      checkNew: filters.checkNewCar,
-      checkOld: filters.checkOldCar,
-    };
-    const queryUrl = qs.stringify(url, {
-      arrayFormat: "comma",
-      skipNulls: true,
-    });
-    router.push(`?${queryUrl}`, {
-      scroll: false,
-    });
-  }, [filters.sort]);
+    if (makes) filters.setMakesType(decodeURIComponent(String(makes)));
+    if (model) filters.setModelType(decodeURIComponent(String(model)));
+    if (evolutions)
+      filters.setEvolutionsType(decodeURIComponent(String(evolutions)));
+  }, [makes, model, evolutions]);
+
+  const handleSortChange = useCallback(
+    (selectedOption: iOption | null) => {
+      if (!selectedOption) return;
+
+      filters.setSort(selectedOption.value);
+
+      const currentParams = {
+        grades:
+          selectedValues.length > 0 ? Array.from(selectedValues) : undefined,
+        grades_eng:
+          selectedGrageEng.length > 0
+            ? Array.from(selectedGrageEng)
+            : undefined,
+        grades_det:
+          selectedGrageDet.length > 0
+            ? Array.from(selectedGrageDet)
+            : undefined,
+        fuels: filters.fuels,
+        yearsMin: filters.yearsMin,
+        yearsMax: filters.yearsMax,
+        priceMin: filters.priceMin,
+        priceMax: filters.priceMax,
+        engineMin: filters.engineMin,
+        engineMax: filters.engineMax,
+        buisness: filters.buisness,
+        robber: filters.robber,
+        changeNumber: filters.changeNumber,
+        changeOwner: filters.changeOwner,
+        insuare: filters.insuare,
+        insuarePrice: filters.insuarePrice,
+        sort: filters.sort,
+        privod: filters.privod,
+        transmission: filters.transmission,
+        mileageMin: filters.mileageMin,
+        mileageMax: filters.mileageMax,
+        cities: filters.cities,
+        check: filters.check,
+        checkNew: filters.checkNewCar,
+        checkOld: filters.checkOldCar,
+      };
+
+      const queryUrl = qs.stringify(currentParams, {
+        arrayFormat: "comma",
+        skipNulls: true,
+      });
+
+      router.push(
+        `${filters.makesType ? "/" + filters.makesType : ""}${
+          filters.modelType ? "/" + filters.modelType : ""
+        }${
+          filters.evolutonsType ? "/" + filters.evolutonsType : ""
+        }?${queryUrl}`,
+        {
+          scroll: false,
+        }
+      );
+    },
+    [filters, selectedValues, router]
+  );
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     router.refresh();
     const params = {
-      makes: filters.makesType,
-      model: filters.modelType,
-      grades: filters.gradesType,
-      grades_eng: filters.gradeEng,
-      grades_det: filters.gradeDetail,
-      evolutions: filters.evolutonsType,
+      grades:
+        selectedValues.length > 0 ? Array.from(selectedValues) : undefined,
+      grades_eng:
+        selectedGrageEng.length > 0 ? Array.from(selectedGrageEng) : undefined,
+      grades_det:
+        selectedGrageDet.length > 0 ? Array.from(selectedGrageDet) : undefined,
       fuels: filters.fuels,
       yearsMin: filters.yearsMin,
       yearsMax: filters.yearsMax,
@@ -96,10 +160,17 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
       arrayFormat: "comma",
       skipNulls: true,
     });
-    router.push(`?${query}`, {
-      scroll: false,
-    });
+
+    router.push(
+      `https://autofish.ru${filters.makesType ? "/" + filters.makesType : ""}${
+        filters.modelType ? "/" + filters.modelType : ""
+      }${filters.evolutonsType ? "/" + filters.evolutonsType : ""}?${query}`,
+      {
+        scroll: false,
+      }
+    );
   };
+
   const handleRemove = () => {
     filters.setMakesType(null);
     filters.setModelType(null);
@@ -108,8 +179,8 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     filters.setYearsMin(null);
     filters.setYearsMax(null);
     filters.setTransmission(null);
-    filters.setPriceMin("");
-    filters.setPriceMax("");
+    filters.setPriceMin(null);
+    filters.setPriceMax(null);
     filters.setEngineMin(null);
     filters.setEngineMax(null);
     filters.setMileageMin(null);
@@ -117,13 +188,16 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     filters.setInsuarePrice(null);
     filters.setCities(null);
     filters.setSort(null);
-    filters.setGradesType(null);
-    filters.setGradesEng(null);
-    filters.setGradesDetail(null);
+    filters.setGradesType("");
+    filters.setGradesEng("");
+    filters.setGradesDetail("");
     filters.setEvolutionsType(null);
     setIsChecked(false);
     setIsCheckedNewCar(false);
     setIsCheckedOldCar(false);
+    setSelectedValues([]);
+    setSelectedGrageEng([]);
+    setSelectedGrageDet([]);
   };
   return (
     <>
@@ -134,14 +208,14 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
         <FirstLine
           onChangeMakes={filters.setMakesType}
           onChangeModels={filters.setModelType}
-          onChangeGrade={filters.setGradesType}
-          onChangeGradeEnglish={filters.setGradesEng}
-          onChangeGradeDetail={filters.setGradesDetail}
+          onChangeGrade={setSelectedValues}
+          onChangeGradeEnglish={setSelectedGrageEng}
+          onChangeGradeDetail={setSelectedGrageDet}
           onChangeEvolution={filters.setEvolutionsType}
           make={filters.makesType}
           model={filters.modelType}
           evolution={filters.evolutonsType}
-          grade={filters.gradesType}
+          grade={selectedValues}
         />
         <TherdLine
           engineMax={filters.engineMax}
@@ -186,6 +260,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
           onChangeCheckNew={filters.setCheckNewCar}
           onChangeCheckOld={filters.setCheckOldCar}
         />
+
         <ButtonSubmit handleRemove={handleRemove} />
       </form>
       <div className="max-w-7xl p-5">
@@ -208,9 +283,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
                     ]
                   : []
               }
-              onChange={(option) => {
-                filters.setSort((option as iOption).value);
-              }}
+              onChange={handleSortChange}
             />
           </div>
         </div>
