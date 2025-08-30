@@ -205,7 +205,7 @@ export const CalculationAlert = ({
               ""
             )}
             {fuel === "Electricity" && (
-              <TooltipUI title="Для более кореектного расчета свяжитесь с оператором" />
+              <TooltipUI title="Для более корректного расчета свяжитесь с менеджером" />
             )}
           </div>
         </div>

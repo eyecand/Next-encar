@@ -30,6 +30,7 @@ export default async function EvolutionPage({
     decodeURIComponent(model),
     decodeURIComponent(evolutions)
   );
+
   const { cbr } = await findCBR();
   const maxPage = Math.ceil(totalPage / 10);
   const currentPage = Math.min(

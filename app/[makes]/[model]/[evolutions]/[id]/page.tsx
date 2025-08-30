@@ -35,7 +35,7 @@ export default async function CarPage({
       href: `/${makes}/${model}`,
     },
     {
-      label: decodeURIComponent(evolutions),
+      label: decodeURIComponent(evolutions).replaceAll("%", " "),
       href: `/${makes}/${model}/${evolutions}`,
     },
   ];
@@ -45,6 +45,7 @@ export default async function CarPage({
     model: String(vehicleId?.details?.model.model_short_name),
     date: String(vehicleId?.details?.release_date),
   });
+
   const { cbr } = await findCBR();
   const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
   const KRW = cbr.find((item) => item.char_code === "KRW")?.value;

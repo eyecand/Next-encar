@@ -9,7 +9,6 @@ import { detectMake } from "./lib";
 import { useEffect, useState } from "react";
 import { Api } from "@/services/api-client";
 import { GradesProps } from "@/services/grades";
-import { MultiSelect } from "../../multi-select";
 import { Multiselect } from "../../s/multi-s";
 export type SelectOption = {
   label: string;

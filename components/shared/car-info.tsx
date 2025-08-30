@@ -39,7 +39,20 @@ export const CarInfo = ({
   // const shareUrl = `https://autofish.ru/vehicle/${id}`;
   // const shareTitle = "Добый день! ";
   // const shareDescription = "Просматриваю это объявление.";
-  const copyLink = `https://autofish.ru/${details?.makes.make_short_name}/${details?.model.model_short_name}/${details?.model.model_english}/uid-${id}`;
+  const copyLink = `https://autofish.ru/${details?.makes.make_short_name}/${
+    details?.model.model_short_name
+  }/${encodeURI(String(details?.model.model_english))}/uid-${id}`;
+  const encodedCopyLink = encodeURIComponent(copyLink); // Используем encodeURIComponent
+
+  const strHref = `https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
+    String(details?.makes.make_short_name)
+  )}, ${
+    details?.model.model_english === "Canival"
+      ? "Carnival"
+      : details?.model.model_english
+  }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
+    details?.engine_displacement
+  } см3, ${encodedCopyLink}. Хочу получить консультацию.`;
   const totalAccident =
     Number(accident?.other_accident_count) +
     Number(accident?.current_accident_count);
@@ -176,15 +189,7 @@ export const CarInfo = ({
         </div>
         <div className="flex flex-col w-full md:w-[36%] mt-2 md:mt-4">
           <a
-            href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
-              String(details?.makes.make_short_name)
-            )}, ${
-              details?.model.model_english === "Canival"
-                ? "Carnival"
-                : details?.model.model_english
-            }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
-              details?.engine_displacement
-            } см3, ${copyLink}. Хочу получить консультацию.`}
+            href={strHref}
             className="w-full  py-4 text-sm bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl  flex items-center justify-center hover:bg-[#ac3f42] duration-300"
           >
             Заказать

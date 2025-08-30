@@ -50,7 +50,11 @@ export const Mobile = ({
                       />
                     ) : (
                       <ImageLoader
-                        imageUrl={item.encar.photos[0].s3_images?.url}
+                        imageUrl={
+                          item.encar.photos.filter((photo) =>
+                            photo.s3_images?.url.includes("001")
+                          )[0].s3_images?.url
+                        }
                       />
                     )}
                   </div>

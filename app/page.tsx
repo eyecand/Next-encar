@@ -17,6 +17,7 @@ export default async function Home({
   const { page } = searchParamsValue;
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
   const { cbr } = await findCBR();
+
   const maxPage = Math.ceil(totalPage / 10);
   const currentPage = Math.min(
     maxPage,

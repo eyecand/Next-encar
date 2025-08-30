@@ -43,7 +43,11 @@ export const Desktop = ({
                       />
                     ) : (
                       <ImageLoader
-                        imageUrl={item.encar.photos[0].s3_images?.url}
+                        imageUrl={
+                          item.encar.photos.filter((item) =>
+                            item.s3_images?.url.includes("001.")
+                          )[0].s3_images?.url
+                        }
                       />
                     )}
                   </div>
