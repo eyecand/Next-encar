@@ -2,6 +2,7 @@ import { CarInfo, SliderCarPage } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import SimilarCars from "@/components/shared/similar-car/similar-car";
 import { Options } from "@/components/shared/vehicle-id-page/options";
+import { TechnicalReportTable } from "@/components/shared/vehicle-id-table/vehicle-id-table";
 import { detectedDate } from "@/lib/detected-date";
 import { findCBR } from "@/lib/find-cbr";
 import { findVehicleSimilar } from "@/lib/find-vehicle-similar";
@@ -45,7 +46,6 @@ export default async function CarPage({
     model: String(vehicleId?.details?.model.model_short_name),
     date: String(vehicleId?.details?.release_date),
   });
-
   const { cbr } = await findCBR();
   const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
   const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
@@ -106,6 +106,14 @@ export default async function CarPage({
           </section>
           {/* Options */}
           <Options options={vehicleId.vehicle_options} />
+          <div className="mx-auto max-w-7xl p-4">
+            {vehicleId.inspections && (
+              <TechnicalReportTable
+                data={vehicleId.inspections.inspection_details}
+              />
+            )}
+          </div>
+
           <SimilarCars
             vehicleSimilar={vehicleSimilar}
             year={new Date(

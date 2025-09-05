@@ -27,6 +27,7 @@ export default async function ModelPage({
     makes,
     decodeURIComponent(model)
   );
+
   const { cbr } = await findCBR();
   const maxPage = Math.ceil(totalPage / 10);
   const currentPage = Math.min(

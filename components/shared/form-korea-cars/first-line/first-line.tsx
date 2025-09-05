@@ -33,9 +33,7 @@ export const FirstLine: React.FC<Props<string | null>> = ({
   const [grades, setGrades] = useState<GradesProps[]>([]);
   const [isGrades, setIsGrades] = useState(false);
 
-  const handleClearAll = () => {
-    console.log("Все значения очищены!");
-  };
+  const handleClearAll = () => {};
 
   useEffect(() => {
     async function filterModels(params: string) {

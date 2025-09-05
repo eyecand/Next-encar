@@ -22,8 +22,8 @@ export const Desktop = ({
   return (
     <div className={cn(className, "flex-col gap-10  ")}>
       {vehicle.length > 0 &&
-        vehicle.map(
-          (item, index) =>
+        vehicle.map((item, index) => {
+          return (
             item.encar.details !== null && (
               <Link
                 key={index}
@@ -44,9 +44,13 @@ export const Desktop = ({
                     ) : (
                       <ImageLoader
                         imageUrl={
-                          item.encar.photos.filter((item) =>
-                            item.s3_images?.url.includes("001.")
-                          )[0].s3_images?.url
+                          item.encar.photos.filter((photo) =>
+                            photo.s3_images?.url.includes("001")
+                          )[0] === undefined
+                            ? item.encar.photos[0].s3_images?.url
+                            : item.encar.photos.filter((photo) =>
+                                photo.s3_images?.url.includes("001")
+                              )[0].s3_images?.url
                         }
                       />
                     )}
@@ -177,7 +181,8 @@ export const Desktop = ({
                 </div>
               </Link>
             )
-        )}
+          );
+        })}
     </div>
   );
 };

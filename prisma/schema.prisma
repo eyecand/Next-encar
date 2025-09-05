@@ -190,6 +190,7 @@ model encar_vehicles {
   notjoined             not_joined_periods[]
   diagnostics           diagnostics?
   advertisements        advertisements?
+  inspections           inspections?
   lib_sell_types        lib_sell_types @relation(fields: [sell_type_id], references: [id])
   vehicle_options       vehicle_options[]
 }
@@ -644,7 +645,184 @@ model lib_option_types {
   updated_at               DateTime      @default(now()) @db.Timestamptz(6)
   lib_options              lib_options[]
 }
+model inspections {
+  id                       BigInt                     @id @default(autoincrement())
+  vehicle_id               BigInt                     @unique
+  engine_type_id           Int
+  registration_date        DateTime                   @db.Date
+  created_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  inspection_details       inspection_details[]
+  inspection_estimates     inspection_estimates[]
+  lib_engine_types         lib_engine_types           @relation(fields: [engine_type_id], references: [id])
+  encar_vehicles           encar_vehicles             @relation(fields: [vehicle_id], references: [id], onDelete: Cascade)
+  outer_inspection_details outer_inspection_details[]
+}
+model inspection_details {
+  id                     BigInt                  @id @default(autoincrement())
+  inspection_id          BigInt
+  main_component_id      Int
+  component_item_id      Int
+  component_subitem_id   Int?
+  condition_id           Int?
+  remark                 String?
+  remark_english         String?
+  error_translate        Boolean                 @default(false)
+  created_at             DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime                @default(now()) @db.Timestamptz(6)
+  lib_component_items    lib_component_items     @relation(fields: [component_item_id], references: [id])
+  lib_component_subitems lib_component_subitems? @relation(fields: [component_subitem_id], references: [id])
+  lib_conditions         lib_conditions?         @relation(fields: [condition_id], references: [id])
+  inspections            inspections             @relation(fields: [inspection_id], references: [id], onDelete: Cascade)
+  lib_main_components    lib_main_components     @relation(fields: [main_component_id], references: [id])
 
+  @@unique([inspection_id, main_component_id, component_item_id, component_subitem_id], map: "inspection_details_unique_index")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model inspection_estimates {
+  id                  BigInt              @id @default(autoincrement())
+  inspection_id       BigInt
+  main_component_id   Int
+  estimated_amount    Int?
+  created_at          DateTime            @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime            @default(now()) @db.Timestamptz(6)
+  inspections         inspections         @relation(fields: [inspection_id], references: [id], onDelete: Cascade)
+  lib_main_components lib_main_components @relation(fields: [main_component_id], references: [id], onDelete: Cascade)
+
+  @@unique([inspection_id, main_component_id], map: "inspection_estimates_inspection_id_main_component_id_unique")
+}
+model lib_component_items {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
+model lib_component_subitems {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
+model lib_conditions {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  component_conditions component_conditions[]
+  inspection_details   inspection_details[]
+}
+
+model lib_engine_types {
+  id          Int           @id @default(autoincrement())
+  name        String        @unique @db.VarChar(55)
+  created_at  DateTime      @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime      @default(now()) @db.Timestamptz(6)
+  inspections inspections[]
+}
+model lib_outer_item_conditions {
+  id                                 Int                                  @id @default(autoincrement())
+  code                               String                               @unique @db.VarChar(255)
+  name                               String                               @db.VarChar(255)
+  name_english                       String?                              @db.VarChar(255)
+  error_translate                    Boolean                              @default(false)
+  created_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_conditions outer_inspection_detail_conditions[]
+}
+
+model lib_outer_items {
+  id                       Int                        @id @default(autoincrement())
+  code                     String                     @unique @db.VarChar(255)
+  name                     String                     @db.VarChar(255)
+  name_english             String?                    @db.VarChar(255)
+  error_translate          Boolean                    @default(false)
+  created_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  updated_at               DateTime                   @default(now()) @db.Timestamptz(6)
+  outer_inspection_details outer_inspection_details[]
+}
+
+model lib_ranks {
+  id                            Int                             @id @default(autoincrement())
+  name                          String                          @unique @db.VarChar(255)
+  created_at                    DateTime                        @default(now()) @db.Timestamptz(6)
+  updated_at                    DateTime                        @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_ranks outer_inspection_detail_ranks[]
+}
+model outer_inspection_detail_ranks {
+  id                         BigInt                   @id @default(autoincrement())
+  outer_inspection_detail_id BigInt
+  rank_id                    Int
+  created_at                 DateTime                 @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime                 @default(now()) @db.Timestamptz(6)
+  outer_inspection_details   outer_inspection_details @relation(fields: [outer_inspection_detail_id], references: [id], onDelete: Cascade)
+  lib_ranks                  lib_ranks                @relation(fields: [rank_id], references: [id], onDelete: Cascade)
+
+  @@unique([outer_inspection_detail_id, rank_id], map: "outer_inspection_detail_ranks_unique_idx")
+}
+model outer_inspection_details {
+  id                                 BigInt                               @id @default(autoincrement())
+  inspection_id                      BigInt
+  outer_item_id                      Int
+  created_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  updated_at                         DateTime                             @default(now()) @db.Timestamptz(6)
+  outer_inspection_detail_conditions outer_inspection_detail_conditions[]
+  outer_inspection_detail_ranks      outer_inspection_detail_ranks[]
+  inspections                        inspections                          @relation(fields: [inspection_id], references: [id])
+  lib_outer_items                    lib_outer_items                      @relation(fields: [outer_item_id], references: [id])
+
+  @@unique([inspection_id, outer_item_id], map: "outer_inspection_details_unique_idx")
+}
+model outer_inspection_detail_conditions {
+  id                         BigInt                    @id @default(autoincrement())
+  outer_inspection_detail_id BigInt
+  outer_item_condition_id    Int
+  created_at                 DateTime                  @default(now()) @db.Timestamptz(6)
+  updated_at                 DateTime                  @default(now()) @db.Timestamptz(6)
+  outer_inspection_details   outer_inspection_details  @relation(fields: [outer_inspection_detail_id], references: [id], onDelete: Cascade, map: "outer_inspection_detail_conditi_outer_inspection_detail_id_fkey")
+  lib_outer_item_conditions  lib_outer_item_conditions @relation(fields: [outer_item_condition_id], references: [id], onDelete: Cascade)
+
+  @@unique([outer_inspection_detail_id, outer_item_condition_id], map: "outer_inspection_detail_conditions_unique_idx")
+}
+model component_conditions {
+  id                     BigInt                  @id @default(autoincrement())
+  component_item_id      Int
+  component_subitem_id   Int?
+  condition_id           Int
+  created_at             DateTime                @default(now()) @db.Timestamptz(6)
+  updated_at             DateTime                @default(now()) @db.Timestamptz(6)
+  lib_component_items    lib_component_items     @relation(fields: [component_item_id], references: [id])
+  lib_component_subitems lib_component_subitems? @relation(fields: [component_subitem_id], references: [id])
+  lib_conditions         lib_conditions          @relation(fields: [condition_id], references: [id])
+
+  @@unique([component_item_id, component_subitem_id, condition_id], map: "component_conditions_unique_idx")
+}
+model lib_main_components {
+  id                   Int                    @id @default(autoincrement())
+  code                 String                 @unique @db.VarChar(255)
+  name                 String                 @db.VarChar(255)
+  name_english         String?                @db.VarChar(255)
+  error_translate      Boolean                @default(false)
+  created_at           DateTime               @default(now()) @db.Timestamptz(6)
+  updated_at           DateTime               @default(now()) @db.Timestamptz(6)
+  inspection_details   inspection_details[]
+  inspection_estimates inspection_estimates[]
+}
 enum enum_option_images_upload_status {
   PENDING
   UPLOADED

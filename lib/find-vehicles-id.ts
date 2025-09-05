@@ -5,6 +5,18 @@ export const findVehicleId = async (id: string) => {
     where: { id: Number(id) },
     include: {
       advertisements: { select: { price: true } },
+      inspections: {
+        select: {
+          inspection_details: {
+            select: {
+              lib_main_components: { select: { name_english: true } },
+              lib_component_items: { select: { name_english: true } },
+              lib_component_subitems: { select: { name_english: true } },
+              lib_conditions: { select: { name_english: true } },
+            },
+          },
+        },
+      },
       diagnostics: {
         select: {
           actual_diagnostic_date: true,

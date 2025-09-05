@@ -27,8 +27,8 @@ export const Mobile = ({
       )}
     >
       {vehicle.length > 0 &&
-        vehicle.map(
-          (item) =>
+        vehicle.map((item) => {
+          return (
             item.encar.details !== null && (
               <Link
                 key={item.encar.id}
@@ -53,7 +53,11 @@ export const Mobile = ({
                         imageUrl={
                           item.encar.photos.filter((photo) =>
                             photo.s3_images?.url.includes("001")
-                          )[0].s3_images?.url
+                          )[0] === undefined
+                            ? item.encar.photos[0].s3_images?.url
+                            : item.encar.photos.filter((photo) =>
+                                photo.s3_images?.url.includes("001")
+                              )[0].s3_images?.url
                         }
                       />
                     )}
@@ -193,7 +197,8 @@ export const Mobile = ({
                 </div>
               </Link>
             )
-        )}
+          );
+        })}
     </div>
   );
 };
