@@ -19,6 +19,7 @@ import { ButtonCopy } from "./vehicle-id-page/car-info/button-copy";
 import { CarInfoWarnings } from "./vehicle-id-page/car-info/car-info-warnings";
 import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { detectedMontYear } from "@/lib/month-year";
+import ShareButton from "./ShareButton";
 export const CarInfo = ({
   details,
   accident,
@@ -26,6 +27,7 @@ export const CarInfo = ({
   diagnostics,
   vehicle_plate_number,
   advertisements,
+  inspections,
   id,
   auctionId,
   sell_type,
@@ -36,14 +38,22 @@ export const CarInfo = ({
   k_krw,
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
-  // const shareUrl = `https://autofish.ru/vehicle/${id}`;
-  // const shareTitle = "Добый день! ";
-  // const shareDescription = "Просматриваю это объявление.";
+
   const copyLink = `https://autofish.ru/${details?.makes.make_short_name}/${
     details?.model.model_short_name
   }/${encodeURI(String(details?.model.model_english))}/uid-${id}`;
   const encodedCopyLink = encodeURIComponent(copyLink); // Используем encodeURIComponent
-
+  //https://wa.me/79265850382
+  const linkWa = `https://api.whatsapp.com/send/?phone=79265850382&text=Здравствуйте, заинтересовал автомобиль ${detectMake(
+    String(details?.makes.make_short_name)
+  )}, ${
+    details?.model.model_english === "Canival"
+      ? "Carnival"
+      : details?.model.model_english
+  }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
+    details?.engine_displacement
+  } см3, ${encodedCopyLink}. Хочу получить консультацию.`;
+  //https://t.me/Avademus
   const strHref = `https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
     String(details?.makes.make_short_name)
   )}, ${
@@ -72,7 +82,12 @@ export const CarInfo = ({
               fuel={realFuel}
               year={new Date(String(details?.release_date)).getFullYear()}
             />
-            <ButtonCopy copyLink={copyLink} />
+            <ShareButton
+              telegram={strHref}
+              whatsapp={linkWa}
+              copyLink={copyLink}
+            />
+            {/* <ButtonCopy copyLink={copyLink} /> */}
           </div>
 
           <div className="flex  justify-between">
@@ -104,7 +119,7 @@ export const CarInfo = ({
           </div>
         </div>
       </div>
-      {/* Что-то */}
+
       <div className="flex flex-col md:flex-row justify-between border-solid border-t border-gray-200 mt-2">
         {/* Стоимость */}
 
@@ -278,7 +293,10 @@ export const CarInfo = ({
             </span>
           </div>
         ) : (
-          <AlertDiagnostic diagnostics={diagnostics} />
+          <AlertDiagnostic
+            diagnostics={diagnostics}
+            inspections={inspections?.inspection_details}
+          />
         )}
       </div>
 

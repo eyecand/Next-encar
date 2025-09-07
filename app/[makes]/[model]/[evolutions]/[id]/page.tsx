@@ -2,7 +2,6 @@ import { CarInfo, SliderCarPage } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import SimilarCars from "@/components/shared/similar-car/similar-car";
 import { Options } from "@/components/shared/vehicle-id-page/options";
-import { TechnicalReportTable } from "@/components/shared/vehicle-id-table/vehicle-id-table";
 import { detectedDate } from "@/lib/detected-date";
 import { findCBR } from "@/lib/find-cbr";
 import { findVehicleSimilar } from "@/lib/find-vehicle-similar";
@@ -97,6 +96,7 @@ export default async function CarPage({
               diagnostics={vehicleId.diagnostics}
               vehicle_plate_number={vehicleId.vehicle_plate_number}
               sell_type={vehicleId.lib_sell_types.sell_type}
+              inspections={vehicleId.inspections}
               EUR={Number(EUR)}
               KRW={Number(KRW)}
               broker={Number(broker)}
@@ -106,13 +106,6 @@ export default async function CarPage({
           </section>
           {/* Options */}
           <Options options={vehicleId.vehicle_options} />
-          <div className="mx-auto max-w-7xl p-4">
-            {vehicleId.inspections && (
-              <TechnicalReportTable
-                data={vehicleId.inspections.inspection_details}
-              />
-            )}
-          </div>
 
           <SimilarCars
             vehicleSimilar={vehicleSimilar}

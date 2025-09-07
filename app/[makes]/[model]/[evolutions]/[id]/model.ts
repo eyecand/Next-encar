@@ -58,6 +58,23 @@ export type VehicleIdProps = {
     engine_displacement: number;
     transmission: { transmission_english: string | null };
   } | null;
+  inspections: {
+    inspection_details:
+      | {
+          lib_component_items: {
+            name_english: string | null;
+          };
+          lib_component_subitems: {
+            name_english: string | null;
+          } | null;
+          lib_conditions: {
+            name_english: string | null;
+          } | null;
+          lib_main_components: {
+            name_english: string | null;
+          };
+        }[];
+  } | null;
   sell_type: string;
   vehicle_plate_number: string | null;
   accident_details: AccidentDetailsProps[];
@@ -71,6 +88,22 @@ export type VehicleIdProps = {
 };
 export type AlertDiagnosticProps = {
   diagnostics: DiagnosticsProps | null;
+  inspections:
+    | {
+        lib_component_items: {
+          name_english: string | null;
+        };
+        lib_component_subitems: {
+          name_english: string | null;
+        } | null;
+        lib_conditions: {
+          name_english: string | null;
+        } | null;
+        lib_main_components: {
+          name_english: string | null;
+        };
+      }[]
+    | undefined;
 };
 export type StatisticAlertDialogProps = {
   details: {

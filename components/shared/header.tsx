@@ -48,7 +48,7 @@ export const Header = () => {
   };
   return (
     <>
-      <section className="w-full fixed  top-0 left-0 z-10 bg-gray-50 border-b border-b-gray-300">
+      <section className="w-full fixed  top-0 left-0 z-50 bg-gray-50 border-b border-b-gray-300">
         <header className="mx-auto max-w-7xl flex flex-col px-4 py-1 pb-4 text-md">
           <div className="flex flex-col lg:flex-row">
             <div className="flex items-center justify-between">

@@ -13,6 +13,7 @@ import DiagnosticBack from "../../public/map_inspect_back.png";
 import { AlertDiagnosticProps } from "@/app/[makes]/[model]/[evolutions]/[id]/model";
 import { useEffect, useRef, useState } from "react";
 import { IoIosClose } from "react-icons/io";
+import { VehicleIdInspections } from "./vehicle-id-table/vehicle-id-inspections";
 type list = {
   [key: string]: string;
 };
@@ -49,7 +50,10 @@ const icons = [
     bg: "bg-amber-700",
   },
 ];
-export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
+export const AlertDiagnostic = ({
+  diagnostics,
+  inspections,
+}: AlertDiagnosticProps) => {
   const ref = useRef<HTMLDivElement>(null);
 
   const [isOpen, setIsOpen] = useState(false);
@@ -162,9 +166,9 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
               </div>
             </div>
           </div>
-          <h4 className="text-xl leading-6 font-medium text-zinc-900  pr-6 -pl-1 mb-5 mt-12">
+          <h5 className="text-xl leading-6 font-medium text-zinc-900  pr-6 -pl-1 mb-5 mt-12">
             Инспекция авто
-          </h4>
+          </h5>
           <div className="flex flex-col">
             {commentList?.map((item, index) => (
               <span className="mb-3" key={index}>
@@ -174,6 +178,7 @@ export const AlertDiagnostic = ({ diagnostics }: AlertDiagnosticProps) => {
               </span>
             ))}
           </div>
+          {inspections && <VehicleIdInspections data={inspections} />}
         </div>
       </AlertDialogContent>
     </AlertDialog>

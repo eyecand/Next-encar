@@ -20,17 +20,17 @@ export default async function AboutPage() {
               доставляем автомобили клиентам по всему миру
             </p>
           </div>
-          <div className="left-0 mt-10 relative   h-auto">
+          <div className="relative h-auto lg:-mt-10">
             <Image
               alt="About title"
               src={"/about/about-background.png"}
-              width={900}
+              width={600}
               height={300}
             />
           </div>
         </div>
         {/* Information */}
-        <div className="bg-white p-6 rounded-lg shadow-[0_-0.25rem_0.5rem_rgba(0,0,0,0.15)] mt-16 md:mt-28">
+        <div className="bg-white p-6 rounded-lg shadow-[0_-0.25rem_0.5rem_rgba(0,0,0,0.15)] mt-16">
           <div className="px-2  md:px-6 flex flex-col lg:flex-row gap-4 mt-4 max-w-7xl mx-auto">
             <div className="bg-[#F8F9FA] flex-[100%] lg:flex-[25%] px-4 py-5 rounded-xl">
               <div className="flex justify-between">
@@ -89,38 +89,7 @@ export default async function AboutPage() {
               </p>
             </div>
           </div>
-          {/* Statistics + bg-image */}
-          {/* <div className="py-6 px-2 lg:px-6 mt-4  bg-white max-w-7xl mx-auto">
-            <div className="about_us px-6 py-6 flex flex-col bg-[url(/about/adv-background-mob.png)] lg:bg-[url(/about/main-statistic-background.png)] bg-no-repeat">
-              <h3 className="text-[70px] leading-[64px] font-bold text-white">
-                1000+
-              </h3>
-              <p className="text-xl font-semibold text-white mt-2">
-                автомобилей доставлено <br /> нашим клиентам
-              </p>
-              <p className="mt-3 text-white text-base">
-                Мы не придумываем цифры, <br /> показываем проданные авто и
-                ежедневно <br /> транслируем нашу работу в соцсетях
-              </p>
-              <div>
-                <a
-                  className="block"
-                  target="_blank"
-                  rel="nofollow"
-                  href="https://t.me/Avademus"
-                >
-                  <button className="flex justify-center items-center bg-gray-500/80 w-[50px] h-[40px] rounded-lg hover:bg-gray-500 cursor-pointer transition-colors mt-2">
-                    <Image
-                      alt="tg"
-                      src={"/about/tg.png"}
-                      width={18}
-                      height={18}
-                    />
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div> */}
+
           {/* text */}
           <div className="px-6 py-2 mt-2 font-semibold text-sm max-w-7xl mx-auto">
             Наш принцип прост: прямые продажи без посредников, что обеспечивает
@@ -299,12 +268,12 @@ export default async function AboutPage() {
                     width={65}
                     height={65}
                   />
-                  <h4 className="text-xl font-semibold">Лизинг</h4>
+                  <h4 className="text-xl font-semibold">Кредит</h4>
                 </div>
                 <div className="text-base flex items-center lg:flex-[25%] xl:flex-[80px] ">
                   Предоставляем
                   <br /> возможность покупки
-                  <br /> в лизинг на лучших условиях.
+                  <br /> в кредит на лучших условиях.
                 </div>
               </div>
             </div>

@@ -46,7 +46,7 @@ export default async function Home({
         ) : (
           <>
             <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 mt-28 md:mt-20">
-              Autofish - Автомобили из Кореи
+              Autofish - Автомобили из Южной Кореи (Encar) под заказ
             </h1>
             <FormKoreaCars total={totalPage.toLocaleString()} />
             {/* Список товаров */}

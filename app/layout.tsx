@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 import YandexMetrika from "@/components/shared/yandex-metrika";
 import { Header } from "@/components/shared";
 import { Footer } from "@/components/shared/footer";
@@ -38,6 +39,7 @@ export default function RootLayout({
           <Header />
           {children}
           <Footer />
+          <Toaster />
           <YandexMetrika />
         </main>
       </body>

@@ -60,8 +60,8 @@ export default async function EvolutionPage({
     <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-3 md:mt-10 lg:mt-24">
       <Breadcrumb classname="mt-16 px-5" items={breadcrumbItems} />
       <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5">
-        {decodeURIComponent(makes)} {decodeURIComponent(model)}{" "}
-        {decodeURIComponent(evolutions)}
+        Купить {decodeURIComponent(makes)} {decodeURIComponent(model)}{" "}
+        {decodeURIComponent(evolutions)} из Южной Кореи (Encar)
       </h1>
       <FormKoreaCars total={totalPage.toLocaleString()} />
       {/* Список товаров */}
