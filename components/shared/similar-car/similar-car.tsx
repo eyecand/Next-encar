@@ -14,21 +14,27 @@ export default function SimilarCars({
         Похожие автомобили
       </h1>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {vehicleSimilar.result.map((car, index) => (
-          <CarCard
-            key={index}
-            id={Number(car.encar.id)}
-            price={Number(car.encar.advertisements?.price)}
-            makes={String(car.encar.details?.makes.make_short_name)}
-            model={String(car.encar.details?.model.model_english)}
-            mileage={String(car.encar.details?.mileage)}
-            fuel={String(car.encar.details?.fuel.fuel_english)}
-            engine={Number(car.encar.details?.engine_displacement_liters)}
-            photo={String(car.encar.photos[0].s3_images?.url)}
-            year={year}
-            model_query={String(car.encar.details?.model.model_short_name)}
-          />
-        ))}
+        {vehicleSimilar.result.map((car, index) => {
+          return (
+            <CarCard
+              key={index}
+              id={Number(car.encar.id)}
+              price={Number(car.encar.advertisements?.price)}
+              makes={String(car.encar.details?.makes.make_short_name)}
+              model={String(car.encar.details?.model.model_english)}
+              mileage={String(car.encar.details?.mileage)}
+              fuel={String(car.encar.details?.fuel.fuel_english)}
+              engine={Number(car.encar.details?.engine_displacement_liters)}
+              photo={
+                car.encar.photos.length > 0
+                  ? String(car.encar.photos[0].s3_images?.url)
+                  : "/12.png"
+              }
+              year={year}
+              model_query={String(car.encar.details?.model.model_short_name)}
+            />
+          );
+        })}
       </div>
     </div>
   );

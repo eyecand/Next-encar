@@ -178,6 +178,11 @@ export const AlertDiagnostic = ({
               </span>
             ))}
           </div>
+          {inspections && (
+            <h4 className="font-gilroy text-xl leading-6 font-medium text-zinc-900 pr-6 -pl-1 mt-2">
+              Осмотр внутренних компонентов
+            </h4>
+          )}
           {inspections && <VehicleIdInspections data={inspections} />}
         </div>
       </AlertDialogContent>

@@ -50,7 +50,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
           Вы можете поделиться ссылкой на страницу в соц. сетях
         </p>
         <Link
-          href={telegram}
+          href={`https://t.me/share/url?url=${telegram}`}
           target="_blank"
           className="flex items-center space-x-2 border-t-2 py-4 hover:text-blue-500 cursor-pointer"
         >
@@ -58,7 +58,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
           <span>Telegram</span>
         </Link>
         <Link
-          href={whatsapp}
+          href={`https://api.whatsapp.com/send?text=${telegram}`}
           target="_blank"
           className="flex items-center space-x-2 border-t-2 py-4 hover:text-green-500 cursor-pointer"
         >

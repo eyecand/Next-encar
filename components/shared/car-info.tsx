@@ -83,7 +83,7 @@ export const CarInfo = ({
               year={new Date(String(details?.release_date)).getFullYear()}
             />
             <ShareButton
-              telegram={strHref}
+              telegram={encodeURIComponent(copyLink)}
               whatsapp={linkWa}
               copyLink={copyLink}
             />

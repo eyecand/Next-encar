@@ -5,7 +5,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { CheckCheck } from "lucide-react";
+import { CheckCheck, X } from "lucide-react";
 import { OptionItemProps } from "./model";
 import { useState } from "react";
 export function OptionItem({ name, image, description }: OptionItemProps) {
@@ -25,6 +25,12 @@ export function OptionItem({ name, image, description }: OptionItemProps) {
           <span className={`text-sm  text-gray-900`}>{name}</span>
         </TooltipTrigger>
         <TooltipContent className="bg-white border border-gray-200 rounded-lg shadow-lg p-4 max-w-xs ">
+          <div
+            onClick={() => setOpen(false)}
+            className="flex justify-end cursor-pointer md:hidden"
+          >
+            <X className="w-4 h-4 text-gray-500 mb-3 " />
+          </div>
           <img
             src={image || "/placeholder.svg"}
             alt={"Изображение опции"}
