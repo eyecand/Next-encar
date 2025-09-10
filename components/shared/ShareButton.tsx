@@ -10,12 +10,14 @@ interface ShareButtonProps {
   telegram: string;
   whatsapp: string;
   copyLink: string;
+  photoForSocial: string;
 }
 
 const ShareButton: React.FC<ShareButtonProps> = ({
   telegram,
   whatsapp,
   copyLink,
+  photoForSocial,
 }) => {
   const [focused, setFocused] = React.useState(false);
   const ref = useRef(null);

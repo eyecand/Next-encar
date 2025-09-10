@@ -8,11 +8,57 @@ import { findVehicleSimilar } from "@/lib/find-vehicle-similar";
 import { findVehicleId } from "@/lib/find-vehicles-id";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
+import type { Metadata, ResolvingMetadata } from "next";
+import { prisma } from "@/prisma/prisma-client";
 interface ProductPageProps {
   makes: string;
   model: string;
   evolutions: string;
   id: string;
+}
+type Props = {
+  params: Promise<ProductPageProps>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+};
+
+export async function generateMetadata(
+  { params, searchParams }: Props,
+  parent: ResolvingMetadata
+): Promise<Metadata> {
+  // read route params
+  const { id } = await params;
+  // fetch data
+  const imageSercev = await prisma.active_lots.findFirst({
+    where: { encar: { id: Number(id.replace("uid-", "")) } },
+    select: {
+      encar: {
+        select: {
+          photos: {
+            select: {
+              s3_images: {
+                select: {
+                  url: true,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  });
+  const ph =
+    imageSercev?.encar.photos.filter((item) =>
+      item.s3_images?.url.includes("001")
+    )[0].s3_images?.url ?? imageSercev?.encar.photos[0].s3_images?.url;
+  const previewPhoto = ph ?? "/12.png";
+  // // optionally access and extend (rather than replace) parent metadata
+  const previousImages = (await parent).openGraph?.images || [];
+
+  return {
+    openGraph: {
+      images: [previewPhoto, ...previousImages],
+    },
+  };
 }
 export default async function CarPage({
   params,
@@ -45,6 +91,7 @@ export default async function CarPage({
     model: String(vehicleId?.details?.model.model_short_name),
     date: String(vehicleId?.details?.release_date),
   });
+  const photoForSocial = vehicleId?.photos[0].s3_images?.url ?? "/12.png";
   const { cbr } = await findCBR();
   const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
   const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
@@ -97,6 +144,7 @@ export default async function CarPage({
               vehicle_plate_number={vehicleId.vehicle_plate_number}
               sell_type={vehicleId.lib_sell_types.sell_type}
               inspections={vehicleId.inspections}
+              photoForSocial={photoForSocial}
               EUR={Number(EUR)}
               KRW={Number(KRW)}
               broker={Number(broker)}

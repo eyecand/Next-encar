@@ -36,7 +36,7 @@ export default async function ModelPage({
   );
   const breadcrumbItems = [
     {
-      label: makes,
+      label: decodeURIComponent(makes),
       href: `/${makes}/`,
     },
     {

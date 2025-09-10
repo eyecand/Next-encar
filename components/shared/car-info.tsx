@@ -36,6 +36,7 @@ export const CarInfo = ({
   fraht,
   broker,
   k_krw,
+  photoForSocial,
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
 
@@ -86,6 +87,7 @@ export const CarInfo = ({
               telegram={encodeURIComponent(copyLink)}
               whatsapp={linkWa}
               copyLink={copyLink}
+              photoForSocial={photoForSocial}
             />
             {/* <ButtonCopy copyLink={copyLink} /> */}
           </div>

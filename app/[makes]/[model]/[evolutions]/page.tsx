@@ -39,7 +39,7 @@ export default async function EvolutionPage({
   );
   const breadcrumbItems = [
     {
-      label: makes,
+      label: decodeURIComponent(makes),
       href: `/${makes}/`,
     },
     {

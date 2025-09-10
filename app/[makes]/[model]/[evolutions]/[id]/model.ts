@@ -33,6 +33,7 @@ type DiagnosticsProps = {
 
 export type VehicleIdProps = {
   id: string;
+  photoForSocial: string;
   auctionId: number;
   advertisements: { price: number } | null;
   details: {
