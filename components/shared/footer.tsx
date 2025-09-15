@@ -37,7 +37,12 @@ export const Footer = () => {
           <div className="flex gap-2">
             <div className="flex flex-col">
               <p className="text-[#212529BF] text-xs">Поддержка</p>
-              <p className="font-bold text-xl">+7 (499) 504-04-08</p>
+              <Link
+                href={"tel:+74995040408"}
+                className="font-bold text-xl cursor-pointer hover:text-red-500"
+              >
+                +7 (499) 504-04-08
+              </Link>
               <p className="text-[#212529BF] text-xs">
                 Звонок по России бесплатный
               </p>
@@ -47,7 +52,7 @@ export const Footer = () => {
                 className="block"
                 target="_blank"
                 rel="nofollow"
-                href="https://t.me/Avademus"
+                href="https://t.me/Autofish_office"
               >
                 <button className="flex justify-center items-center bg-gray-100 w-[40px] h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
                   <FaTelegram size={25} className="text-blue-500" />
@@ -57,7 +62,7 @@ export const Footer = () => {
                 className=""
                 target="_blank"
                 rel="nofollow"
-                href="https://wa.me/79265850382"
+                href="https://wa.me/79850364206"
               >
                 <button className="flex justify-center items-center bg-gray-100 w-[40px] h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
                   <FaWhatsapp size={25} className="text-green-500" />
@@ -71,7 +76,7 @@ export const Footer = () => {
               className="flex ml-2"
               target="_blank"
               rel="nofollow"
-              href="https://t.me/+Kd_gfq0IVGNiMDcy"
+              href="https://t.me/Autofishru"
             >
               <button className="flex justify-center items-center h-[40px] w-[40px] bg-gray-100 hover:bg-gray-200  rounded-lg cursor-pointer transition-colors">
                 <FaTelegram size={25} className="text-blue-500" />

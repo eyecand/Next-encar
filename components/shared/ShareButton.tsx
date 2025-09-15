@@ -7,18 +7,11 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { IoCopyOutline } from "react-icons/io5";
 interface ShareButtonProps {
-  telegram: string;
-  whatsapp: string;
+  text: string;
   copyLink: string;
-  photoForSocial: string;
 }
 
-const ShareButton: React.FC<ShareButtonProps> = ({
-  telegram,
-  whatsapp,
-  copyLink,
-  photoForSocial,
-}) => {
+const ShareButton: React.FC<ShareButtonProps> = ({ text, copyLink }) => {
   const [focused, setFocused] = React.useState(false);
   const ref = useRef(null);
   useClickAway(ref, () => {
@@ -52,7 +45,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
           Вы можете поделиться ссылкой на страницу в соц. сетях
         </p>
         <Link
-          href={`https://t.me/share/url?url=${telegram}`}
+          href={`https://t.me/share/url?url=${text}`}
           target="_blank"
           className="flex items-center space-x-2 border-t-2 py-4 hover:text-blue-500 cursor-pointer"
         >
@@ -60,7 +53,7 @@ const ShareButton: React.FC<ShareButtonProps> = ({
           <span>Telegram</span>
         </Link>
         <Link
-          href={`https://api.whatsapp.com/send?text=${telegram}`}
+          href={`https://api.whatsapp.com/send?text=${text}`}
           target="_blank"
           className="flex items-center space-x-2 border-t-2 py-4 hover:text-green-500 cursor-pointer"
         >
@@ -74,19 +67,6 @@ const ShareButton: React.FC<ShareButtonProps> = ({
         >
           <IoCopyOutline size={25} /> <span>Копировать ссылку</span>
         </Link>
-
-        {/* {shareUrls.map((item, index) => (
-          <a
-            key={index}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block p-2 hover:bg-gray-100 "
-            onClick={() => setFocused(false)}
-          >
-            {item.icon}
-          </a>
-        ))} */}
       </div>
     </div>
   );

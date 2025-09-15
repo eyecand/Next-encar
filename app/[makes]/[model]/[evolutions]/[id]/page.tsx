@@ -1,4 +1,4 @@
-import { CarInfo, SliderCarPage } from "@/components/shared";
+import { CarInfo, LoadingSpinner, SliderCarPage } from "@/components/shared";
 import Breadcrumb from "@/components/shared/breadcrumb";
 import SimilarCars from "@/components/shared/similar-car/similar-car";
 import { Options } from "@/components/shared/vehicle-id-page/options";
@@ -22,11 +22,11 @@ type Props = {
 };
 
 export async function generateMetadata(
-  { params, searchParams }: Props,
+  { params }: Props,
   parent: ResolvingMetadata
 ): Promise<Metadata> {
   // read route params
-  const { id } = await params;
+  const { id, evolutions, makes, model } = await params;
   // fetch data
   const imageSercev = await prisma.active_lots.findFirst({
     where: { encar: { id: Number(id.replace("uid-", "")) } },
@@ -46,17 +46,26 @@ export async function generateMetadata(
       },
     },
   });
-  const ph =
-    imageSercev?.encar.photos.filter((item) =>
-      item.s3_images?.url.includes("001")
-    )[0].s3_images?.url ?? imageSercev?.encar.photos[0].s3_images?.url;
-  const previewPhoto = ph ?? "/12.png";
+  let previewPhoto:
+    | string
+    | { s3_images: { url: string } | null }[]
+    | undefined = "/12.png";
+  if (imageSercev) {
+    previewPhoto = imageSercev.encar.photos.filter((i) => {
+      if (i.s3_images?.url) i.s3_images?.url.includes("001");
+    })
+      ? imageSercev.encar.photos.filter((i) => i.s3_images?.url.includes("001"))
+      : imageSercev.encar.photos[0].s3_images?.url;
+  }
+
   // // optionally access and extend (rather than replace) parent metadata
   const previousImages = (await parent).openGraph?.images || [];
 
   return {
+    title: `Автомобиль ${makes} ${model} ${evolutions} из Южной Кореи (Encar)`,
+    description: `Купить/привезти автомобиль ${makes} ${model} ${evolutions} из Южной Кореи (Encar) (недорого)`,
     openGraph: {
-      images: [previewPhoto, ...previousImages],
+      images: [String(previewPhoto), ...previousImages],
     },
   };
 }
@@ -73,7 +82,7 @@ export default async function CarPage({
   }
   const breadcrumbItems = [
     {
-      label: makes,
+      label: decodeURIComponent(makes),
       href: `/${makes}/`,
     },
     {
@@ -103,25 +112,7 @@ export default async function CarPage({
   }
   return (
     <>
-      <div className="mx-auto px-5 max-w-7xl mt-32 lg:mt-44">
-        {/* <div className=" py-5 flex items-baseline">
-          <h1 className="font-bold text-lg md:text-3xl">
-            {detectMake(String(vehicleId?.details?.makes.make_short_name))}{" "}
-            {vehicleId?.details?.model.model_short_name === "Canival"
-              ? "Carnival"
-              : vehicleId?.details?.model.model_short_name}
-          </h1>
-          <ShareButton
-            url={shareUrl}
-            title={shareTitle}
-            description={shareDescription}
-          />
-          <div className=" flex flex-1 justify-end">
-            <div className="text-[14px] sm:text-[16px]">
-              Дата: {detectedDate(vehicleId.created_at)}
-            </div>
-          </div>
-        </div> */}
+      <div className="mx-auto flex flex-col flex-1 min-h-screen px-5 max-w-7xl mt-32 lg:mt-44">
         <div className="flex flex-col md:flex-row md:justify-between">
           <Breadcrumb items={breadcrumbItems} />
           <span className="text-sm text-muted-foreground">
@@ -129,7 +120,7 @@ export default async function CarPage({
           </span>
         </div>
 
-        <Suspense fallback={<p>Loading</p>}>
+        <Suspense fallback={<LoadingSpinner />}>
           <section className=" flex md:flex-row flex-col mb-12">
             <SliderCarPage imgSrc={vehicleId.photos} />
 

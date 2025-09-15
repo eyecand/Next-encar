@@ -1,6 +1,13 @@
 import YandexMetrika from "@/components/shared/yandex-metrika";
+import { Metadata } from "next";
 import Image from "next/image";
-
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `Мы лидеры в сфере экспорта автомобилей с вторичного рынка Южной Кореи.`,
+    description: `С момента нашего основания в 2016 году, мы успешно подбираем и
+              доставляем автомобили клиентам по всему миру`,
+  };
+}
 export default async function AboutPage() {
   return (
     <>
@@ -20,12 +27,12 @@ export default async function AboutPage() {
               доставляем автомобили клиентам по всему миру
             </p>
           </div>
-          <div className="relative h-auto lg:-mt-10">
+          <div className="relative h-auto mt-5 lg:mt-0">
             <Image
               alt="About title"
-              src={"/about/about-background.png"}
-              width={600}
-              height={300}
+              src={"/about/11.png"}
+              width={510}
+              height={345}
             />
           </div>
         </div>

@@ -162,9 +162,11 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     });
 
     router.push(
-      `https://autofish.ru${filters.makesType ? "/" + filters.makesType : ""}${
-        filters.modelType ? "/" + filters.modelType : ""
-      }${filters.evolutonsType ? "/" + filters.evolutonsType : ""}?${query}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}${
+        filters.makesType ? "/" + filters.makesType : ""
+      }${filters.modelType ? "/" + filters.modelType : ""}${
+        filters.evolutonsType ? "/" + filters.evolutonsType : ""
+      }?${query}`,
       {
         scroll: false,
       }

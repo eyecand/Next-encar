@@ -8,7 +8,9 @@ export const useCBR = (): ReturnProps => {
     async function getCBR() {
       try {
         const allCBR = (
-          await axios.get<currency_rates[]>("http://localhost:3000/api/cbr")
+          await axios.get<currency_rates[]>(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/api/cbr`
+          )
         ).data;
         setCBR(allCBR);
       } catch (error) {

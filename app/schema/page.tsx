@@ -11,6 +11,17 @@ import {
   Package,
   Coins,
 } from "lucide-react";
+import { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `Каталог авто с площадки Encar`,
+    description: `Encar (Енкар) основана в 2000 году — это онлайн-платформа для
+                продажи автомобилей с пробегом,офис расположен в Корее по
+                адресу: 18-19F, Aia Tower 16, Тонгил-ро, 2-гил, Чун-гу, Сеул,
+                04511, Южная Корея`,
+  };
+}
+
 export default async function SchemaPage() {
   return (
     <>

@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Metadata } from "next";
 const leftColumnQuestions = [
   {
     id: "item-1",
@@ -65,6 +66,12 @@ const rightColumnQuestions = [
       "Мы предоставляем детальный фотоотчет, видеоосмотр автомобиля, а также можем организовать независимую экспертизу состояния автомобиля перед покупкой.",
   },
 ];
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `Часто задаваемые вопросы`,
+    description: `Информация о том как с нами работать`,
+  };
+}
 export default async function QuestionsPage() {
   return (
     <>

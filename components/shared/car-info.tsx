@@ -15,7 +15,6 @@ import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
 import { CalculationCar } from "@/lib/calcilation-car";
 import Link from "next/link";
 import { CarInfoHeader } from "./vehicle-id-page/car-info/car-info-header";
-import { ButtonCopy } from "./vehicle-id-page/car-info/button-copy";
 import { CarInfoWarnings } from "./vehicle-id-page/car-info/car-info-warnings";
 import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { detectedMontYear } from "@/lib/month-year";
@@ -40,9 +39,11 @@ export const CarInfo = ({
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
 
-  const copyLink = `https://autofish.ru/${details?.makes.make_short_name}/${
-    details?.model.model_short_name
-  }/${encodeURI(String(details?.model.model_english))}/uid-${id}`;
+  const copyLink = `https://autofish.ru/${encodeURI(
+    String(details?.makes.make_short_name)
+  )}/${encodeURI(String(details?.model.model_short_name))}/${encodeURI(
+    String(details?.model.model_english)
+  )}/uid-${id}`;
   const encodedCopyLink = encodeURIComponent(copyLink); // Используем encodeURIComponent
   //https://wa.me/79265850382
   const linkWa = `https://api.whatsapp.com/send/?phone=79265850382&text=Здравствуйте, заинтересовал автомобиль ${detectMake(
@@ -55,9 +56,7 @@ export const CarInfo = ({
     details?.engine_displacement
   } см3, ${encodedCopyLink}. Хочу получить консультацию.`;
   //https://t.me/Avademus
-  const strHref = `https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${detectMake(
-    String(details?.makes.make_short_name)
-  )}, ${
+  const strHref = `${detectMake(String(details?.makes.make_short_name))}, ${
     details?.model.model_english === "Canival"
       ? "Carnival"
       : details?.model.model_english
@@ -84,12 +83,9 @@ export const CarInfo = ({
               year={new Date(String(details?.release_date)).getFullYear()}
             />
             <ShareButton
-              telegram={encodeURIComponent(copyLink)}
-              whatsapp={linkWa}
+              text={encodeURIComponent(copyLink)}
               copyLink={copyLink}
-              photoForSocial={photoForSocial}
             />
-            {/* <ButtonCopy copyLink={copyLink} /> */}
           </div>
 
           <div className="flex  justify-between">
@@ -217,7 +213,7 @@ export const CarInfo = ({
               className="block w-[50%]"
               target="_blank"
               rel="nofollow"
-              href="https://t.me/Avademus"
+              href={`https://t.me/Autofish_office?text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
             >
               <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
                 <FaTelegram size={25} className="text-blue-500" />
@@ -227,7 +223,7 @@ export const CarInfo = ({
               className="block w-[50%]"
               target="_blank"
               rel="nofollow"
-              href="https://wa.me/79265850382"
+              href={`https://api.whatsapp.com/send/?phone=79850364206&text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
             >
               <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
                 <FaWhatsapp size={25} className="text-green-500" />

@@ -2,6 +2,13 @@ import YandexMetrika from "@/components/shared/yandex-metrika";
 import Image from "next/image";
 import Link from "next/link";
 import { MessageCircle, Users, Award, TrendingUp } from "lucide-react";
+import { Metadata } from "next";
+export async function generateMetadata(): Promise<Metadata> {
+  return {
+    title: `Телеграм канал авто из Кореи`,
+    description: `Хочешь купить качественный автомобиль из Южной Кореи и сэкономить максимум денег?`,
+  };
+}
 export default async function SchemaPage() {
   return (
     <>
@@ -21,7 +28,7 @@ export default async function SchemaPage() {
                 <div>
                   {" "}
                   <Link
-                    href={"https://t.me/+Kd_gfq0IVGNiMDcy"}
+                    href={"https://t.me/Autofishru"}
                     className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors duration-200 shadow-lg"
                   >
                     Подписаться на Телеграм-канал
@@ -270,7 +277,7 @@ export default async function SchemaPage() {
                     <p className="text-gray-700">
                       Подписывайтесь на наш{" "}
                       <Link
-                        href={"https://t.me/+Kd_gfq0IVGNiMDcy"}
+                        href={"https://t.me/Autofishru"}
                         className="text-blue-600 underline font-semibold"
                       >
                         Telegram-канал
@@ -281,7 +288,7 @@ export default async function SchemaPage() {
                   </div>
                 </div>
                 <Link
-                  href={"https://t.me/+Kd_gfq0IVGNiMDcy"}
+                  href={"https://t.me/Autofishru"}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors duration-200 whitespace-nowrap"
                 >
                   Подписаться на Telegram-канал

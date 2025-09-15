@@ -6,6 +6,7 @@ import PaginationComponent from "@/components/shared/pagination";
 import { findCBR } from "@/lib/find-cbr";
 import { VehicleList } from "@/app/vehicle-list/vehicle-list";
 import Breadcrumb from "@/components/shared/breadcrumb";
+import { Metadata } from "next";
 
 interface EvolutionPageProps {
   makes: string;
@@ -13,7 +14,17 @@ interface EvolutionPageProps {
   evolutions: string;
 }
 type ParamsProps = Promise<GetSearchParams>;
-
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<EvolutionPageProps>;
+}): Promise<Metadata> {
+  const { makes, model, evolutions } = await params;
+  return {
+    title: `Купить ${makes} ${model} ${evolutions} из Южной Кореи (Encar)`,
+    description: `Купить/привезти автомобиль ${makes} ${model} ${evolutions} из Южной Кореи (Encar)`,
+  };
+}
 export default async function EvolutionPage({
   params,
   searchParams,
