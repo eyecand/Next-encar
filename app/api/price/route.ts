@@ -17,11 +17,7 @@ export async function GET(request: NextRequest) {
       value: true,
     },
   });
-  const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
-  const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
-  const fraht = cbr.find((item) => item.char_code === "fraht")?.value;
-  const broker = cbr.find((item) => item.char_code === "broker")?.value;
-  const k_krw = cbr.find((item) => item.char_code === "K_KRW")?.value;
+  const cbrMap = new Map(cbr.map((item) => [item.char_code, item.value]));
 
   const car = await prisma.encar_vehicles.findFirst({
     where: {
@@ -42,12 +38,12 @@ export async function GET(request: NextRequest) {
   });
   const K_Power = DetectedKPower(Number(power));
   const oformlenie = DetectedCustomsClearance(
-    Number(car?.advertisements?.price) * Number(KRW) * 10
+    Number(car?.advertisements?.price) * Number(cbrMap.get("KRW")) * 10
   );
   const poshlina = CustomsDuty(
     Number(car?.advertisements?.price) * 10000,
-    Number(KRW),
-    Number(EUR),
+    Number(cbrMap.get("KRW")),
+    Number(cbrMap.get("EUR")),
     Number(car?.details?.engine_displacement),
     String(car?.details?.fuel.fuel_english),
     DetectedFullYear(String(car?.details?.release_date)),
@@ -60,13 +56,14 @@ export async function GET(request: NextRequest) {
   );
   const total =
     Math.floor(
-      (Number(car?.advertisements?.price) * 10000 + Number(fraht)) *
-        Number(KRW) *
+      (Number(car?.advertisements?.price) * 10000 +
+        Number(cbrMap.get("fraht"))) *
+        Number(cbrMap.get("KRW")) *
         0.001 *
-        Number(k_krw)
+        Number(Number(cbrMap.get("K_KRW")))
     ) +
     poshlina +
-    Number(broker) +
+    Number(cbrMap.get("broker")) +
     util +
     oformlenie;
   return NextResponse.json(total);

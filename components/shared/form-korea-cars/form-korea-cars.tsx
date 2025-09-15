@@ -66,9 +66,11 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
   const handleSortChange = useCallback(
     (selectedOption: iOption | null) => {
       if (!selectedOption) return;
-
-      filters.setSort(selectedOption.value);
-
+      const newSortValue = selectedOption.value;
+      console.log("опции", selectedOption.value);
+      console.log("start", filters.sort);
+      filters.setSort(newSortValue);
+      console.log("stop", filters.sort);
       const currentParams = {
         grades:
           selectedValues.length > 0 ? Array.from(selectedValues) : undefined,
@@ -93,7 +95,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
         changeOwner: filters.changeOwner,
         insuare: filters.insuare,
         insuarePrice: filters.insuarePrice,
-        sort: filters.sort,
+        sort: newSortValue,
         privod: filters.privod,
         transmission: filters.transmission,
         mileageMin: filters.mileageMin,
@@ -122,7 +124,6 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     },
     [filters, selectedValues, router]
   );
-
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     router.refresh();

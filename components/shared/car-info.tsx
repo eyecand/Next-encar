@@ -35,7 +35,6 @@ export const CarInfo = ({
   fraht,
   broker,
   k_krw,
-  photoForSocial,
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
 
@@ -45,17 +44,7 @@ export const CarInfo = ({
     String(details?.model.model_english)
   )}/uid-${id}`;
   const encodedCopyLink = encodeURIComponent(copyLink); // Используем encodeURIComponent
-  //https://wa.me/79265850382
-  const linkWa = `https://api.whatsapp.com/send/?phone=79265850382&text=Здравствуйте, заинтересовал автомобиль ${detectMake(
-    String(details?.makes.make_short_name)
-  )}, ${
-    details?.model.model_english === "Canival"
-      ? "Carnival"
-      : details?.model.model_english
-  }, ${new Date(String(details?.release_date)).getFullYear()} г., ${
-    details?.engine_displacement
-  } см3, ${encodedCopyLink}. Хочу получить консультацию.`;
-  //https://t.me/Avademus
+
   const strHref = `${detectMake(String(details?.makes.make_short_name))}, ${
     details?.model.model_english === "Canival"
       ? "Carnival"
@@ -201,12 +190,14 @@ export const CarInfo = ({
           />
         </div>
         <div className="flex flex-col w-full md:w-[36%] mt-2 md:mt-4">
-          <a
-            href={strHref}
+          <Link
+            target="_blank"
+            rel="nofollow"
+            href={`https://t.me/Autofish_office?text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
             className="w-full  py-4 text-sm bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl  flex items-center justify-center hover:bg-[#ac3f42] duration-300"
           >
             Заказать
-          </a>
+          </Link>
           <span className="w-full text-center mt-2">или напишите нам</span>
           <div className="flex items-center justify-between gap-4 mt-2 ">
             <Link

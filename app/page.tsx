@@ -16,19 +16,13 @@ export default async function Home({
   const searchParamsValue = await searchParams;
   const { page } = searchParamsValue;
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue);
-  const { cbr } = await findCBR();
+  const { cbrMap } = await findCBR();
 
   const maxPage = Math.ceil(totalPage / 10);
   const currentPage = Math.min(
     maxPage,
     Math.max(1, parseInt((page as string) || "1"))
   );
-
-  const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
-  const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
-  const fraht = cbr.find((item) => item.char_code === "fraht")?.value;
-  const broker = cbr.find((item) => item.char_code === "broker")?.value;
-  const k_krw = cbr.find((item) => item.char_code === "K_KRW")?.value;
 
   const show = 0;
   return (
@@ -54,11 +48,11 @@ export default async function Home({
             <Suspense fallback={<LoadingSpinner />}>
               <VehicleList
                 vehicle={vehicle}
-                EUR={Number(EUR)}
-                KRW={Number(KRW)}
-                broker={Number(broker)}
-                fraht={Number(fraht)}
-                k_krw={Number(k_krw)}
+                EUR={Number(cbrMap.get("EUR"))}
+                KRW={Number(cbrMap.get("KRW"))}
+                broker={Number(cbrMap.get("broker"))}
+                fraht={Number(cbrMap.get("fraht"))}
+                k_krw={Number(cbrMap.get("K_KRW"))}
               />
             </Suspense>
             <div className="mt-16">

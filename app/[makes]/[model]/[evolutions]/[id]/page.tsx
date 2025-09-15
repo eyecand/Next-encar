@@ -54,7 +54,9 @@ export async function generateMetadata(
     previewPhoto = imageSercev.encar.photos.filter((i) => {
       if (i.s3_images?.url) i.s3_images?.url.includes("001");
     })
-      ? imageSercev.encar.photos.filter((i) => i.s3_images?.url.includes("001"))
+      ? imageSercev.encar.photos.filter((i) =>
+          i.s3_images?.url.includes("001")
+        )[0].s3_images?.url
       : imageSercev.encar.photos[0].s3_images?.url;
   }
 
@@ -100,13 +102,7 @@ export default async function CarPage({
     model: String(vehicleId?.details?.model.model_short_name),
     date: String(vehicleId?.details?.release_date),
   });
-  const photoForSocial = vehicleId?.photos[0].s3_images?.url ?? "/12.png";
-  const { cbr } = await findCBR();
-  const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
-  const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
-  const fraht = cbr.find((item) => item.char_code === "fraht")?.value;
-  const broker = cbr.find((item) => item.char_code === "broker")?.value;
-  const k_krw = cbr.find((item) => item.char_code === "K_KRW")?.value;
+  const { cbrMap } = await findCBR();
   if (!vehicleId) {
     return notFound();
   }
@@ -135,12 +131,11 @@ export default async function CarPage({
               vehicle_plate_number={vehicleId.vehicle_plate_number}
               sell_type={vehicleId.lib_sell_types.sell_type}
               inspections={vehicleId.inspections}
-              photoForSocial={photoForSocial}
-              EUR={Number(EUR)}
-              KRW={Number(KRW)}
-              broker={Number(broker)}
-              fraht={Number(fraht)}
-              k_krw={Number(k_krw)}
+              EUR={Number(cbrMap.get("EUR"))}
+              KRW={Number(cbrMap.get("KRW"))}
+              broker={Number(cbrMap.get("broker"))}
+              fraht={Number(cbrMap.get("fraht"))}
+              k_krw={Number(cbrMap.get("K_KRW"))}
             />
           </section>
           {/* Options */}

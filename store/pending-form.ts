@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface State {
   pendingForm: boolean;
-  setPendingFormStore: (cbr: boolean) => void;
+  setPendingFormStore: (pendingForm: boolean) => void;
 }
 
 export const usePendingFormtore = create<State>()((set) => ({

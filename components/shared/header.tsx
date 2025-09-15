@@ -25,12 +25,6 @@ export const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const pathname = usePathname();
-  const krwRate = cbr?.find((rate) => rate.char_code === "KRW");
-  const EUR = cbr ? cbr.find((rate) => rate.char_code === "EUR")?.value : 91.07;
-  const KRW = krwRate ? krwRate.value : 57.8;
-  const K_KRW = cbr
-    ? cbr?.find((rate) => rate.char_code === "K_KRW")?.value
-    : 1;
   const toggleMobileMenu = () => {
     if (isMobileMenuOpen) {
       // Закрытие меню
@@ -217,7 +211,9 @@ export const Header = () => {
                       />{" "}
                       <span>KRW</span>
                       <span className="text-red-500 font-medium">
-                        {(Number(KRW) * Number(K_KRW)).toFixed(2)}
+                        {(
+                          Number(cbr?.get("KRW")) * Number(cbr?.get("K_KRW"))
+                        ).toFixed(2)}
                       </span>
                       <span className="font-semibold">RUB</span>
                       <span className="text-[10px]  bg-gray-100 px-1 py-[2px] rounded-md">
@@ -233,7 +229,7 @@ export const Header = () => {
                       />{" "}
                       <span>EUR</span>
                       <span className="text-red-500 font-medium">
-                        {Number(EUR).toFixed(2)}
+                        {Number(cbr?.get("EUR")).toFixed(2)}
                       </span>
                       <span className="font-semibold">RUB</span>
                       <span className="text-[10px]  bg-gray-100 px-1 py-[2px] rounded-md">
@@ -340,7 +336,9 @@ export const Header = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-red-500 font-bold">
-                          {(Number(KRW) * Number(K_KRW)).toFixed(2)}
+                          {(
+                            Number(cbr?.get("KRW")) * Number(cbr?.get("K_KRW"))
+                          ).toFixed(2)}
                         </span>
                         <span className="text-black font-semibold">RUB</span>
                       </div>
@@ -360,7 +358,7 @@ export const Header = () => {
                       </div>
                       <div className="flex items-center gap-2">
                         <span className="text-red-500 font-bold">
-                          {Number(EUR).toFixed(2)}
+                          {Number(cbr?.get("EUR")).toFixed(2)}
                         </span>
                         <span className="text-black font-semibold">RUB</span>
                       </div>
@@ -380,7 +378,13 @@ export const Header = () => {
                 <div className="flex items-center gap-3 bg-gray-50 py-2 rounded-lg px-1">
                   <Phone size={20} className="text-gray-600" />
                   <div>
-                    <p className="text-sm font-bold">+7 (499) 504-04-08</p>
+                    <Link
+                      href={"tel:+74995040408"}
+                      className="text-sm font-bold cursor-pointer hover:text-red-500"
+                    >
+                      +7 (499) 504-04-08
+                    </Link>
+
                     <p className=" text-gray-600">
                       Звонок по России бесплатный
                     </p>

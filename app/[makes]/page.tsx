@@ -34,7 +34,7 @@ export default async function MakesPage({
   const { makes } = await params;
   const { page } = searchParamsValue;
   const { vehicle, totalPage } = await findVehicleV2(searchParamsValue, makes);
-  const { cbr } = await findCBR();
+  const { cbrMap } = await findCBR();
   const maxPage = Math.ceil(totalPage / 10);
   const currentPage = Math.min(
     maxPage,
@@ -46,13 +46,8 @@ export default async function MakesPage({
       href: `/${makes}/`,
     },
   ];
-  const EUR = cbr.find((item) => item.char_code === "EUR")?.value;
-  const KRW = cbr.find((item) => item.char_code === "KRW")?.value;
-  const fraht = cbr.find((item) => item.char_code === "fraht")?.value;
-  const broker = cbr.find((item) => item.char_code === "broker")?.value;
-  const k_krw = cbr.find((item) => item.char_code === "K_KRW")?.value;
   return (
-    <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-3 md:mt-10 lg:mt-24">
+    <div className="mx-auto flex flex-col flex-1 w-full max-w-7xl mt-16  lg:mt-24">
       <Breadcrumb classname="mt-16 px-5" items={breadcrumbItems} />
       <h1 className="text-2xl md:text-4xl lg:text-[38px] font-bold px-5 ">
         Купить {decodeURIComponent(makes)} из Южной Кореи (Encar)
@@ -63,11 +58,11 @@ export default async function MakesPage({
       <Suspense fallback={<LoadingSpinner />}>
         <VehicleList
           vehicle={vehicle}
-          EUR={Number(EUR)}
-          KRW={Number(KRW)}
-          broker={Number(broker)}
-          fraht={Number(fraht)}
-          k_krw={Number(k_krw)}
+          EUR={Number(cbrMap.get("EUR"))}
+          KRW={Number(cbrMap.get("KRW"))}
+          broker={Number(cbrMap.get("broker"))}
+          fraht={Number(cbrMap.get("fraht"))}
+          k_krw={Number(cbrMap.get("K_KRW"))}
         />
       </Suspense>
       <div className="mt-16">

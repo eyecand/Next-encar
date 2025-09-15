@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface State {
   cityState: number;
-  setCityState: (cbr: number) => void;
+  setCityState: (cityState: number) => void;
 }
 
 export const useCityState = create<State>()((set) => ({

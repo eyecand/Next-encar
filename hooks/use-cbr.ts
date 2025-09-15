@@ -1,9 +1,10 @@
 import { currency_rates } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 import axios from "axios";
 import { useEffect, useState } from "react";
 
 export const useCBR = (): ReturnProps => {
-  const [cbr, setCBR] = useState<currency_rates[] | undefined>([]);
+  const [cbr, setCBR] = useState<Map<string, Decimal | null>>();
   useEffect(() => {
     async function getCBR() {
       try {
@@ -12,7 +13,10 @@ export const useCBR = (): ReturnProps => {
             `${process.env.NEXT_PUBLIC_BASE_URL}/api/cbr`
           )
         ).data;
-        setCBR(allCBR);
+        const cbrMap = new Map(
+          allCBR.map((item) => [item.char_code, item.value])
+        );
+        setCBR(cbrMap);
       } catch (error) {
         console.error("Error fetching CBR data:", error);
       }
@@ -22,5 +26,5 @@ export const useCBR = (): ReturnProps => {
   return { cbr };
 };
 interface ReturnProps {
-  cbr: currency_rates[] | undefined;
+  cbr: Map<string, Decimal | null> | undefined;
 }

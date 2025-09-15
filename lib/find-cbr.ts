@@ -1,5 +1,5 @@
 import { prisma } from "@/prisma/prisma-client";
-import { currency_rates } from "@prisma/client";
+import { Decimal } from "@prisma/client/runtime/library";
 
 export const findCBR = async (): Promise<ReturnProps> => {
   const cbr = await prisma.currency_rates.findMany({
@@ -9,9 +9,10 @@ export const findCBR = async (): Promise<ReturnProps> => {
       value: true,
     },
   });
-  return { cbr };
+  const cbrMap = new Map(cbr.map((item) => [item.char_code, item.value]));
+  return { cbrMap };
 };
 
 interface ReturnProps {
-  cbr: currency_rates[];
+  cbrMap: Map<string, Decimal | null>;
 }
