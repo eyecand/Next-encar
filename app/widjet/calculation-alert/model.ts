@@ -11,6 +11,7 @@ export type PriceInfoProps = {
   fraht: number;
   broker: number;
   k_krw: number;
+  commision: number;
   EUR: number;
   KRW: number;
   copyLink: string;

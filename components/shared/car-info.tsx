@@ -35,6 +35,7 @@ export const CarInfo = ({
   fraht,
   broker,
   k_krw,
+  commision,
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
 
@@ -142,6 +143,7 @@ export const CarInfo = ({
                       broker,
                       fraht,
                       k_krw,
+                      commision,
                       0
                     )
                   )}
@@ -162,6 +164,7 @@ export const CarInfo = ({
                       broker,
                       fraht,
                       k_krw,
+                      commision,
                       0
                     )
                   )}
@@ -180,13 +183,14 @@ export const CarInfo = ({
             broker={broker}
             fraht={fraht}
             k_krw={k_krw}
-            copyLink={copyLink}
+            copyLink={strHref}
             make={detectMake(String(details?.makes.make_short_name))}
             model={
               details?.model.model_english === "Canival"
                 ? "Carnival"
                 : String(details?.model.model_english)
             }
+            commision={commision}
           />
         </div>
         <div className="flex flex-col w-full md:w-[36%] mt-2 md:mt-4">

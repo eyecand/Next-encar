@@ -14,6 +14,7 @@ type Props = {
   fraht: number;
   broker: number;
   k_krw: number;
+  commision: number;
 };
 export const PriceAll = ({
   price_origion,
@@ -26,6 +27,7 @@ export const PriceAll = ({
   fraht,
   broker,
   k_krw,
+  commision,
 }: Props) => {
   const priceWon = price_origion ? price_origion * 10000 : 1;
   const realFuel = fuel ? fuel : "Gasoline";
@@ -57,6 +59,7 @@ export const PriceAll = ({
                   broker,
                   fraht,
                   k_krw,
+                  commision,
                   stateCity
                 )
               )
@@ -73,6 +76,7 @@ export const PriceAll = ({
                   broker,
                   fraht,
                   k_krw,
+                  commision,
                   stateCity
                 )
               )

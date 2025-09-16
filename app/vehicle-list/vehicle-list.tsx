@@ -13,6 +13,7 @@ export const VehicleList: React.FC<VehicleListProps> = ({
   fraht,
   broker,
   k_krw,
+  commision,
 }) => {
   const pending = usePendingFormtore((state) => state.pendingForm);
   return (
@@ -29,6 +30,7 @@ export const VehicleList: React.FC<VehicleListProps> = ({
             broker={broker}
             fraht={fraht}
             k_krw={k_krw}
+            commision={commision}
           />
           <Desktop
             className="Desktop"
@@ -38,6 +40,7 @@ export const VehicleList: React.FC<VehicleListProps> = ({
             broker={broker}
             fraht={fraht}
             k_krw={k_krw}
+            commision={commision}
           />
         </>
       )}

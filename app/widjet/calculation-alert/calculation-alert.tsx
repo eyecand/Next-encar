@@ -35,6 +35,7 @@ export const CalculationAlert = ({
   copyLink,
   make,
   model,
+  commision,
 }: PriceInfoProps) => {
   const alertRef = useRef<HTMLDivElement>(null);
 
@@ -93,7 +94,8 @@ export const CalculationAlert = ({
 
   const isNoProhodCar = NoProhodCar(year);
   const totalKorea = priceEn + fraht;
-  const totalRussia = poshlina + broker + utilSbor + customsOformlenie;
+  const totalRussia =
+    poshlina + broker + utilSbor + customsOformlenie + commision;
   const total = Math.floor(totalKorea * KRW * 0.001 * k_krw) + totalRussia;
 
   return (
@@ -161,6 +163,7 @@ export const CalculationAlert = ({
             poshlina={poshlina}
             utilSbor={utilSbor}
             totalRussia={totalRussia}
+            commision={commision}
           />
         </div>
         {/* Общая стоимость */}
@@ -168,13 +171,17 @@ export const CalculationAlert = ({
           <div className="text-base md:text-lg flex flex-col items-start gap-4 text-zinc-700 group font-bold">
             <div className="flex gap-2 w-full justify-between">
               <span className="inline-block">Общая стоимость под ключ:</span>
-
-              <PriceView
-                tilda={true}
-                className=""
-                label="₽"
-                price={String(total)}
-              />
+              <div className="items-center flex gap-2">
+                <PriceView
+                  tilda={true}
+                  className=""
+                  label="₽"
+                  price={String(total)}
+                />
+                {fuel === "Electricity" && (
+                  <TooltipUI title="Для более корректного расчета свяжитесь с менеджером" />
+                )}
+              </div>
             </div>
             {isNoProhodCar ? (
               <div className="flex justify-end w-full items-center gap-2">
@@ -196,6 +203,7 @@ export const CalculationAlert = ({
                       broker,
                       fraht,
                       k_krw,
+                      commision,
                       1
                     )
                   )}
@@ -204,16 +212,11 @@ export const CalculationAlert = ({
             ) : (
               ""
             )}
-            {fuel === "Electricity" && (
-              <TooltipUI title="Для более корректного расчета свяжитесь с менеджером" />
-            )}
           </div>
         </div>
         <div>
           <a
-            href={`https://t.me/Avademus?text=Здравствуйте, заинтересовал автомобиль ${make}, ${model}, ${new Date(
-              year
-            ).getFullYear()} г., ${engine} см3, ${copyLink}. Хочу получить консультацию.`}
+            href={`https://t.me/Autofish_office?text=Здравствуйте, заинтересовал автомобиль ${copyLink}`}
             className="w-full  py-4 text-sm bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl  flex items-center justify-center hover:bg-[#ac3f42] duration-300"
           >
             Заказать

@@ -6,12 +6,14 @@ export const PriceInRussian = ({
   utilSbor,
   customsOformlenie,
   totalRussia,
+  commision,
 }: {
   customs: number;
   poshlina: number;
   utilSbor: number;
   customsOformlenie: number;
   totalRussia: number;
+  commision: number;
 }) => {
   return (
     <div className="mt-4">
@@ -80,6 +82,18 @@ export const PriceInRussian = ({
           <PriceView
             tilda={true}
             price={String(utilSbor)}
+            label="₽"
+            className="whitespace-nowrap font-semibold"
+          />
+        </div>
+      </div>
+      <div className="my-6 ">
+        <div className="text-sm md:text-base flex items-start justify-between gap-4 text-zinc-700 group">
+          <div className="flex items-center justify-start gap-2"> Комиссия</div>
+
+          <PriceView
+            tilda={false}
+            price={String(commision)}
             label="₽"
             className="whitespace-nowrap font-semibold"
           />

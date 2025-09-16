@@ -63,6 +63,7 @@ export default async function MakesPage({
           broker={Number(cbrMap.get("broker"))}
           fraht={Number(cbrMap.get("fraht"))}
           k_krw={Number(cbrMap.get("K_KRW"))}
+          commision={Number(cbrMap.get("company_comission"))}
         />
       </Suspense>
       <div className="mt-16">

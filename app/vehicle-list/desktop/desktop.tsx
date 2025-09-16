@@ -18,6 +18,7 @@ export const Desktop = ({
   fraht,
   broker,
   k_krw,
+  commision,
 }: InterfaceProps) => {
   return (
     <div className={cn(className, "flex-col gap-10  ")}>
@@ -134,6 +135,7 @@ export const Desktop = ({
                         broker={broker}
                         fraht={fraht}
                         k_krw={k_krw}
+                        commision={commision}
                       />
                       <div className="flex flex-col items-end mt-2">
                         <span className="text-gray-500 text-[15px] leading-5">

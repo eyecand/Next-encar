@@ -67,10 +67,7 @@ export const FormKoreaCars = ({ total }: { total: string }) => {
     (selectedOption: iOption | null) => {
       if (!selectedOption) return;
       const newSortValue = selectedOption.value;
-      console.log("опции", selectedOption.value);
-      console.log("start", filters.sort);
       filters.setSort(newSortValue);
-      console.log("stop", filters.sort);
       const currentParams = {
         grades:
           selectedValues.length > 0 ? Array.from(selectedValues) : undefined,

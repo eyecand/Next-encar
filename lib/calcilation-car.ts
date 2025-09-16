@@ -13,6 +13,7 @@ export const CalculationCar = (
   broker: number,
   expensesInKorea: number,
   k_krw: number,
+  commision: number,
   stateCity?: number
 ) => {
   const city = stateCity === 0 || stateCity === 1 ? 0 : 200000;
@@ -37,6 +38,7 @@ export const CalculationCar = (
     poshlina +
     util +
     customsOformlenie +
-    city;
+    city +
+    commision;
   return Math.floor(result);
 };

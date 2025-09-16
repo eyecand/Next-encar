@@ -18,6 +18,7 @@ export const Mobile = ({
   fraht,
   broker,
   k_krw,
+  commision,
 }: InterfaceProps) => {
   return (
     <div
@@ -179,6 +180,7 @@ export const Mobile = ({
                       broker={broker}
                       fraht={fraht}
                       k_krw={k_krw}
+                      commision={commision}
                     />
                     <div className="flex flex-col">
                       <span className="text-gray-400 text-[10px]">

@@ -85,6 +85,7 @@ export type VehicleIdProps = {
   fraht: number;
   broker: number;
   k_krw: number;
+  commision: number;
 };
 export type AlertDiagnosticProps = {
   diagnostics: DiagnosticsProps | null;

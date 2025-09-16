@@ -44,6 +44,7 @@ export interface VehicleListProps {
   fraht: number;
   broker: number;
   k_krw: number;
+  commision: number;
 }
 
 export interface InterfaceProps extends VehicleListProps {
