@@ -277,7 +277,7 @@ export const Header = () => {
             </div>
 
             {/* Navigation Menu */}
-            <div className="p-3">
+            <div className="p-3 mt-5">
               <nav className=" text-xs">
                 <Link
                   onClick={toggleMobileMenu}
@@ -396,7 +396,7 @@ export const Header = () => {
                     className=" flex justify-center items-center bg-gray-100 py-2  rounded-lg hover:bg-gray-200 cursor-pointer transition-colors"
                     target="_blank"
                     rel="nofollow"
-                    href="https://t.me/Avademus"
+                    href="https://t.me/Autofish_office"
                   >
                     <FaTelegram size={25} className="text-blue-500 mr-2" />{" "}
                     <span>Чат в Telegram</span>
@@ -405,7 +405,7 @@ export const Header = () => {
                     className=" flex justify-center items-center bg-gray-100 py-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors"
                     target="_blank"
                     rel="nofollow"
-                    href="https://wa.me/79265850382"
+                    href="https://wa.me/79850364206"
                   >
                     <FaWhatsapp size={25} className="text-green-500 mr-2" />{" "}
                     <span>WhatsApp</span>

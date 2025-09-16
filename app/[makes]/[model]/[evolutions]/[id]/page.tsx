@@ -50,7 +50,7 @@ export async function generateMetadata(
     | string
     | { s3_images: { url: string } | null }[]
     | undefined = "/12.png";
-  if (imageSercev) {
+  if (imageSercev !== null && !imageSercev?.encar.photos) {
     previewPhoto = imageSercev.encar.photos.filter((i) => {
       if (i.s3_images?.url) i.s3_images?.url.includes("001");
     })
