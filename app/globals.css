@@ -189,23 +189,6 @@
     display: none;
   }
 }
-/* Vehical-card  */
-@media (max-width: 640px) {
-  .Desktop {
-    display: none;
-  }
-  .isMobile {
-    display: block;
-  }
-}
-@media (min-width: 640px) {
-  .Desktop {
-    display: flex;
-  }
-  .isMobile {
-    display: none;
-  }
-}
 
 @media (max-width: 1024px) {
   .about_us {
@@ -213,8 +196,3 @@
     height: 560px;
   }
 }
-/* @media (min-width: 1024px) {
-  .about_us {
-    min-height: 530px;
-  }
-} */

@@ -106,13 +106,6 @@ export const findVehicleId = async (id: string) => {
       },
     },
   });
-  const activeLots = await prisma.active_lots.findFirst({
-    where: {
-      encar: {
-        id: Number(id),
-      },
-    },
-  });
-  console.log("activeLots", activeLots);
+
   return vahicleId;
 };

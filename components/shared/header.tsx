@@ -9,7 +9,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
-import { ChevronDown, HelpCircle, Menu, Phone, Ship, X } from "lucide-react";
+import { ChevronDown, Menu, Phone, X } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { detectedCurrentDate } from "@/lib/detected-current-date";
 import {

@@ -10,6 +10,8 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import type { Metadata, ResolvingMetadata } from "next";
 import { prisma } from "@/prisma/prisma-client";
+import { isActiveVehicleId } from "@/lib/is-active-vehicle-id";
+import YandexMetrika from "@/components/shared/yandex-metrika";
 interface ProductPageProps {
   makes: string;
   model: string;
@@ -49,26 +51,23 @@ export async function generateMetadata(
   let previewPhoto:
     | string
     | { s3_images: { url: string } | null }[]
-    | undefined = "/12.png";
-
+    | undefined = "https://autofish.ru/12.png";
   if (imageSercev !== null && imageSercev?.encar.photos.length > 0) {
     previewPhoto = imageSercev.encar.photos.filter((i) => {
       if (i.s3_images?.url) i.s3_images?.url.includes("001");
-    })
-      ? imageSercev.encar.photos.filter((i) =>
-          i.s3_images?.url.includes("001")
-        )[0].s3_images?.url
-      : imageSercev.encar.photos[0].s3_images?.url;
+    });
+    if (previewPhoto.length > 0) {
+      previewPhoto = previewPhoto[0].s3_images?.url;
+    } else {
+      previewPhoto = imageSercev.encar.photos[0].s3_images?.url;
+    }
   }
-
-  // // optionally access and extend (rather than replace) parent metadata
-  const previousImages = (await parent).openGraph?.images || [];
 
   return {
     title: `Автомобиль ${makes} ${model} ${evolutions} из Южной Кореи (Encar)`,
     description: `Купить/привезти автомобиль ${makes} ${model} ${evolutions} из Южной Кореи (Encar) (недорого)`,
     openGraph: {
-      images: [String(previewPhoto), ...previousImages],
+      images: String(previewPhoto),
     },
   };
 }
@@ -97,6 +96,7 @@ export default async function CarPage({
       href: `/${makes}/${model}/${evolutions}`,
     },
   ];
+  const isActive = await isActiveVehicleId(carId);
   const vehicleId = await findVehicleId(carId);
   const vehicleSimilar = await findVehicleSimilar({
     makes: String(vehicleId?.details?.makes.make_short_name),
@@ -138,11 +138,12 @@ export default async function CarPage({
               fraht={Number(cbrMap.get("fraht"))}
               k_krw={Number(cbrMap.get("K_KRW"))}
               commision={Number(cbrMap.get("company_comission"))}
+              isActive={isActive}
             />
           </section>
           {/* Options */}
           <Options options={vehicleId.vehicle_options} />
-
+          {/* Раздел - Похожие автомобили */}
           <SimilarCars
             vehicleSimilar={vehicleSimilar}
             year={new Date(
@@ -151,7 +152,7 @@ export default async function CarPage({
           />
         </Suspense>
       </div>
-      {/* <YandexMetrika /> */}
+      <YandexMetrika />
     </>
   );
 }

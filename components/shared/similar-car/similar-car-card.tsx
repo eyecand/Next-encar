@@ -1,10 +1,8 @@
 import Image from "next/image";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { detectFuels } from "@/lib/detect-fuels";
 import Link from "next/link";
 export function CarCard({
   id,
-  price,
   makes,
   model,
   mileage,

@@ -6,27 +6,21 @@ import { PriceAll } from "@/components/shared/price-on-mian-windows";
 import { ImageLoader } from "../../../components/shared/image-loader";
 
 import NotImage from "../../../public/12.png";
-import { InterfaceProps } from "../model";
+import { VehicleListProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import { detectedDate } from "@/lib/detected-date";
 
 export const Mobile = ({
   vehicle,
-  className,
   EUR,
   KRW,
   fraht,
   broker,
   k_krw,
   commision,
-}: InterfaceProps) => {
+}: VehicleListProps) => {
   return (
-    <div
-      className={cn(
-        className,
-        "flex-col items-center sm:flex-row p-4  pb-0 sm:flex-wrap"
-      )}
-    >
+    <div className={"flex-col items-center sm:flex-row p-4  pb-0 sm:flex-wrap"}>
       {vehicle.length > 0 &&
         vehicle.map((item) => {
           return (
@@ -41,6 +35,7 @@ export const Mobile = ({
                   className={`bg-white border-light-gray rounded-xl overflow-hidden flex flex-col relative
                 min-h-[300px] sm:transition-all border-[2.5px] sm:hover:shadow-xl sm:hover:-translate-y-2 shadow-md`}
                 >
+                  {/* Изображение авто */}
                   <div className="w-full flex relative">
                     {item.encar.photos.length === 0 ? (
                       <Image
@@ -66,6 +61,7 @@ export const Mobile = ({
 
                   <div className="p-1 sm:p-2 md:p-3 lg:p-4 grow flex flex-col">
                     <div className="items-center justify-between min-h-[81px] flex gap-1 md:gap-3 py-1 md:py-3 text-gray-900 border-b border-gray-200 grow">
+                      {/* Название авто */}
                       <span className="font-bold text-xs sm:text-base lg:text-lg font-gilroy">
                         {detectMake(
                           String(item.encar.details.makes.make_short_name)
@@ -74,6 +70,7 @@ export const Mobile = ({
                           ? "Carnival"
                           : item.encar.details.model.model_english}
                       </span>
+                      {/* Label кредит|| рента || был в аварии */}
                       {(item.encar.lib_sell_types.sell_type ===
                         "RENT_SUCCESSION" ||
                         item.encar.lib_sell_types.sell_type === "RENT_CAR") && (
@@ -104,7 +101,7 @@ export const Mobile = ({
                         ""
                       )}
                     </div>
-
+                    {/* Перечисление  характеристик блок-1 */}
                     <div className="align-middle flex py-3 text-gray-900 text-[12px] lg:text-sm justify-between items-baseline border-b  border-gray-200 relative">
                       <span className="text-gray-500">Год:</span>
                       <div className="flex">
@@ -124,7 +121,8 @@ export const Mobile = ({
                             : ""}
                         </span>
                       </div>
-                    </div>
+                    </div>{" "}
+                    {/* Перечисление  характеристик авто блок-2 */}
                     <div className="align-middle  text-[12px] lg:text-sm mx-[2px] flex py-3 whitespace-nowrap text-gray-900  justify-between items-baseline border-b  border-gray-200 relative">
                       <span className="text-gray-500 ">Двигатель:</span>
                       <div>
@@ -147,7 +145,6 @@ export const Mobile = ({
                         )}
                       </div>
                     </div>
-
                     <div className="align-middle flex py-3 text-[12px]  whitespace-nowrap text-gray-900  justify-between items-baseline border-b  border-gray-200 relative">
                       <span className="text-gray-500">Пробег:</span>
                       <div className="flex items-center space-x-2">
@@ -168,6 +165,7 @@ export const Mobile = ({
                       </div>
                     </div>
                   </div>
+                  {/* Цена, PriceAll-расчет стоимости в России */}
                   <div className="flex justify-between items-center text-black text-wrap text-[14px] whitespace-nowrap font-semibold px-2 pb-5">
                     <PriceAll
                       price_origion={Number(item.encar.advertisements?.price)}

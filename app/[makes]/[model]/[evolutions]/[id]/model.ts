@@ -86,6 +86,7 @@ export type VehicleIdProps = {
   broker: number;
   k_krw: number;
   commision: number;
+  isActive: boolean;
 };
 export type AlertDiagnosticProps = {
   diagnostics: DiagnosticsProps | null;

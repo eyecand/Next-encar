@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Autofish",
+  title: "Autofish -- авто из Южной Кореи под заказ с сайта Енкар (Encar)",
   keywords:
     "Encar, Корея, авто из Кореи, аукционы Кореи, автомобиль из Кореи, купить машину из Кореи",
   description:

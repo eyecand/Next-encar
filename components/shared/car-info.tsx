@@ -9,16 +9,14 @@ import { Button } from "../ui/button";
 import { VehicleIdProps } from "@/app/[makes]/[model]/[evolutions]/[id]/model";
 import { detectTransmission } from "./form-korea-cars/second-line/lib";
 import { detectMake } from "./form-korea-cars/first-line/lib";
-import { CalculationAlert } from "@/app/widjet/calculation-alert/calculation-alert";
 import { NoProhodCar } from "@/lib/is-no-prohod-car";
-import { PriceView } from "@/app/widjet/calculation-alert/lib/price-view";
-import { CalculationCar } from "@/lib/calcilation-car";
 import Link from "next/link";
 import { CarInfoHeader } from "./vehicle-id-page/car-info/car-info-header";
 import { CarInfoWarnings } from "./vehicle-id-page/car-info/car-info-warnings";
-import { FaTelegram, FaWhatsapp } from "react-icons/fa";
 import { detectedMontYear } from "@/lib/month-year";
 import ShareButton from "./ShareButton";
+import { CoastCar } from "./car-info/coast-car/coast-car";
+
 export const CarInfo = ({
   details,
   accident,
@@ -30,12 +28,7 @@ export const CarInfo = ({
   id,
   auctionId,
   sell_type,
-  EUR,
-  KRW,
-  fraht,
-  broker,
-  k_krw,
-  commision,
+  isActive,
 }: VehicleIdProps) => {
   const isNoProhodCar = NoProhodCar(String(details?.release_date));
 
@@ -61,8 +54,8 @@ export const CarInfo = ({
     : "Gasoline";
   return (
     <div className="w-full md:w-1/2">
-      <div className="flex">
-        {/* Header */}
+      {/* Header */}
+      <section className="flex">
         <div className="w-full">
           <div className="flex gap-2">
             <CarInfoHeader
@@ -77,9 +70,8 @@ export const CarInfo = ({
               copyLink={copyLink}
             />
           </div>
-
+          {/* Был в аварии, Кредит */}
           <div className="flex  justify-between">
-            {/* Был в аварии, Кредит */}
             <CarInfoWarnings
               grade={
                 details?.grades.grade_english
@@ -106,129 +98,22 @@ export const CarInfo = ({
             </Link>
           </div>
         </div>
-      </div>
+      </section>
+      {/* Стоимость */}
+      <CoastCar
+        krw_price={Number(advertisements?.price) * 10000}
+        isNoProhodCar={isNoProhodCar}
+        realFuel={realFuel}
+        engine={Number(details?.engine_displacement)}
+        makes={String(details?.makes.make_short_name)}
+        model={String(details?.model.model_english)}
+        strHref={strHref}
+        year={String(details?.release_date)}
+        isActive={isActive}
+      />
 
-      <div className="flex flex-col md:flex-row justify-between border-solid border-t border-gray-200 mt-2">
-        {/* Стоимость */}
-
-        <div className="flex flex-col gap-4 w-full md:w-[60%] mt-4">
-          <div className="flex justify-between items-center text-zinc-500">
-            <span>Стоимость в Корее</span>
-            <span className="text-lg font-semibold text-zinc-700">
-              {new Intl.NumberFormat("ru-RU")
-                .format(Number(advertisements?.price) * 10000)
-                .replace(",", ".")}{" "}
-              ₩
-            </span>
-          </div>
-          <div
-            className="flex justify-between items-center 
-            text-zinc-500"
-          >
-            <span>Стоимость в России</span>
-            <span className="text-xl font-semibold text-zinc-700">
-              {isNoProhodCar ? (
-                <PriceView
-                  tilda={true}
-                  className=""
-                  label="₽"
-                  price={String(
-                    CalculationCar(
-                      Number(advertisements?.price) * 10000,
-                      KRW,
-                      EUR,
-                      Number(details?.engine_displacement),
-                      realFuel,
-                      "4",
-                      broker,
-                      fraht,
-                      k_krw,
-                      commision,
-                      0
-                    )
-                  )}
-                />
-              ) : (
-                <PriceView
-                  tilda={true}
-                  className=""
-                  label="₽"
-                  price={String(
-                    CalculationCar(
-                      Number(advertisements?.price) * 10000,
-                      KRW,
-                      EUR,
-                      Number(details?.engine_displacement),
-                      realFuel,
-                      String(details?.release_date),
-                      broker,
-                      fraht,
-                      k_krw,
-                      commision,
-                      0
-                    )
-                  )}
-                />
-              )}
-            </span>
-          </div>
-          {/* Подробный расчет */}
-          <CalculationAlert
-            engine={Number(details?.engine_displacement)}
-            fuel={realFuel}
-            priceEn={Number(advertisements?.price) * 10000}
-            year={String(details?.release_date)}
-            EUR={EUR}
-            KRW={KRW}
-            broker={broker}
-            fraht={fraht}
-            k_krw={k_krw}
-            copyLink={strHref}
-            make={detectMake(String(details?.makes.make_short_name))}
-            model={
-              details?.model.model_english === "Canival"
-                ? "Carnival"
-                : String(details?.model.model_english)
-            }
-            commision={commision}
-          />
-        </div>
-        <div className="flex flex-col w-full md:w-[36%] mt-2 md:mt-4">
-          <Link
-            target="_blank"
-            rel="nofollow"
-            href={`https://t.me/Autofish_office?text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
-            className="w-full  py-4 text-sm bg-[#e05358] text-white uppercase font-gilroy font-semibold rounded-xl  flex items-center justify-center hover:bg-[#ac3f42] duration-300"
-          >
-            Заказать
-          </Link>
-          <span className="w-full text-center mt-2">или напишите нам</span>
-          <div className="flex items-center justify-between gap-4 mt-2 ">
-            <Link
-              className="block w-[50%]"
-              target="_blank"
-              rel="nofollow"
-              href={`https://t.me/Autofish_office?text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
-            >
-              <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
-                <FaTelegram size={25} className="text-blue-500" />
-              </button>
-            </Link>
-            <Link
-              className="block w-[50%]"
-              target="_blank"
-              rel="nofollow"
-              href={`https://api.whatsapp.com/send/?phone=79850364206&text=Здравствуйте, заинтересовал автомобиль ${strHref}`}
-            >
-              <button className="flex justify-center items-center bg-gray-100 w-full h-[40px] rounded-lg hover:bg-gray-200 cursor-pointer transition-colors">
-                <FaWhatsapp size={25} className="text-green-500" />
-              </button>
-            </Link>
-          </div>
-        </div>
-      </div>
-      {/* Основные характеристики авто */}
-      <div className="border-solid border-t border-gray-200 mt-2 pt-4 flex flex-col  lg:items-start  gap-4">
+      {/* Характеристики авто */}
+      <section className="border-solid border-t border-gray-200 mt-2 pt-4 flex flex-col  lg:items-start  gap-4">
         <h3 className="text-lg md:text-xl font-semibold">Характеристики</h3>
         <div className="w-full flex flex-col md:flex-row ">
           <div className="space-y-4 w-full lg:w-1/2 mr-12">
@@ -263,9 +148,9 @@ export const CarInfo = ({
             />
           </div>
         </div>
-      </div>
-
-      <div className="flex flex-col gap-4 mt-7">
+      </section>
+      {/* Alert "Отчет страховой" && компании "Отчет осмотра авто"*/}
+      <section className="flex flex-col gap-4 mt-7">
         <StatisticAlertDialog
           plate_number={vehicle_plate_number}
           accident_details={accident_details}
@@ -291,10 +176,9 @@ export const CarInfo = ({
             inspections={inspections?.inspection_details}
           />
         )}
-      </div>
-
-      <div className=" mt-6 ">
-        {/* Ссылка на оригинальное обьявление */}
+      </section>
+      {/* Ссылка на оригинальное обьявление */}
+      <section className=" mt-6 ">
         <div className="group relative w-full grow mt-4 flex justify-center">
           <a
             target="_blank"
@@ -310,8 +194,7 @@ export const CarInfo = ({
           Владивосток. <br /> Обратитесь к нам, оставив заявку, чтобы получить
           консультацию.
         </p>
-      </div>
-      {/* <PriceInfo priceEn={data.average_cost_japan} priceRub={data.full_duty} /> */}
+      </section>
     </div>
   );
 };

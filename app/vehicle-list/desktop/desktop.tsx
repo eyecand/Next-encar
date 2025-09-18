@@ -6,22 +6,22 @@ import { detectFuels } from "@/lib/detect-fuels";
 import { PriceAll } from "@/components/shared/price-on-mian-windows";
 import { ImageLoader } from "../../../components/shared/image-loader";
 import NotImage from "../../../public/12.png";
-import { InterfaceProps } from "../model";
+import { VehicleListProps } from "../model";
 import { detectMake } from "@/components/shared/form-korea-cars/first-line/lib";
 import { detectedDate } from "@/lib/detected-date";
 
 export const Desktop = ({
   vehicle,
-  className,
+
   EUR,
   KRW,
   fraht,
   broker,
   k_krw,
   commision,
-}: InterfaceProps) => {
+}: VehicleListProps) => {
   return (
-    <div className={cn(className, "flex-col gap-10  ")}>
+    <div className="flex flex-col gap-10">
       {vehicle.length > 0 &&
         vehicle.map((item, index) => {
           return (
@@ -33,6 +33,7 @@ export const Desktop = ({
                 className=" p-5 max-w-7xl "
               >
                 <div className="flex justify-between relative card-car">
+                  {/* Изображение авто */}
                   <div className="mr-5 relative w-full h-full  md:w-[320px] md:h-[220px] lg:h-[240px]">
                     {item.encar.photos.length === 0 ? (
                       <Image
@@ -57,7 +58,9 @@ export const Desktop = ({
                     )}
                   </div>
                   <div className="flex flex-col basis-[400px] min-w-[232px] mr-5">
+                    {/* Параметры авто */}
                     <div className="flex-1">
+                      {/* Основные характеристики название и тд */}
                       <div className="title">
                         <h3 className="inline text-[18px] leading-[25px] font-semibold">
                           {detectMake(
@@ -82,6 +85,7 @@ export const Desktop = ({
                             : ""}
                         </div>
                       </div>
+                      {/* Перечисление доп характеристик авто объем, пробег и тд */}
                       <div className="middle mt-1 text-[15px] leading-6">
                         {item.encar.details.engine_displacement < 500 ? (
                           ""
@@ -123,7 +127,9 @@ export const Desktop = ({
                     </div>
                   </div>
                   <div className="flex flex-col flex-shrink-0 flex-grow-0 w-[260px]">
+                    {/* Секция с ценами и Label */}
                     <div className="flex-1 basis-full">
+                      {/* Цена в России */}
                       <PriceAll
                         price_origion={Number(item.encar.advertisements?.price)}
                         years={String(item.encar.details.release_date)}
@@ -137,6 +143,7 @@ export const Desktop = ({
                         k_krw={k_krw}
                         commision={commision}
                       />
+                      {/* Цена в Кореи */}
                       <div className="flex flex-col items-end mt-2">
                         <span className="text-gray-500 text-[15px] leading-5">
                           Цена в Корее
@@ -151,6 +158,7 @@ export const Desktop = ({
                           ₩
                         </span>
                       </div>
+                      {/* Label Креит || Рента */}
                       <div className="flex flex-col gap-2 items-end mt-2">
                         {(item.encar.lib_sell_types.sell_type ===
                           "RENT_SUCCESSION" ||
@@ -174,6 +182,7 @@ export const Desktop = ({
                         )}
                       </div>
                     </div>
+                    {/* Дата объявления */}
                     <div className="middle mt-1 text-[15px] leading-6 flex justify-end">
                       <span className="whitespace-nowrap">
                         {detectedDate(item.encar.created_at)}
